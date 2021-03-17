@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "117669408139",
+    "project_id": "tidyup-a55b9",
+    "storage_bucket": "tidyup-a55b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117669408139:android:d6af86c8cae2fcd2ab538e",
+        "android_client_info": {
+          "package_name": "com.example.android.tidyup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117669408139-6hv6rvrsggfhkj1pqm0giijvecmjlvvj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUGAzScixKTdX7mY2KSU_Zg5PW5N3MbMQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117669408139-6hv6rvrsggfhkj1pqm0giijvecmjlvvj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

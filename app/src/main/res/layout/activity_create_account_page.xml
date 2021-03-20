@@ -12,6 +12,7 @@
         android:layout_width="329dp"
         android:layout_height="107dp"
         android:layout_marginTop="76dp"
+        android:fontFamily="bradley"
         android:text="Thanks for Signing Up For Tidy Up"
         android:textAlignment="center"
         android:textColor="#003060"

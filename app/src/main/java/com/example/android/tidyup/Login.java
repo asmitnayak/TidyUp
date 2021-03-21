@@ -1,24 +1,31 @@
 package com.example.android.tidyup;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
 
     protected static final ArrayList<String> LOGINCREDENTIALS = new ArrayList<>();
     private String Role = "";
-    private Authorization auth = null;
+    private EditText mEmail, mPassword;
+    private Button mLoginBtn;
+    private FirebaseAuth fauth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,37 +33,57 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
     }
 
+    // redirect user to task page if user credentials are correct
     public void login(View view) {
-        EditText emailIn = findViewById(R.id.emailInput);
-        String email = emailIn.getText().toString();
-        EditText passwordIn = findViewById(R.id.passwordInput);
-        String password = passwordIn.getText().toString();
+        mEmail = findViewById(R.id.emailInput);
+        mPassword = findViewById(R.id.cPasswordInput);
+        mLoginBtn = findViewById(R.id.loginButton);
+        fauth = FirebaseAuth.getInstance();
 
-        // Check for valid input.
-        if (email != null && !email.equals("") && password != null && !password.equals("")) {
-            // Check if login credentials matches.
-            check(email, password);
-        } else {
-            Toast.makeText(Login.this, "Invalid input. Please try again!", Toast.LENGTH_LONG).show();
-        }
-    }
-    public void check(final String username, final String password) {
-        //some checking credentials here
+        mLoginBtn.setOnClickListener(new View.OnClickListener() {
+            String email = mEmail.getText().toString().trim();
+            String password = mPassword.getText().toString().trim();
+            @Override
+            public void onClick(View v) {
+                if (TextUtils.isEmpty(email)){
+                    mEmail.setError("Email is required");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)){
+                    mPassword.setError("Password is required");
+                    return;
+                }
+                if(password.length() < 6){
+                    mPassword.setError("Password must be greater than or equal to 6 characters");
+                    return;
+                }
+
+                //check credentials of user through firebase
+                fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(), Account.class));
+                        } else{
+                            Toast.makeText(Login.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+        });
 
     }
+
     // Redirect the user to Create Account screen
     public void goToCreateAccount(View view) {
         Intent intent = new Intent(this, CreateAccount.class);
         startActivity(intent);
     }
-
-    public class Authorization extends AsyncTask<Void, Void, Boolean> {
-
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            return null;
-        }
+    //Redirect the user to Task Page
+    public void goToTaskPage(View view) {
+        Intent intent = new Intent(this, TaskPage.class);
+        startActivity(intent);
     }
+
 }

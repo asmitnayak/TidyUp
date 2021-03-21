@@ -3,20 +3,23 @@ package com.example.android.tidyup;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -25,13 +28,14 @@ public class CreateAccount extends AppCompatActivity {
 
     protected static final ArrayList<String> CREDENTIALS = new ArrayList<>();
 
-    private EditText mUsernameView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfView;
     private EditText mAddressView;
     private EditText mPhoneNumberView;
     private Spinner mRoleSpinner;
-    private UserLoginTask mAuthTask;
+    private Button mCreateButton;
+    private FirebaseAuth fAuth;
 
     public static String[] accountDetails = new String[6];
 
@@ -59,30 +63,55 @@ public class CreateAccount extends AppCompatActivity {
 
 
 
-        mAuthTask = new UserLoginTask();
-        mUsernameView = findViewById(R.id.emailInput);
-        mPasswordView = findViewById(R.id.passwordInput);
+        mEmailView = findViewById(R.id.cEmailInput);
+        mPasswordView = findViewById(R.id.cPasswordInput);
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
         mAddressView = findViewById(R.id.address);
         mPhoneNumberView = findViewById(R.id.phoneNumber);
         mRoleSpinner = spinner;
+        mCreateButton = findViewById(R.id.registerLink);
+        fAuth = FirebaseAuth.getInstance();
 
+        // if user account is already there with same information just log them in
+        if (fAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(), Account.class));
+            finish();
+        }
         Button mRegisterButton = (Button) findViewById(R.id.registerLink);
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if (mAuthTask.write_credentials())
-                        finish();
-                    // TODO: go to login this line is error generating
-                    if (mRoleSpinner.getSelectedItem().toString().equalsIgnoreCase("Admin")){
-
-                    }
-                    else if (mRoleSpinner.getSelectedItem().toString().equalsIgnoreCase("User")) {
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                String email = mEmailView.getText().toString().trim();
+                String password = "";
+                if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
+                    password = mPasswordView.getText().toString().trim();
+                } else{
+                    mPasswordConfView.setError("Password and Confirm password do no match");
+                    return;
                 }
+                if (TextUtils.isEmpty(email)){
+                    mEmailView.setError("Email is required");
+                    return;
+                }
+                if (TextUtils.isEmpty(password)){
+                    mPasswordView.setError("Password is required");
+                    return;
+                }
+                if(password.length() < 6){
+                    mPasswordView.setError("Password must be greater than or equal to 6 characters");
+                    return;
+                }
+                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(), Account.class));
+                        }else{
+                            Toast.makeText(CreateAccount.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
 
@@ -90,85 +119,8 @@ public class CreateAccount extends AppCompatActivity {
 
 
     public void goToAccountPage(){
-        //Intent intent = new Intent(this, View.class);
-        //startActivity(intent);
-    }
-
-
-
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-        private String mUser;
-        private String mPassword;
-
-        UserLoginTask(String user, String password) {
-            mUser = user;
-            mPassword = password;
-        }
-        UserLoginTask() {
-            mUser = "";
-            mPassword = "";
-
-        }
-
-        void setUsernamePassword(String user, String pass){
-            mUser = user;
-            mPassword = pass;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            if(CREDENTIALS.isEmpty())
-                return false;
-
-            for (String credential : CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mUser)) {
-                    // Account exists, return true if the password matches.
-                    if (pieces[1].equals(mPassword))
-                        System.arraycopy(pieces, 0, accountDetails, 0, 6);
-                    return  pieces[1].equals(mPassword);
-                }
-            }
-
-            return false;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
-
-        public ArrayList<String> read_credentials() throws IOException {
-
-
-            return CREDENTIALS;
-        }
-
-        private boolean write_credentials() throws IOException {
-            boolean success = false;
-
-
-            return success;
-        }
+        Intent intent = new Intent(this, Account.class);
+        startActivity(intent);
     }
 
 }

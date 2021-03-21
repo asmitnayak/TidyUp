@@ -78,6 +78,7 @@
                 android:layout_marginEnd="24dp"
                 android:backgroundTint="#003060"
                 android:fontFamily="@font/bad_script"
+                android:onClick="onInvite"
                 android:text="Invite"
                 android:textSize="14sp" />
 
@@ -121,9 +122,21 @@
 
                 android:backgroundTint="#003060"
                 android:fontFamily="@font/bad_script"
+                android:onClick="onCopy"
                 android:text="Copy"
                 android:textSize="14sp" />
         </LinearLayout>
-    </LinearLayout>
 
+        <Button
+            android:id="@+id/createGroupButton"
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="25dp"
+            android:backgroundTint="#003060"
+            android:fontFamily="@font/bad_script"
+            android:onClick="onCreateGroup"
+            android:text="Create"
+            android:textSize="14sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

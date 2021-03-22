@@ -58,6 +58,7 @@
         android:layout_marginTop="584dp"
         android:backgroundTint="#003060"
         android:fontFamily="@font/bad_script"
+        android:onClick="onJoinGroup"
         android:text="Join"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"

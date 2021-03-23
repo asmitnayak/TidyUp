@@ -81,9 +81,13 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
     //Redirect the user to Task Page
-    public void goToTaskPage(View view) {
+    public void goToTaskPage() {
         Intent intent = new Intent(this, TaskPage.class);
         startActivity(intent);
     }
 
+    public void goToAccountPage(View view) {
+        Intent intent = new Intent(this, Account.class);
+        startActivity(intent);
+    }
 }

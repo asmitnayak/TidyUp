@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,15 +20,20 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateAccount extends AppCompatActivity {
 
 
     protected static final ArrayList<String> CREDENTIALS = new ArrayList<>();
 
+    private EditText mNameView;
     private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfView;
@@ -36,8 +42,8 @@ public class CreateAccount extends AppCompatActivity {
     private Spinner mRoleSpinner;
     private Button mCreateButton;
     private FirebaseAuth fAuth;
+    private FirebaseFirestore fFirestore;
 
-    public static String[] accountDetails = new String[6];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +67,7 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-
-
+        mNameView = findViewById(R.id.cName);
         mEmailView = findViewById(R.id.cEmailInput);
         mPasswordView = findViewById(R.id.cPasswordInput);
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
@@ -71,6 +76,7 @@ public class CreateAccount extends AppCompatActivity {
         mRoleSpinner = spinner;
         mCreateButton = findViewById(R.id.registerLink);
         fAuth = FirebaseAuth.getInstance();
+        fFirestore = FirebaseFirestore.getInstance();
 
         // if user account is already there with same information just log them in
         if (fAuth.getCurrentUser() != null){
@@ -78,11 +84,19 @@ public class CreateAccount extends AppCompatActivity {
             finish();
         }
         Button mRegisterButton = (Button) findViewById(R.id.registerLink);
+        registerUser(mRegisterButton);
+    }
+
+    private void registerUser(Button mRegisterButton) {
         mRegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String name = mNameView.getText().toString().trim();
                 String email = mEmailView.getText().toString().trim();
                 String password = "";
+                String address = mAddressView.getText().toString().trim();
+                String phoneNumber = mPhoneNumberView.getText().toString().trim();
+                String role = mRoleSpinner.getSelectedItem().toString();
                 if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
                     password = mPasswordView.getText().toString().trim();
                 } else{
@@ -101,12 +115,32 @@ public class CreateAccount extends AppCompatActivity {
                     mPasswordView.setError("Password must be greater than or equal to 6 characters");
                     return;
                 }
+                String finalPassword = password;
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), Account.class));
+                            Map<String, String> userMap = new HashMap<>();
+                            userMap.put("Name", name);
+                            userMap.put("Email", email);
+                            userMap.put("Password", finalPassword);
+                            userMap.put("Address", address);
+                            userMap.put("Phone Number", phoneNumber);
+                            userMap.put("Role", role);
+
+                            // Store user information into Firestore
+                            fFirestore.collection("Users").add(userMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    if (task.isSuccessful()){
+                                        Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+                                        startActivity(new Intent(getApplicationContext(), Account.class));
+                                    } else {
+                                        Toast.makeText(CreateAccount.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+
                         }else{
                             Toast.makeText(CreateAccount.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -114,7 +148,6 @@ public class CreateAccount extends AppCompatActivity {
                 });
             }
         });
-
     }
 
 

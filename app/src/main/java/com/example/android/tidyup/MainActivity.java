@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -16,7 +18,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +31,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GroupManagement gm = new GroupManagement();
+        gm.execute();
+//        fireStoreAdd2Doc();
+        Button btn = (Button) findViewById(R.id.button3);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gm.addGroupCodes("beta-test", GroupManagement.getCode());
+            }
+        });
+//        GroupManagement.readGroupCodeDB();
+//        fireStoreAddObject();
 
-        fireStoreAdd2Doc();
     }
+
 
     private void fireStoreAdd2Doc(){
         C_D ab = new C_D("Hello2", "World2");
@@ -38,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fireStoreAddObject(){
-        A_B ab = new A_B("Hello", "World");
+        A_B ab = new A_B("Hello", Arrays.asList("World", "World2", "World3"));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("first-time").document("id-specific").set(ab, SetOptions.merge());
+        db.collection("first-time").document("id-specific3").set(ab, SetOptions.merge());
     }
 
     private DocumentReference mDocRef = FirebaseFirestore.getInstance().document("testing/tested");
@@ -120,19 +136,26 @@ public class MainActivity extends AppCompatActivity {
 
     class A_B{
 
-        String a, b;
+        String a;
+        List<String> b;
+        Map<String, Object> nestedData = new HashMap<>();
 
         A_B(){};
-        A_B(String a, String b){
+        A_B(String a, List<String> b){
             this.a = a;
             this.b = b;
+            this.nestedData.put("g1", Arrays.asList("a","b","c"));
+            this.nestedData.put("g2", Arrays.asList("a2","b2","c2"));
         }
 
         public String getA(){
             return this.a;
         }
-        public String getB(){
+        public List<String> getB(){
             return this.b;
+        }
+        public Map<String, Object> getNestedData(){
+            return this.nestedData;
         }
     }
     class C_D{

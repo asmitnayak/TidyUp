@@ -34,7 +34,7 @@ public class LeaveGroup extends AppCompatActivity {
                         removeItem(position);
                     }
                 });
-                builder.setNegativeButton("Cancle", null);
+                builder.setNegativeButton("Cancel", null);
                 builder.create().show();
             }
         });

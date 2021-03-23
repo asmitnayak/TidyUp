@@ -14,7 +14,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RVAdapter extends RecyclerView.Adapter<RVAdapter.myViewHolder> {
-    private ArrayList<GroupItems> myGroupList;
+    private ArrayList<GroupListObject> myGroupList;
     private OnItemClickListener mylistener;
     public interface OnItemClickListener{
         void onDeleteClick(int position);
@@ -43,21 +43,21 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.myViewHolder> {
             });
         }
     }
-    public RVAdapter(ArrayList<GroupItems> groupList){
+    public RVAdapter(ArrayList<GroupListObject> groupList){
         this.myGroupList = groupList;
     }
 
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_groups_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.actvity_group_list_layout, parent, false);
         myViewHolder vh = new myViewHolder(v,mylistener);
         return vh;
     }
 
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
-        GroupItems currentItem = myGroupList.get(position);
+        GroupListObject currentItem = myGroupList.get(position);
         holder.groupName.setText(currentItem.getGroupName());
         holder.leaveButton = currentItem.getLeaveButton();
     }

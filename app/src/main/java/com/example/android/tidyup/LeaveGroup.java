@@ -17,7 +17,7 @@ public class LeaveGroup extends AppCompatActivity {
     private RecyclerView myRecyclerView;
     private RVAdapter myAdapter;
     private RecyclerView.LayoutManager myLayoutManager;
-    private ArrayList<GroupItems> myGroupList;
+    private ArrayList<GroupListObject> myGroupList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,15 +35,15 @@ public class LeaveGroup extends AppCompatActivity {
                         removeItem(position);
                     }
                 });
-                builder.setNegativeButton("Cancle", null);
+                builder.setNegativeButton("Cancel", null);
                 builder.create().show();
             }
         });
     }
     public void createGroupList(){
         myGroupList = new ArrayList<>();
-        myGroupList.add(new GroupItems("Apt201",new Button(this)));
-        myGroupList.add(new GroupItems("Apt501",new Button(this))) ;
+        myGroupList.add(new GroupListObject("Apt201",new Button(this)));
+        myGroupList.add(new GroupListObject("Apt501",new Button(this))) ;
     }
     public void buildRecylcerView(){
         myRecyclerView = findViewById(R.id.recyclerview);

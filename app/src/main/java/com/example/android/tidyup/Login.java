@@ -21,11 +21,11 @@ import java.util.ArrayList;
 
 public class Login extends AppCompatActivity {
 
-    protected static final ArrayList<String> LOGINCREDENTIALS = new ArrayList<>();
     private String Role = "";
     private EditText mEmail, mPassword;
     private Button mLoginBtn;
     private FirebaseAuth fauth;
+    private Auth_service auth_service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
+
                 //check credentials of user through firebase
                 fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -66,12 +67,16 @@ public class Login extends AppCompatActivity {
                             Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                             startActivity(new Intent(getApplicationContext(), Account.class));
                         } else{
-                            Toast.makeText(Login.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
             }
         });
+
+    }
+
+    public void login_success (){
 
     }
 

@@ -24,7 +24,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "GroupManagementFirebase";
     private static final String GROUP_CODE_DB = "GroupCodeDB";
     private static final String GROUP_CODE_DB_DOCUMENT = "test";
-    private static final String GROUP_DB = "Groupsz";
+    private static final String GROUP_DB = "Groups";
     private static final String GROUP_DB_DOCUMENT = "Groups";
     private static Map<String, List<String>> gcDB;
     private static Map<String, List<String>> grpDB;
@@ -41,19 +41,29 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return saltStr;
     }
 
-    public static void addUserToGroup(String groupID, String userID){
+    public static void addUserToGroup(String groupID, String userID, String code){
         if(grpDB.containsKey(groupID)){
-            ArrayList<String> lst = (ArrayList<String>) gcDB.get(groupID);
+            ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
             if (lst.contains(userID))
                 return;
             lst.add(userID);
-            gcDB.put(groupID, lst);
+            grpDB.put(groupID, lst);
         } else
             grpDB.put(groupID, Collections.singletonList(userID));
 
-        Group grp = new Group();
-        db.collection(GROUP_DB).document(GROUP_CODE_DB).set(grp);
+        Group grp = new Group(grpDB);
+        db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
+        addGroupCodes(groupID, code);
     }
+//    public static void addGroup(String groupID){
+//        if(grpDB.containsKey(groupID))
+//            return;
+//        else
+//            grpDB.put(groupID, Collections.singletonList(""));
+//
+//        Group grp = new Group();
+//        db.collection(GROUP_DB).document(GROUP_CODE_DB).set(grp);
+//    }
 
     public static void removeUserToGroup(String groupID, String userID){
 
@@ -146,7 +156,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             this.grpMap = customMap;
         }
 
-        public Map<String, List<String>> getGrpCodeMap(){
+        public Map<String, List<String>> getGrpMap(){
             return this.grpMap;
         }
     }

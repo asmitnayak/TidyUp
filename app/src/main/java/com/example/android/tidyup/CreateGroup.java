@@ -1,10 +1,14 @@
 package com.example.android.tidyup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,12 +17,15 @@ public class CreateGroup extends AppCompatActivity {
     EditText memberEmail;
     TextView inviteCode;
 
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         groupName = findViewById(R.id.groupName);
-
+        inviteCode = findViewById(R.id.linkText);
+        inviteCode.setText(GroupManagement.getCode());
 
     }
     public void onInvite(View view) {
@@ -31,6 +38,13 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     public void onCreateGroup(View view) {
-//        takes you to group settings
+        GroupManagement.addUserToGroup(groupName.getText().toString(),fAuth.getUid(), inviteCode.getText().toString());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent setIntent = new Intent(this, Account.class);
+        startActivity(setIntent);
+        finish();
     }
 }

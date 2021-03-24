@@ -39,9 +39,9 @@ public class Account extends AppCompatActivity {
 
 
 
-    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private DocumentReference docRef  = fFirestore.collection("Users").document(fAuth.getUid());
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+    private final DocumentReference docRef  = fFirestore.collection("Users").document(fAuth.getUid());
 
     private TextView mName, mEmail, mPassword, mAddress, mPhoneNumber;
 
@@ -94,6 +94,7 @@ public class Account extends AppCompatActivity {
 
     public void goToCreateGroupPage(View view){
         Intent intent = new Intent(this, CreateGroup.class);
+        finish();
         startActivity(intent);
     }
     public void goToJoinGroupPage(View view){

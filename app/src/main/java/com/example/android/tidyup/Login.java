@@ -30,20 +30,23 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-    }
-
-    // redirect user to task page if user credentials are correct
-    public void login(View view) {
+//    }
+//
+//    // redirect user to task page if user credentials are correct
+//    public void login(View view) {
         mEmail = findViewById(R.id.emailInput);
         mPassword = findViewById(R.id.cPasswordInput);
         mLoginBtn = findViewById(R.id.loginButton);
         fauth = FirebaseAuth.getInstance();
 
+        GroupManagement gm = new GroupManagement();
+        gm.execute();
+
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
-            String email = mEmail.getText().toString().trim();
-            String password = mPassword.getText().toString().trim();
             @Override
             public void onClick(View v) {
+                String email = mEmail.getText().toString().trim();
+                String password = mPassword.getText().toString().trim();
                 if (TextUtils.isEmpty(email)){
                     mEmail.setError("Email is required");
                     return;
@@ -63,8 +66,10 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
+                            finish();
                             Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                            // check if admin move to Account.java
+                            startActivity(new Intent(getApplicationContext(), Account.class));
                         } else{
                             Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
@@ -72,7 +77,6 @@ public class Login extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     public void login_success (){

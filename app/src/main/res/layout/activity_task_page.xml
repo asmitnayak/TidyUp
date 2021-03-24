@@ -14,6 +14,7 @@
         android:layout_marginBottom="32dp"
         android:backgroundTint="@color/fontAndButtonColor"
         android:onClick="completeTask"
+        android:fontFamily="@font/architects_daughter"
         android:text="Complete Task"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/taskList"

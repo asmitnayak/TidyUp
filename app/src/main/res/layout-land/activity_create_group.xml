@@ -13,8 +13,10 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/light_blue_background" />
 
     <EditText
@@ -23,7 +25,7 @@
         android:layout_height="56dp"
         android:backgroundTint="#003060"
         android:ems="10"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:foregroundTint="#003060"
         android:hint="Group Name"
         android:textColor="#003060"
@@ -41,7 +43,7 @@
         android:layout_height="58dp"
         android:backgroundTint="#003060"
         android:ems="10"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:foregroundTint="#003060"
         android:hint="Invitee Email"
         android:textColor="#003060"
@@ -49,55 +51,51 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.224"
+        app:layout_constraintHorizontal_bias="0.409"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintVertical_bias="0.43" />
 
     <TextView
         android:id="@+id/inviteByEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="185dp"
-        android:fontFamily="@font/bad_script"
+        android:layout_marginStart="195dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/architects_daughter"
         android:text="Invite Members By Email"
         android:textColor="#003060"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/groupName" />
 
     <TextView
         android:id="@+id/linkText"
         android:layout_width="247dp"
         android:layout_height="42dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="6dp"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:text="Link goes here"
         android:textColor="@android:color/darker_gray"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/copyButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/groupLinkText" />
+        tools:layout_editor_absoluteX="195dp"
+        tools:layout_editor_absoluteY="274dp" />
 
     <TextView
         android:id="@+id/groupLinkText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="291dp"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:text="Group Link"
         android:textColor="#003060"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/memberEmail" />
 
@@ -107,12 +105,13 @@
         android:layout_height="0dp"
         android:layout_marginEnd="35dp"
         android:backgroundTint="#003060"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:text="Invite"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.544"
         app:layout_constraintStart_toEndOf="@+id/memberEmail"
-        tools:layout_editor_absoluteY="194dp" />
+        tools:layout_editor_absoluteY="162dp" />
 
     <Button
         android:id="@+id/copyButton"
@@ -121,11 +120,12 @@
         android:layout_marginStart="6dp"
         android:layout_marginEnd="35dp"
         android:backgroundTint="#003060"
-        android:fontFamily="@font/bad_script"
+        android:fontFamily="@font/architects_daughter"
         android:text="Copy"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toEndOf="@+id/linkText"
-        tools:layout_editor_absoluteY="306dp" />
+        tools:layout_editor_absoluteY="274dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,6 +55,10 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         db.collection(GROUP_DB).document(GROUP_CODE_DB).set(grp);
     }
 
+    public static void removeUserToGroup(String groupID, String userID){
+
+    }
+
     public static void addGroupCodes(String groupID, String groupCode){
         if(gcDB.containsKey(groupID)){
             ArrayList<String> lst = (ArrayList<String>) gcDB.get(groupID);

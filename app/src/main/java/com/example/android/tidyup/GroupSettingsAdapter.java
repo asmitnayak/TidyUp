@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -39,6 +41,9 @@ public class GroupSettingsAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.member_list_view_layout, null);
+        TextView memberName = (TextView) view.findViewById(R.id.memberName);
+        //memberName.setText(members.get(i).)
+        Button delete = (Button) view.findViewById(R.id.deleteButton);
         return view;
     }
 }

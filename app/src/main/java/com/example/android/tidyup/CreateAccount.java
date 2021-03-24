@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -116,11 +118,12 @@ public class CreateAccount extends AppCompatActivity {
                     return;
                 }
                 String finalPassword = password;
+                //create user and store in Firestore
                 fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Map<String, String> userMap = new HashMap<>();
+                            Map<String, Object> userMap = new HashMap<>();
                             userMap.put("Name", name);
                             userMap.put("Email", email);
                             userMap.put("Password", finalPassword);
@@ -129,26 +132,27 @@ public class CreateAccount extends AppCompatActivity {
                             userMap.put("Role", role);
 
                             // Store user information into Firestore
-                            fFirestore.collection("Users").add(userMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                            fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                    if (task.isSuccessful()){
-                                        Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
-                                        startActivity(new Intent(getApplicationContext(), Account.class));
-                                    } else {
-                                        Toast.makeText(CreateAccount.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                                    }
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(getApplicationContext(), Account.class));
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
                                 }
                             });
-
                         }else{
-                            Toast.makeText(CreateAccount.this, "Error " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
             }
         });
     }
+
 
 
     public void goToAccountPage(){

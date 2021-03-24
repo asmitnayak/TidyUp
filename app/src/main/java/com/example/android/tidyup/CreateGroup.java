@@ -1,11 +1,12 @@
 package com.example.android.tidyup;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateGroup extends AppCompatActivity {
     EditText groupName;
@@ -17,8 +18,9 @@ public class CreateGroup extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
         groupName = findViewById(R.id.groupName);
-    }
 
+
+    }
     public void onInvite(View view) {
         memberEmail = findViewById(R.id.memberEmail);
         //will add user by email

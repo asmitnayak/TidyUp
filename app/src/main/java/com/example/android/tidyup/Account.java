@@ -104,12 +104,4 @@ public class Account extends AppCompatActivity {
         Intent intent = new Intent(this, AddMembers.class);
         startActivity(intent);
     }
-
-    public void goToLeaveGroupPage(View view){
-        Intent intent = new Intent(this, LeaveGroup.class);
-        startActivity(intent);
-    }
-
-
-
 }

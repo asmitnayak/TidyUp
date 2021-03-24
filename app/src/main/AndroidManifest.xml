@@ -16,7 +16,6 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TidyUp.NoActionBar" />
-        <activity android:name=".LeaveGroup" />
         <activity
             android:name=".CreateAccount"
             android:label="CreateAccount"

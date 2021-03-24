@@ -16,7 +16,6 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TidyUp.NoActionBar" />
-        <activity android:name=".LeaveGroup" />
         <activity
             android:name=".CreateAccount"
             android:label="CreateAccount"
@@ -24,6 +23,7 @@
         <activity
             android:name=".Account"
             android:label="Account" />
+        <activity android:name=".AddMembers" />
         <activity android:name=".Login" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

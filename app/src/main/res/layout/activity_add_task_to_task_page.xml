@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D00B0303"
-    android:backgroundTint="#C10E0606"
+    android:background="@drawable/light_blue_background"
     tools:context=".AddTaskToTaskPage">
 
     <TextView
@@ -13,14 +12,16 @@
         android:layout_width="329dp"
         android:layout_height="107dp"
         android:layout_marginTop="108dp"
+        android:fontFamily="@font/bad_script"
         android:text="Add Task to Task Page"
         android:textAlignment="center"
-        android:textColor="#64FFDA"
+        android:textColor="@color/fontAndButtonColor"
         android:textSize="30sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/taskName"
@@ -28,66 +29,22 @@
         android:layout_height="55dp"
         android:ems="10"
         android:hint="Name"
-        android:textColor="#64FFDA"
-        android:textSize="24sp"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
-
-<!--    <EditText
-        android:id="@+id/taskRewardPenaltyValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Reward/Penalty value"
-        android:textColor="#64FFDA"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.467" />-->
-
-    <!--<EditText
-        android:id="@+id/taskAssignToPerson"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Assign to Person"
-        android:textColor="#64FFDA"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.575" />-->
-
-   <!-- <EditText
-        android:id="@+id/taskPriority"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Task Priority"
-        android:textColor="#64FFDA"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.680" />-->
-
+        app:layout_constraintVertical_bias="0.347" />
 
     <Button
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/teal_200"
+        android:backgroundTint="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
         android:onClick="returnToTaskPage"
         android:text="Add Task"
         android:textAllCaps="false"
@@ -106,14 +63,15 @@
         android:layout_marginStart="59dp"
         android:layout_marginTop="25dp"
         android:text="Person"
-        android:textColor="#64FFDA"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.436" />
+        app:layout_constraintVertical_bias="0.43" />
 
     <Spinner
         android:id="@+id/personAssignedToTask"
@@ -139,7 +97,8 @@
         android:layout_marginStart="59dp"
         android:layout_marginTop="25dp"
         android:text="Reward/Penalty Value"
-        android:textColor="#64FFDA"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -171,7 +130,8 @@
         android:layout_marginStart="59dp"
         android:layout_marginTop="25dp"
         android:text="Priority"
-        android:textColor="#64FFDA"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -202,14 +162,15 @@
         android:layout_height="55dp"
         android:ems="10"
         android:hint="Due Date DD/MM"
-        android:textColor="#64FFDA"
-        android:textSize="24sp"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.730" />
+        app:layout_constraintVertical_bias="0.742" />
 
     <TextView
         android:id="@+id/taskRepetition"
@@ -218,7 +179,8 @@
         android:layout_marginStart="59dp"
         android:layout_marginTop="25dp"
         android:text="Repetition"
-        android:textColor="#64FFDA"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/bad_script"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

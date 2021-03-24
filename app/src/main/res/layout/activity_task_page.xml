@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B70B0202"
-    android:backgroundTint="#B70B0202"
+    android:background="@drawable/light_blue_background"
     tools:context=".TaskPage">
 
     <Button
@@ -13,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:backgroundTint="#64FFDA"
+        android:backgroundTint="@color/fontAndButtonColor"
         android:onClick="completeTask"
         android:text="Complete Task"
         app:layout_constraintBottom_toBottomOf="parent"

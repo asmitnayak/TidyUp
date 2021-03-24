@@ -16,6 +16,8 @@
 
         <TextView
             android:id="@+id/taskNameLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_marginStart="0dp"
@@ -24,6 +26,8 @@
             android:text="Name:" />
         <TextView
             android:id="@+id/taskPersonLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskNameLayout"
@@ -35,6 +39,8 @@
 
         <TextView
             android:id="@+id/taskPointValueLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_below="@id/taskPersonLayout"
@@ -45,7 +51,20 @@
             android:text="Point Value:" />
 
         <TextView
+            android:id="@+id/taskRepetitionLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
+            android:layout_width="100dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="110dp"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/taskSelect"
+            android:text="Repetition:" />
+
+        <TextView
             android:id="@+id/taskPriorityLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskNameLayout"
@@ -57,6 +76,8 @@
 
         <TextView
             android:id="@+id/taskDateLayout"
+            android:textColor="@color/fontAndButtonColor"
+            android:fontFamily="@font/bad_script"
             android:layout_width="100dp"
             android:layout_height="27dp"
             android:layout_below="@id/taskPriorityLayout"
@@ -66,14 +87,6 @@
             android:layout_toEndOf="@id/taskSelect"
             android:text="Date:" />
 
-        <TextView
-            android:id="@+id/taskRepetitionLayout"
-            android:layout_width="100dp"
-            android:layout_height="27dp"
-            android:layout_marginStart="110dp"
-            android:layout_marginLeft="20dp"
-            android:layout_toEndOf="@+id/taskSelect"
-            android:text="Repetition:" />
 
         <CheckBox
             android:id="@+id/taskSelect"

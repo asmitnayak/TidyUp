@@ -94,16 +94,79 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/logoutButton"
+                android:id="@+id/acLogoutButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
                 android:onClick="loguot"
                 android:text="Logout"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.868" />
+                app:layout_constraintTop_toBottomOf="@+id/acLeaveGroupButton"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/acCreateCroupButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:onClick="goToCreateGroupPage"
+                android:text="Create Group"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/acJoinGroupButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:onClick="goToJoinGroupPage"
+                android:text="Join Group"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acCreateCroupButton" />
+
+            <Button
+                android:id="@+id/acAddMembersButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:onClick="gotToAddMemberPage"
+                android:text="Add Members"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acJoinGroupButton" />
+
+            <Button
+                android:id="@+id/acLeaveGroupButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:onClick="goToLeaveGroupPage"
+                android:text="Leave Group"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acAddMembersButton" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

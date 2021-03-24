@@ -71,8 +71,6 @@ public class Account extends AppCompatActivity {
                     mPassword.setText("Password: " + password);
                     mAddress.setText("Address: " + address);
                     mPhoneNumber.setText("Phone Number: " + phonenumber);
-                    Toast.makeText(Account.this, "Loaded User Info", Toast.LENGTH_LONG).show();
-
                 }else {
                     Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                 }
@@ -93,5 +91,25 @@ public class Account extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
     }
+
+    public void goToCreateGroupPage(View view){
+        Intent intent = new Intent(this, CreateGroup.class);
+        startActivity(intent);
+    }
+    public void goToJoinGroupPage(View view){
+        Intent intent = new Intent(this, JoinGroup.class);
+        startActivity(intent);
+    }
+    public void gotToAddMemberPage(View view){
+        Intent intent = new Intent(this, AddMembers.class);
+        startActivity(intent);
+    }
+
+    public void goToLeaveGroupPage(View view){
+        Intent intent = new Intent(this, LeaveGroup.class);
+        startActivity(intent);
+    }
+
+
 
 }

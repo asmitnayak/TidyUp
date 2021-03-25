@@ -89,7 +89,7 @@ public class Account extends AppCompatActivity {
                              addedUserDoc.update(KEY_Group, grpName);
 
                         } else {
-                            Toast.makeText(Account.this, "Error! finding and adding User with email " + newUserEmail + " " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             Log.d(TAG, "Error! " + task.getException().getMessage() + newUserEmail);
                         }
                     }
@@ -129,6 +129,10 @@ public class Account extends AppCompatActivity {
                 Log.d(TAG, e.toString());
             }
         });
+    }
+
+    public void updateUserInfo() {
+
     }
 
     public void loguot(View view){

@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class CreateAccount extends AppCompatActivity {
     private Button mCreateButton;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fFirestore;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +74,11 @@ public class CreateAccount extends AppCompatActivity {
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
         mRoleSpinner = spinner;
         mCreateButton = findViewById(R.id.registerLink);
+
         fAuth = FirebaseAuth.getInstance();
         fFirestore = FirebaseFirestore.getInstance();
+        mProgressBar = findViewById(R.id.cProgressBar);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         // if user account is already there with same information just log them in
         /*
@@ -81,77 +86,72 @@ public class CreateAccount extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), Account.class));
             finish();
         }
-         */
-        // register User
-        registerUser(mCreateButton);
+        */
+
     }
 
-    private void registerUser(Button mCreateButton) {
-        mCreateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = mNameView.getText().toString().trim();
-                String email = mEmailView.getText().toString().trim();
-                String password = "";
-                String role = mRoleSpinner.getSelectedItem().toString();
-                if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
-                    password = mPasswordView.getText().toString().trim();
-                } else{
-                    mPasswordConfView.setError("Password and Confirm password do no match");
-                    return;
-                }
-                if (TextUtils.isEmpty(email)){
-                    mEmailView.setError("Email is required");
-                    return;
-                }
-                if (TextUtils.isEmpty(password)){
-                    mPasswordView.setError("Password is required");
-                    return;
-                }
-                if(password.length() < 6){
-                    mPasswordView.setError("Password must be greater than or equal to 6 characters");
-                    return;
-                }
-                String finalPassword = password;
-                //create user and store in Firestore
-                fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Map<String, Object> userMap = new HashMap<>();
-                            userMap.put("Name", name);
-                            userMap.put("Email", email);
-                            userMap.put("Password", finalPassword);
-                            userMap.put("Role", role);
-                            userMap.put("GroupID", "");
-                            userMap.put("Group", "");
+    public void registerUser(View view) {
+        String name = mNameView.getText().toString().trim();
+        String email = mEmailView.getText().toString().trim();
+        String password = "";
+        String role = mRoleSpinner.getSelectedItem().toString();
+        if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
+            password = mPasswordView.getText().toString().trim();
+        } else{
+            mPasswordConfView.setError("Password and Confirm password do no match");
+            return;
+        }
+        if (TextUtils.isEmpty(email)){
+            mEmailView.setError("Email is required");
+            return;
+        }
+        if (TextUtils.isEmpty(password)){
+            mPasswordView.setError("Password is required");
+            return;
+        }
+        if(password.length() < 6){
+            mPasswordView.setError("Password must be greater than or equal to 6 characters");
+            return;
+        }
+        String finalPassword = password;
 
-                            // Store user information into Firestore
-                            fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(getApplicationContext(), Account.class));
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }else{
-                            Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        mProgressBar.setVisibility(View.VISIBLE);
+        //create user and store in Firestore
+        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Map<String, Object> userMap = new HashMap<>();
+                    userMap.put("Name", name);
+                    userMap.put("Email", email);
+                    userMap.put("Password", finalPassword);
+                    userMap.put("Role", role);
+                    userMap.put("GroupID", "");
+                    userMap.put("Group", "");
+
+                    // Store user information into Firestore
+                    fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), Account.class));
                         }
-                    }
-                });
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            mProgressBar.setVisibility(View.INVISIBLE);
+                            Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }else{
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
-
-    public void goToAccountPage(){
-        Intent intent = new Intent(this, Account.class);
-        startActivity(intent);
-    }
 
 }

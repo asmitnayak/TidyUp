@@ -111,9 +111,28 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintHorizontal_bias="0.428"
+                app:layout_constraintStart_toEndOf="@+id/acUpdateInfoButton"
                 app:layout_constraintTop_toBottomOf="@+id/acLeaveGroupButton"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.013" />
+
+            <Button
+                android:id="@+id/acUpdateInfoButton"
+                android:layout_width="145dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="68dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:onClick="loguot"
+                android:text="Update Info"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acGroupSettingsButton"
+                app:layout_constraintVertical_bias="0.013" />
 
             <Button
                 android:id="@+id/acCreateCroupButton"
@@ -159,10 +178,10 @@
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.29"
                 app:layout_constraintStart_toEndOf="@+id/acNewUserEmail"
                 app:layout_constraintTop_toBottomOf="@+id/acJoinGroupButton"
-                app:layout_constraintVertical_bias="0.003" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/acLeaveGroupButton"
@@ -176,13 +195,13 @@
                 android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.443"
+                app:layout_constraintHorizontal_bias="0.428"
                 app:layout_constraintStart_toEndOf="@+id/acGroupSettingsButton"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/acGroupSettingsButton"
-                android:layout_width="wrap_content"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
                 android:layout_marginTop="166dp"
@@ -191,10 +210,8 @@
                 android:text="Group Settings"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

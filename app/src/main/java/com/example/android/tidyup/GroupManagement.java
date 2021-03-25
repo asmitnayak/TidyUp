@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import java.util.stream.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,6 +42,17 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return saltStr;
     }
 
+    public static String getGroup(String code){
+        if(gcDB == null)
+            return null;
+        for (Map.Entry<String, List<String>> entry : gcDB.entrySet()) {
+            if (entry.getValue().contains(code)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
     public static void addUserToGroup(String groupID, String userID, String code){
         if(grpDB.containsKey(groupID)){
             ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
@@ -53,17 +65,22 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
-        addGroupCodes(groupID, code);
+        if(code != null)
+            addGroupCodes(groupID, code);
     }
-//    public static void addGroup(String groupID){
-//        if(grpDB.containsKey(groupID))
-//            return;
-//        else
-//            grpDB.put(groupID, Collections.singletonList(""));
-//
-//        Group grp = new Group();
-//        db.collection(GROUP_DB).document(GROUP_CODE_DB).set(grp);
-//    }
+
+    public static ArrayList<String> getGroupMemberList(String groupID){
+        if(grpDB == null){
+            readGroupDB();
+            if(grpDB == null)
+                return null;
+        }
+        if(!grpDB.containsKey(groupID))
+            return null;
+        else
+            return (ArrayList<String>) grpDB.get(groupID);
+
+    }
 
     public static void removeUserToGroup(String groupID, String userID){
 

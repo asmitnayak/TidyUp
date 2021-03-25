@@ -130,6 +130,7 @@ public class CreateAccount extends AppCompatActivity {
                             userMap.put("Address", address);
                             userMap.put("Phone Number", phoneNumber);
                             userMap.put("Role", role);
+                            userMap.put("Group", "");
 
                             // Store user information into Firestore
                             fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {

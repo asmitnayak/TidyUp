@@ -16,8 +16,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
 
@@ -25,6 +27,7 @@ public class Login extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button mLoginBtn;
     private FirebaseAuth fauth;
+    public static HashMap<String, Object> userMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +72,12 @@ public class Login extends AppCompatActivity {
                             finish();
                             Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                             // check if admin move to Account.java
-                            startActivity(new Intent(getApplicationContext(), TaskPage.class));
+
+                            userMap = UserManagement.getUserDetails();
+                            if(userMap.get("Group") != "")
+                                startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                            else
+                                startActivity(new Intent(getApplicationContext(), Account.class));
                         } else{
                             Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }

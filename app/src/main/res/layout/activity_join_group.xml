@@ -16,7 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/light_blue_background" />
+        app:srcCompat="@drawable/light_blue_background"
+        android:contentDescription="TODO" />
 
 
     <TextView
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
         android:fontFamily="@font/architects_daughter"
-        android:text="Join a Group!"
+        android:text="@string/join_a_group"
         android:textColor="#003060"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -42,14 +43,16 @@
         android:ems="10"
         android:fontFamily="@font/architects_daughter"
         android:foregroundTint="#003060"
-        android:hint="Enter Join Code"
+        android:hint="@string/enter_join_code"
+        android:inputType="text"
         android:textColor="#003060"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
 
     <Button
         android:id="@+id/joinButton"
@@ -59,7 +62,7 @@
         android:backgroundTint="#003060"
         android:fontFamily="@font/architects_daughter"
         android:onClick="onJoinGroup"
-        android:text="Join"
+        android:text="@string/join"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"

@@ -69,7 +69,7 @@ public class Login extends AppCompatActivity {
                             finish();
                             Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                             // check if admin move to Account.java
-                            startActivity(new Intent(getApplicationContext(), Account.class));
+                            startActivity(new Intent(getApplicationContext(), TaskPage.class));
                         } else{
                             Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }

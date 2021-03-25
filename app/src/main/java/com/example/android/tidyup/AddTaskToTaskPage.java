@@ -10,12 +10,18 @@ import java.util.ArrayList;
 
 public class AddTaskToTaskPage extends TaskPage{
 
+    private Spinner mPersonSpinner;
+    private Spinner mSpinnerRewardPenaltyValue;
+    private Spinner mSpinnerPriority;
+    private Spinner mSpinnerRepetition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task_to_task_page);
 
         Spinner spinnerPerson = findViewById(R.id.personAssignedToTask);
+
         ArrayList<String> personList = new ArrayList<>();
         personList.add("Asmit");
         personList.add("Alvin");
@@ -49,12 +55,18 @@ public class AddTaskToTaskPage extends TaskPage{
 
         Spinner spinnerRepetition = findViewById(R.id.taskRepetitionValue);
         ArrayList<String> repetitionList = new ArrayList<>();
+        repetitionList.add("None");
         repetitionList.add("Daily");
         repetitionList.add("Weekly");
         repetitionList.add("Monthly");
         ArrayAdapter<String> repetitionListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, repetitionList);
         repetitionListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRepetition.setAdapter(repetitionListAdapter);
+
+        mPersonSpinner = spinnerPerson;
+        mSpinnerRewardPenaltyValue = spinnerRewardPenaltyValue;
+        mSpinnerPriority = spinnerPriority;
+        mSpinnerRepetition = spinnerRepetition;
     }
 
     public void addTaskItem(String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
@@ -63,26 +75,21 @@ public class AddTaskToTaskPage extends TaskPage{
     }
 
 
+
     public void returnToTaskPage(View view) {
-        System.out.println("\n\n running return to admin page \n");
+
+        // access the task name
         EditText nameIn = (EditText) findViewById(R.id.taskName);
         String name = nameIn.getText().toString();
-
-        //EditText personAssigned = (EditText) findViewById(R.id.personAssignedToTask);
-        //String person = personAssigned.getText().toString();
 
         EditText dueDate = (EditText) findViewById(R.id.taskDueDate);
         String date = nameIn.getText().toString();
 
-        //EditText rewardPenaltyPointValue = (EditText) findViewById(R.id.rewardPenaltyValue);
-        //String pointValue = rewardPenaltyPointValue.getText().toString();
-        //int value = Integer.parseInt(pointValue);
+        String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
+        int rewardInt = Integer.parseInt(rewardString);
 
-        //EditText inStockIn = (EditText) findViewById(R.id.menuAvailability);
-        //String inStockString = inStockIn.getText().toString();
-        //int inStock = Integer.parseInt(inStockString);
-
-        //addTaskItem(name, price, inStock);
+        addTaskItem(name, mPersonSpinner.getSelectedItem().toString(), rewardInt,
+                mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
 
         finish();
     }

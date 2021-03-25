@@ -11,21 +11,37 @@
         android:id="@+id/completeTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="40dp"
         android:backgroundTint="@color/fontAndButtonColor"
-        android:onClick="completeTask"
         android:fontFamily="@font/architects_daughter"
+        android:onClick="completeTask"
         android:text="Complete Task"
         app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="123dp"
         app:layout_constraintEnd_toEndOf="@+id/taskList"
-        app:layout_constraintStart_toStartOf="@+id/taskList" />
+        app:layout_constraintStart_toStartOf="@+id/taskList"/>
+
+    <Button
+        android:id="@+id/addtask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="116dp"
+        android:backgroundTint="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:onClick="addTask"
+        android:text="Add Task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_editor_absoluteX="150dp"
+        app:layout_constraintEnd_toEndOf="@+id/taskList"
+        app:layout_constraintStart_toStartOf="@+id/taskList"/>
 
     <ListView
         android:id="@+id/taskList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="92dp"
-        tools:layout_editor_absoluteY="107dp">
+        android:layout_width="415dp"
+        android:layout_height="731dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </ListView>
 

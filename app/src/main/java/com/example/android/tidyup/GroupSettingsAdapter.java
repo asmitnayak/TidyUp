@@ -11,16 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GroupSettingsAdapter extends BaseAdapter {
     Context context;
-    ArrayList<String> members;
     LayoutInflater inflter;
+    ArrayList<String> members;
 
     public GroupSettingsAdapter(Context applicationContext, ArrayList<String> members) {
         this.context = context;
         this.members = members;
         inflter = (LayoutInflater.from(applicationContext));
+
     }
 
     @Override
@@ -42,8 +44,16 @@ public class GroupSettingsAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.member_list_view_layout, null);
         TextView memberName = (TextView) view.findViewById(R.id.memberName);
-        //memberName.setText(members.get(i).)
+        memberName.setText(members.get(i)); //probably get users name from group
         Button delete = (Button) view.findViewById(R.id.deleteButton);
+        delete.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                //GroupManagement.removeUserToGroup("fjfhghgd", members.get(i));
+                members.remove(i);
+            }
+        });
         return view;
     }
 }

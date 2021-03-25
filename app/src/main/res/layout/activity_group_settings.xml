@@ -66,6 +66,8 @@
         android:layout_width="289dp"
         android:layout_height="98dp"
         android:layout_marginStart="36dp"
+        android:clickable="true"
+        android:onClick="onRadioButtonClicked"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/assignText">
 
@@ -79,7 +81,7 @@
             android:textSize="20sp" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/manualSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/architects_daughter"
@@ -90,8 +92,8 @@
 
     <ListView
         android:id="@+id/membersList"
-        android:layout_width="313dp"
-        android:layout_height="154dp"
+        android:layout_width="337dp"
+        android:layout_height="368dp"
         android:layout_marginTop="268dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.367"

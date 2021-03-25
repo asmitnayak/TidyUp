@@ -26,12 +26,45 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import android.os.Bundle;
+import android.view.View;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class TaskPage extends AppCompatActivity {
     public static ArrayList<TaskItem> taskItems = new ArrayList<TaskItem>();
+    CustomAdapter customAdp;
+    ListView taskList;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
+
+        taskList = (ListView) findViewById(R.id.taskList);
+
+        customAdp = new CustomAdapter(getApplicationContext(), taskItems);
+        taskList.setAdapter(customAdp);
     }
 
     // when a task is selected and the completeTask button is pressed
@@ -40,6 +73,9 @@ public class TaskPage extends AppCompatActivity {
 
     }
 
-
+    public void addTask(View view){
+        Intent intent = new Intent(this, AddTaskToTaskPage.class);
+        startActivity(intent);
+    }
 
 }

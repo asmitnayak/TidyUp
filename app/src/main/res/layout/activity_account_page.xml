@@ -35,31 +35,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/acEmail" />
 
             <TextView
-                android:id="@+id/acAddress"
+                android:id="@+id/acGroup"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:fontFamily="@font/bad_script"
-                android:text="Address:"
+                android:text="Group:"
                 android:textColor="@color/fontAndButtonColor"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acPassword" />
-
-            <TextView
-                android:id="@+id/acPhoneNumber"
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/bad_script"
-                android:text="Phone Number:"
-                android:textColor="@color/fontAndButtonColor"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acAddress" />
+                app:layout_constraintTop_toBottomOf="@+id/acPassword"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/acName"
@@ -67,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/bad_script"
-                android:text="Name:"
+                android:text="Username:"
                 android:textColor="@color/fontAndButtonColor"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,50 +82,69 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <EditText
+                android:id="@+id/acNewUserEmail"
+                android:layout_width="245dp"
+                android:layout_height="59dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:ems="10"
+                android:fontFamily="@font/bad_script"
+                android:hint="New User Email"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/fontAndButtonColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acCreateCroupButton" />
+
             <Button
                 android:id="@+id/acLogoutButton"
-                android:layout_width="wrap_content"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="68dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
                 android:onClick="loguot"
                 android:text="Logout"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/acLeaveGroupButton"
                 app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/acCreateCroupButton"
-                android:layout_width="wrap_content"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
                 android:onClick="goToCreateGroupPage"
                 android:text="Create Group"
+                android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/acJoinGroupButton"
-                android:layout_width="wrap_content"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
                 android:onClick="goToJoinGroupPage"
                 android:text="Join Group"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acCreateCroupButton" />
+                app:layout_constraintHorizontal_bias="0.428"
+                app:layout_constraintStart_toEndOf="@+id/acCreateCroupButton"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/acAddMembersButton"
@@ -146,27 +154,47 @@
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
                 android:onClick="gotToAddMemberPage"
-                android:text="Add Members"
+                android:text="Add \n Members"
+                android:textSize="10sp"
                 android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acJoinGroupButton" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/acNewUserEmail"
+                app:layout_constraintTop_toBottomOf="@+id/acJoinGroupButton"
+                app:layout_constraintVertical_bias="0.003" />
 
             <Button
                 android:id="@+id/acLeaveGroupButton"
-                android:layout_width="wrap_content"
+                android:layout_width="145dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="166dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
                 android:onClick="goToLeaveGroupPage"
                 android:text="Leave Group"
+                android:textSize="12sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintHorizontal_bias="0.443"
+                app:layout_constraintStart_toEndOf="@+id/acGroupSettingsButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/acGroupSettingsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="166dp"
+                android:backgroundTint="@color/fontAndButtonColor"
+                android:fontFamily="@font/bad_script"
+                android:text="Group Settings"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acAddMembersButton" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

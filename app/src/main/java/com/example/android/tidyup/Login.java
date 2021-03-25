@@ -87,9 +87,6 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void login_success (){
-
-    }
 
     // Redirect the user to Create Account screen
     public void goToCreateAccount(View view) {

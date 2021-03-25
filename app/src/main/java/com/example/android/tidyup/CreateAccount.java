@@ -39,13 +39,10 @@ public class CreateAccount extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfView;
-    private EditText mAddressView;
-    private EditText mPhoneNumberView;
     private Spinner mRoleSpinner;
     private Button mCreateButton;
     private FirebaseAuth fAuth;
     private FirebaseFirestore fFirestore;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,35 +66,33 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        mNameView = findViewById(R.id.cName);
+        mNameView = findViewById(R.id.cUsername);
         mEmailView = findViewById(R.id.cEmailInput);
         mPasswordView = findViewById(R.id.cPasswordInput);
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
-        mAddressView = findViewById(R.id.address);
-        mPhoneNumberView = findViewById(R.id.phoneNumber);
         mRoleSpinner = spinner;
         mCreateButton = findViewById(R.id.registerLink);
         fAuth = FirebaseAuth.getInstance();
         fFirestore = FirebaseFirestore.getInstance();
 
         // if user account is already there with same information just log them in
+        /*
         if (fAuth.getCurrentUser() != null){
             startActivity(new Intent(getApplicationContext(), Account.class));
             finish();
         }
-        Button mRegisterButton = (Button) findViewById(R.id.registerLink);
-        registerUser(mRegisterButton);
+         */
+        // register User
+        registerUser(mCreateButton);
     }
 
-    private void registerUser(Button mRegisterButton) {
-        mRegisterButton.setOnClickListener(new View.OnClickListener() {
+    private void registerUser(Button mCreateButton) {
+        mCreateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String name = mNameView.getText().toString().trim();
                 String email = mEmailView.getText().toString().trim();
                 String password = "";
-                String address = mAddressView.getText().toString().trim();
-                String phoneNumber = mPhoneNumberView.getText().toString().trim();
                 String role = mRoleSpinner.getSelectedItem().toString();
                 if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
                     password = mPasswordView.getText().toString().trim();
@@ -127,9 +122,8 @@ public class CreateAccount extends AppCompatActivity {
                             userMap.put("Name", name);
                             userMap.put("Email", email);
                             userMap.put("Password", finalPassword);
-                            userMap.put("Address", address);
-                            userMap.put("Phone Number", phoneNumber);
                             userMap.put("Role", role);
+                            userMap.put("GroupID", "");
                             userMap.put("Group", "");
 
                             // Store user information into Firestore
@@ -153,7 +147,6 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
     }
-
 
 
     public void goToAccountPage(){

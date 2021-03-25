@@ -8,8 +8,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-import java.util.stream.*;
+
+import java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +29,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static final String GROUP_DB_DOCUMENT = "Groups";
     private static Map<String, List<String>> gcDB;
     private static Map<String, List<String>> grpDB;
+    private static boolean grpRand;
 
     protected static String getCode(){
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
@@ -56,12 +57,14 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     public static void addUserToGroup(String groupID, String userID, String code){
         if(grpDB.containsKey(groupID)){
             ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
+            if(getGroupTask(groupID) == null)
+                lst.add(0, "false");
             if (lst.contains(userID))
                 return;
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
-            grpDB.put(groupID, Collections.singletonList(userID));
+            grpDB.put(groupID, Arrays.asList("false", userID));
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
@@ -80,6 +83,22 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         else
             return (ArrayList<String>) grpDB.get(groupID);
 
+    }
+
+    public static Boolean getGroupTask(String groupID){
+        if(grpDB.get(groupID).get(0).equalsIgnoreCase("true"))
+            return true;
+        else if(grpDB.get(groupID).get(0).equalsIgnoreCase("false"))
+            return false;
+        return null;
+    }
+
+    public static void setGroupTask(String groupID, boolean value){
+        ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
+        if(getGroupTask(groupID) == null)
+            lst.add(0, "false");
+        else
+            lst.set(0, Boolean.toString(value));
     }
 
     public static void removeUserToGroup(String groupID, String userID){
@@ -166,7 +185,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static class Group{
         // Group ID: ==> [user list]
         public Map<String, List<String>> grpMap = new HashMap<>();
-
         Group(){}
         Group(Map<String, List<String>> customMap){
             this.grpMap = new HashMap<>();
@@ -176,5 +194,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         public Map<String, List<String>> getGrpMap(){
             return this.grpMap;
         }
+
     }
 }

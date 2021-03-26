@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:fontFamily="@font/architects_daughter"
-                android:text="Code goes here"
+                android:text="@string/code_goes_here"
                 android:textAllCaps="false"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"

@@ -52,7 +52,7 @@ public class CreateGroup extends AppCompatActivity {
                     inviteCode.setText(code);
                     copyBtn.setEnabled(true);
                 } else {
-                    inviteCode.setText(R.string.link_goes_here);
+                    inviteCode.setText(R.string.code_goes_here);
                     copyBtn.setEnabled(false);
                 }
             }

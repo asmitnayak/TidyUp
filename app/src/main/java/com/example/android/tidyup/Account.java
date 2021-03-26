@@ -54,7 +54,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private String addedUserID;
     private String grpID;
     private String grpName;
+
     private ImageView menu;
+    private TextView pageTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +70,11 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         mNewUserEmail = findViewById(R.id.acNewUserEmail);
         mAddMembers = findViewById(R.id.acAddMembersButton);
         mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
+
+        //action bar
         menu = findViewById(R.id.menu);
+        pageTitle = findViewById(R.id.pageTitle);
+        pageTitle.setText("Account");
 
         // load and display user info on Account Page
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -111,6 +117,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         });
     }
 
+    /* unneeded for now since using my own action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -128,7 +135,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         }
         return super.onOptionsItemSelected(item);
     }
-
+ */
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch(item.getItemId()){
@@ -189,7 +196,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     docRef.update("GroupID", "");
                 }
             });
-            leaveAlert.setNegativeButton("Cancle", null);
+            leaveAlert.setNegativeButton("Cancel", null);
             leaveAlert.show();
         }
     }

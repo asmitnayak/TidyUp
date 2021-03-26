@@ -26,6 +26,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_USERNAME = "Username";
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_PASSWORD = "Password";
+    private static final String KEY_ROLE= "Role";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -83,12 +84,23 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     protected static void setUsername(String username){
         docRef.update(KEY_USERNAME, username);
     }
-
     protected static void setUserEmail(String email){
         docRef.update(KEY_EMAIL, email);
     }
     protected static void setUserPassword(String password){
         docRef.update(KEY_PASSWORD, password);
+    }
+
+    protected static void setUserRole(String role){
+        docRef.update(KEY_ROLE, role);
+    }
+
+    protected static void setUserGroupID(String groupID){
+        docRef.update(KEY_GroupID, groupID);
+    }
+
+    protected static void setUserGroup(String groupName){
+        docRef.update(KEY_Group, groupName);
     }
 
     @Override

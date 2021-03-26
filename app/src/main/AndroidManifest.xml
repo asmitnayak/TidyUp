@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TidyUp">
         <activity android:name=".GroupSettings"/>
-
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup"/>
 
@@ -35,8 +34,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
+        <activity android:name=".UpdateUserInfo" />
+        <activity android:name=".AuthenticationPassword" />
         <activity android:name=".AddTaskToTaskPage" />
         <activity android:name=".TaskPage" />
 

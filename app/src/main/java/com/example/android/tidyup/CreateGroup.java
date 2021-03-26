@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.auth.User;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -99,6 +100,12 @@ public class CreateGroup extends AppCompatActivity {
         gID = GroupManagement.getGroupID(groupName.getText().toString());
         GroupManagement.addGroupCodes(gID, code);
         GroupManagement.addUserToGroup(gID,fAuth.getUid(), inviteCode.getText().toString(), groupName.getText().toString());
+
+        //updates user Info
+        UserManagement.setUserGroup(gID);
+        UserManagement.setUserGroupID(gID);
+        UserManagement.setUserRole("Admin");
+        Toast.makeText(CreateGroup.this, "You are now Admin of Group " + gID, Toast.LENGTH_LONG).show();
         // go to task page???
     }
 

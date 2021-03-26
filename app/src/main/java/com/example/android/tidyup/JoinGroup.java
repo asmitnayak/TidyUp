@@ -21,6 +21,9 @@ public class JoinGroup extends AppCompatActivity {
         joinCode = findViewById(R.id.joinCode);
         String grp = GroupManagement.getGroup(joinCode.getText().toString()); // groupID
         UserManagement.updateUserGroup(grp, getApplicationContext());
+        UserManagement.setUserGroup(grp);
+        UserManagement.setUserGroupID(grp);
+        UserManagement.setUserRole("User");
         finish();
         startActivity(new Intent(this, TaskPage.class));
         //if(join code exists in database)

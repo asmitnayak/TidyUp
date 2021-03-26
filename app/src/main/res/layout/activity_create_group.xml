@@ -92,7 +92,7 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="40dp"
             android:fontFamily="@font/architects_daughter"
-            android:text="Group Link"
+            android:text="Group Code"
             android:textColor="#003060"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
                 android:fontFamily="@font/architects_daughter"
-                android:text="Link goes here"
+                android:text="Code goes here"
                 android:textAllCaps="false"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="20sp"

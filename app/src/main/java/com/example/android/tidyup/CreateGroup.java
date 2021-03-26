@@ -1,5 +1,8 @@
 package com.example.android.tidyup;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +20,7 @@ public class CreateGroup extends AppCompatActivity {
     EditText groupName;
     EditText memberEmail;
     TextView inviteCode;
+    String code;
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
@@ -26,7 +30,8 @@ public class CreateGroup extends AppCompatActivity {
         setContentView(R.layout.activity_create_group);
         groupName = findViewById(R.id.groupName);
         inviteCode = findViewById(R.id.linkText);
-        inviteCode.setText(GroupManagement.getCode());
+        code = GroupManagement.getCode();
+        inviteCode.setText(code);
 
     }
     public void onInvite(View view) {
@@ -35,7 +40,9 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     public void onCopy(View view) {
-        //will generate and copy invite link
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("Invite Code", code);
+        clipboard.setPrimaryClip(clip);
     }
 
     public void onCreateGroup(View view) {

@@ -61,8 +61,16 @@ public class GroupSettings extends AppCompatActivity {
 
         customAdp = new GroupSettingsAdapter(getApplicationContext(), members, groupID);
         membersList.setAdapter(customAdp);
-        //randomSetting = get from database
-        //members = get from database based off of Users id?
+        randomSetting = GroupManagement.getGroupTask(groupID);
+        RadioButton manual = findViewById(R.id.manualSetting);
+        RadioButton random = findViewById(R.id.randomSetting);
+        if(randomSetting == false){
+            manual.setChecked(true);
+            random.setChecked(false);
+        }else if(randomSetting == true){
+            manual.setChecked(false);
+            random.setChecked(true);
+        }
 
     }
 
@@ -75,12 +83,12 @@ public class GroupSettings extends AppCompatActivity {
             case R.id.randomSetting:
                 if (checked)
                     randomSetting = true;
-                    //add setting to group database
+                    GroupManagement.setGroupTask(groupID, randomSetting);
                 break;
             case R.id.manualSetting:
                 if (checked)
                     randomSetting = false;
-                    //add setting to group database
+                    GroupManagement.setGroupTask(groupID, randomSetting);
                 break;
         }
     }

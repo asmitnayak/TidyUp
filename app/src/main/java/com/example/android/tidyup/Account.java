@@ -3,7 +3,9 @@ package com.example.android.tidyup;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,6 +117,33 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 popup.show();
             }
         });
+
+        mGroup.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String str = s.toString();
+                String[] arr = str.split(":");
+                if(arr.length < 2)
+                    return;
+                mAddMembers.setEnabled(!arr[1].equalsIgnoreCase("No Group Yet"));
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String str = s.toString();
+                String[] arr = str.split(":");
+                if(arr.length < 2)
+                    return;
+                mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 
     /* unneeded for now since using my own action bar

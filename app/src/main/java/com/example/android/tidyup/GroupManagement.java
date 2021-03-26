@@ -144,15 +144,21 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             ArrayList<String> userList = (ArrayList<String>) gcDB.get(groupID);
             if(userList.contains(userID))
                 userList.remove(userID);
-            gcDB.put(groupID,userList);
-            Group_Code gc = new Group_Code(gcDB);
-            db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);
+
+            // TODO if length of group is 2 then delete group
+            if(userList.size() == 2)
+                grpDB.remove(groupID);
+            else
+                grpDB.put(groupID,userList);
+            Group gc = new Group(grpDB);
+            db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(gc);
+
         }
     }
 
     public static void addGroupCodes(String groupID, String groupCode){
         if(gcDB.containsKey(groupID)){
-            ArrayList<String> lst = (ArrayList<String>) gcDB.get(groupID);
+            ArrayList<String> lst = new ArrayList<>(gcDB.get(groupID));
             if (lst.contains(groupCode))
                 return;
             lst.add(groupCode);

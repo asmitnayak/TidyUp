@@ -79,7 +79,7 @@ public class Login extends AppCompatActivity {
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
-                        startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                     else
                         startActivity(new Intent(getApplicationContext(), Account.class));
                 } else{

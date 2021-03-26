@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class JoinGroup extends AppCompatActivity {
     EditText joinCode;
@@ -20,8 +21,14 @@ public class JoinGroup extends AppCompatActivity {
     public void onJoinGroup(View view) {
         joinCode = findViewById(R.id.joinCode);
         String grp = GroupManagement.getGroup(joinCode.getText().toString()); // groupID
+
+        if (grp == null){
+            Toast.makeText(JoinGroup.this, "Invalid Group Code", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         UserManagement.updateUserGroup(grp, getApplicationContext());
-        UserManagement.setUserGroup(grp);
+        UserManagement.setUserGroup(GroupManagement.getGroupName(grp));
         UserManagement.setUserGroupID(grp);
         UserManagement.setUserRole("User");
         finish();

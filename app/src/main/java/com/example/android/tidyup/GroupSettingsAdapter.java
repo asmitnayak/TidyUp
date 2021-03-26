@@ -26,14 +26,16 @@ import java.util.Arrays;
 public class GroupSettingsAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflter;
+    String groupID;
     ArrayList<String> members;
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private DocumentReference docRef;
 
-    public GroupSettingsAdapter(Context applicationContext, ArrayList<String> members) {
+    public GroupSettingsAdapter(Context applicationContext, ArrayList<String> members, String groupID) {
         this.context = context;
         this.members = members;
+        this.groupID = groupID;
         inflter = (LayoutInflater.from(applicationContext));
 
     }
@@ -65,7 +67,7 @@ public class GroupSettingsAdapter extends BaseAdapter {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
                         String name = documentSnapshot.getString("Name");
-                        memberName.setText(name); //probably get users name from group
+                        memberName.setText(name);
                     }else {
                         return;
                     }
@@ -83,7 +85,7 @@ public class GroupSettingsAdapter extends BaseAdapter {
 
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                //GroupManagement.removeUserToGroup("fjfhghgd", members.get(i));
+                GroupManagement.removeUserFromGroup(groupID, members.get(i));
                 members.remove(i);
             }
         });

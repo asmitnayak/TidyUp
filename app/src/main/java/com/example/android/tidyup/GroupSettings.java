@@ -59,7 +59,7 @@ public class GroupSettings extends AppCompatActivity {
         }
         members = GroupManagement.getGroupMemberList(groupID);
 
-        customAdp = new GroupSettingsAdapter(getApplicationContext(), members);
+        customAdp = new GroupSettingsAdapter(getApplicationContext(), members, groupID);
         membersList.setAdapter(customAdp);
         //randomSetting = get from database
         //members = get from database based off of Users id?

@@ -35,7 +35,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static void updateUserGroup(String newGroupID, Context cntxt) {
-        docRef.update("Group", newGroupID)
+        docRef.update("GroupID", newGroupID,
+                      "Group", GroupManagement.getGroupName(newGroupID))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

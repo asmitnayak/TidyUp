@@ -2,6 +2,7 @@ package com.example.android.tidyup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,7 +39,14 @@ public class CreateGroup extends AppCompatActivity {
     }
 
     public void onCreateGroup(View view) {
-        GroupManagement.addUserToGroup(groupName.getText().toString(),fAuth.getUid(), inviteCode.getText().toString());
+
+        if (TextUtils.isEmpty(groupName.getText().toString())){
+            groupName.setError("Group Name is required");
+            return;
+        }
+
+        GroupManagement.addUserToGroup(GroupManagement.getGroupID(groupName.getText().toString()),fAuth.getUid(), inviteCode.getText().toString(), groupName.getText().toString());
+        // go to task page???
     }
 
     @Override

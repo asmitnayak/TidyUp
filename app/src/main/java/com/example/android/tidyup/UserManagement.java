@@ -21,11 +21,16 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 
 public class UserManagement extends AsyncTask<Void, Void, Void> {
-
+    private static final String COLLECTIONPATH_USERS = "Users";
     private static final String TAG = "UserManagement";
+    private static final String KEY_USERNAME = "Username";
+    private static final String KEY_EMAIL = "Email";
+    private static final String KEY_PASSWORD = "Password";
+    private static final String KEY_GroupID = "GroupID";
+    private static final String KEY_Group = "Group";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private static final DocumentReference docRef = fFirestore.collection("Users").document(fAuth.getUid());
+    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
 
     public static void addGroupField() {
         Map<String, String> data = new HashMap<>();
@@ -72,6 +77,17 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
             }
         });
         return (HashMap<String, Object>) map;
+    }
+
+    protected static void setUsername(String username){
+        docRef.update(KEY_USERNAME, username);
+    }
+
+    protected static void setUserEmail(String email){
+        docRef.update(KEY_EMAIL, email);
+    }
+    protected static void setUserPassword(String password){
+        docRef.update(KEY_PASSWORD, password);
     }
 
     @Override

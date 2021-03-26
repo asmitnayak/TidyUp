@@ -82,7 +82,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             return null;
         else
             return (ArrayList<String>) grpDB.get(groupID);
-
     }
 
     public static Boolean getGroupTask(String groupID){

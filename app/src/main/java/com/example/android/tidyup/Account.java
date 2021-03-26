@@ -28,16 +28,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 
 public class Account extends AppCompatActivity {
-    private static final String COLLECTIONPATH_GROUP = "Users";
+    private static final String COLLECTIONPATH_USERS = "Users";
     private static final String TAG = "Account";
-    private static final String KEY_NAME = "Name";
+    private static final String KEY_USERNAME = "Username";
     private static final String KEY_EMAIL = "Email";
     private static final String KEY_PASSWORD = "Password";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
+
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_GROUP).document(fAuth.getUid());
+    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
 
     private TextView mName, mEmail, mPassword, mGroup;
     private EditText mNewUserEmail;
@@ -70,7 +71,7 @@ public class Account extends AppCompatActivity {
                     mNewUserEmail.setError("New User Email is required");
                     return;
                 }
-                fFirestore.collection(COLLECTIONPATH_GROUP)
+                fFirestore.collection(COLLECTIONPATH_USERS)
                         .whereEqualTo(KEY_EMAIL, newUserEmail)
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -84,13 +85,13 @@ public class Account extends AppCompatActivity {
                              }
 
                              addedUserID = task.getResult().getDocuments().get(0).getId();
-                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_GROUP).document(addedUserID);
+                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
                              GroupManagement.addUserToGroup(grpID, addedUserID, null);
                              addedUserDoc.update(KEY_GroupID, grpID);
                              addedUserDoc.update(KEY_Group, grpName);
 
                         } else {
-                            Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             Log.d(TAG, "Error! " + task.getException().getMessage() + newUserEmail);
                         }
                     }
@@ -127,12 +128,12 @@ public class Account extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_NAME);
+                    String name = documentSnapshot.getString(KEY_USERNAME);
                     String email = documentSnapshot.getString(KEY_EMAIL);
                     String password = documentSnapshot.getString(KEY_PASSWORD);
                     grpID = documentSnapshot.getString(KEY_GroupID);
                     grpName = documentSnapshot.getString(KEY_Group);
-                    mName.setText("Name: " + name);
+                    mName.setText("Username: " + name);
                     mEmail.setText("Email: "+ email);
                     mPassword.setText("Password: " + password);
                     if (!grpName.equals("")){
@@ -158,6 +159,34 @@ public class Account extends AppCompatActivity {
     }
 
     private void loadUserData() {
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()){
+                    String name = documentSnapshot.getString(KEY_USERNAME);
+                    String email = documentSnapshot.getString(KEY_EMAIL);
+                    String password = documentSnapshot.getString(KEY_PASSWORD);
+                    grpID = documentSnapshot.getString(KEY_GroupID);
+                    grpName = documentSnapshot.getString(KEY_Group);
+                    mName.setText("Username: " + name);
+                    mEmail.setText("Email: "+ email);
+                    mPassword.setText("Password: " + password);
+                    if (!grpName.equals("")){
+                        mGroup.setText("Group: " + grpName);
+                    } else {
+                        mGroup.setText("Group: No Group Yet");
+                    }
+                }else {
+                    Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Account.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d(TAG, e.toString());
+            }
+        });
     }
 
     public void loguot(View view){
@@ -174,14 +203,18 @@ public class Account extends AppCompatActivity {
 
     public void goToJoinGroupPage(View view){
         Intent intent = new Intent(this, JoinGroup.class);
+        finish();
         startActivity(intent);
     }
     public void gotToGroupSettings(View view){
         Intent intent = new Intent(this, GroupSettings.class);
+        finish();
         startActivity(intent);
     }
 
-    public void addMembers (){
-
+    public void goToUpdateUserInfo (View view){
+        Intent intent = new Intent(this, UpdateUserInfo.class);
+        finish();
+        startActivity(intent);
     }
 }

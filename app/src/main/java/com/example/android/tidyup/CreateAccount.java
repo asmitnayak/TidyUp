@@ -1,7 +1,6 @@
 package com.example.android.tidyup;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,10 +21,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +32,7 @@ public class CreateAccount extends AppCompatActivity {
 
     protected static final ArrayList<String> CREDENTIALS = new ArrayList<>();
 
-    private EditText mNameView;
+    private EditText mUsernameView;
     private EditText mEmailView;
     private EditText mPasswordView;
     private EditText mPasswordConfView;
@@ -68,7 +64,7 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        mNameView = findViewById(R.id.cUsername);
+        mUsernameView = findViewById(R.id.cUsername);
         mEmailView = findViewById(R.id.cEmailInput);
         mPasswordView = findViewById(R.id.cPasswordInput);
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
@@ -91,7 +87,7 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     public void registerUser(View view) {
-        String name = mNameView.getText().toString().trim();
+        String username = mUsernameView.getText().toString().trim();
         String email = mEmailView.getText().toString().trim();
         String password = "";
         String role = mRoleSpinner.getSelectedItem().toString();
@@ -122,7 +118,7 @@ public class CreateAccount extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Map<String, Object> userMap = new HashMap<>();
-                    userMap.put("Name", name);
+                    userMap.put("Username", username);
                     userMap.put("Email", email);
                     userMap.put("Password", finalPassword);
                     userMap.put("Role", role);

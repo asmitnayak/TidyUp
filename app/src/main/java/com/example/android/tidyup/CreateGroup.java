@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +36,18 @@ public class CreateGroup extends AppCompatActivity {
     }
     public void onInvite(View view) {
         memberEmail = findViewById(R.id.memberEmail);
-        //will add user by email
+        String email = memberEmail.getText().toString().trim();
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("message/rfc822");
+        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
+        i.putExtra(Intent.EXTRA_SUBJECT, "Join my group on Tidy Up ");
+        i.putExtra(Intent.EXTRA_TEXT   , "Use this join code to join my group on Tidy Up. A " +
+                "platform that helps you manage chores. Here is my join code " + code + ".");
+        try {
+            startActivity(Intent.createChooser(i, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(CreateGroup.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onCopy(View view) {

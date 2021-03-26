@@ -18,7 +18,7 @@
         android:layout_marginEnd="23dp"
         android:backgroundTint="#003060"
         android:fontFamily="@font/bad_script"
-        android:text="Delete" />
+        android:text="@string/delete" />
 
     <TextView
         android:id="@+id/memberName"
@@ -28,7 +28,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="23dp"
         android:fontFamily="@font/bad_script"
-        android:text="Member Name"
+        android:text="@string/member_name"
         android:textColor="#003060"
         android:textSize="20sp"
         android:textStyle="bold" />

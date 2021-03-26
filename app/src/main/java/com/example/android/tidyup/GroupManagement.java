@@ -10,10 +10,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.spec.KeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
 import java.util.ArrayList;
@@ -64,7 +60,22 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public static void addUserToGroup(String groupID, String userID, String code, String groupName){
+    public static String getGroupIDFromUserID(String uID){
+        if(grpDB == null)
+            return null;
+        for (Map.Entry<String, List<String>> entry : grpDB.entrySet()) {
+            if (entry.getValue().contains(uID)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    // TODO: Implement the int return type to avoid adding members to different grp, or same ones.
+    public static int addUserToGroup(String groupID, String userID, String code, String groupName){
+
+        if(getGroupIDFromUserID(userID) != null) // already in a grp
+            return -1;
         if(grpDB.containsKey(groupID)){
             ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
             if(getGroupTask(groupID) == null)
@@ -74,7 +85,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                     lst.add(1, "GroupName:"+groupName);
             }
             if(lst.contains(userID))
-                return;
+                return 0;
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
@@ -84,6 +95,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
         if(code != null)
             addGroupCodes(groupID, code);
+        return 1;
     }
 
     public static ArrayList<String> getGroupMemberList(String groupID){
@@ -94,8 +106,12 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         }
         if(!grpDB.containsKey(groupID))
             return null;
-        else
-            return (ArrayList<String>) grpDB.get(groupID);
+        else {
+            ArrayList<String> returnList = new ArrayList<>(grpDB.get(groupID));
+            returnList.remove(0);
+            returnList.remove(0);
+            return returnList;
+        }
     }
 
     public static String getGroupName(String groupID){

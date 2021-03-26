@@ -1,6 +1,7 @@
 package com.example.android.tidyup;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,16 +34,16 @@ public class GroupSettingsAdapter extends BaseAdapter {
     private DocumentReference docRef;
 
     public GroupSettingsAdapter(Context applicationContext, ArrayList<String> members, String groupID) {
-        this.context = context;
+        this.context = applicationContext;
         this.members = members;
         this.groupID = groupID;
-        inflter = (LayoutInflater.from(applicationContext));
+//        inflter = (LayoutInflater.from(applicationContext));
 
     }
 
     @Override
     public int getCount() {
-        return 0;
+        return this.members.size();
     }
 
     @Override
@@ -57,7 +58,7 @@ public class GroupSettingsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.member_list_view_layout, null);
+        view =  LayoutInflater.from(context).inflate(R.layout.member_list_view_layout, null);
         TextView memberName = (TextView) view.findViewById(R.id.memberName);
         docRef = fFirestore.collection("Users").document(members.get(i));
         if(members.get(i) != null){
@@ -66,12 +67,12 @@ public class GroupSettingsAdapter extends BaseAdapter {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     if(documentSnapshot.exists()){
-                        String name = documentSnapshot.getString("Name");
+                        String name = documentSnapshot.getString("Username");
                         memberName.setText(name);
-                    }else {
-                        return;
+                        Typeface typeface = context.getResources().getFont(R.font.bad_script);
+                        memberName.setTypeface(typeface);
+//                        Typeface typeface = Typeface.createFromAsset(getAssets());
                     }
-
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

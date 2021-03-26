@@ -73,6 +73,7 @@ public class UpdateUserInfo extends AppCompatActivity {
                         Intent intent = new Intent(getApplication(), AuthenticationPassword.class);
                         intent.putExtra("EXTRA_EMAIL", newEmail);
                         intent.putExtra("EXTRA_SUBJECT", "Email");
+                        finish();
                         startActivity(intent);
                     } else{
                         mNewEmail.setError("Error! Email already in use");
@@ -97,6 +98,7 @@ public class UpdateUserInfo extends AppCompatActivity {
             Intent intent = new Intent(getApplication(), AuthenticationPassword.class);
             intent.putExtra("EXTRA_PASSWORD", newPassword);
             intent.putExtra("EXTRA_SUBJECT", "Password");
+            finish();
             startActivity(intent);
         }
     }

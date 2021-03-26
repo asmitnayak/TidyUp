@@ -102,7 +102,7 @@ public class CreateGroup extends AppCompatActivity {
         GroupManagement.addUserToGroup(gID,fAuth.getUid(), inviteCode.getText().toString(), groupName.getText().toString());
 
         //updates user Info
-        UserManagement.setUserGroup(gID);
+        UserManagement.setUserGroup(groupName.getText().toString());
         UserManagement.setUserGroupID(gID);
         UserManagement.setUserRole("Admin");
         Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();

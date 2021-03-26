@@ -105,7 +105,7 @@ public class CreateGroup extends AppCompatActivity {
         UserManagement.setUserGroup(gID);
         UserManagement.setUserGroupID(gID);
         UserManagement.setUserRole("Admin");
-        Toast.makeText(CreateGroup.this, "You are now Admin of Group " + gID, Toast.LENGTH_LONG).show();
+        Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();
         // go to task page???
     }
 

@@ -145,6 +145,8 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             if(userList.contains(userID))
                 userList.remove(userID);
             gcDB.put(groupID,userList);
+            Group_Code gc = new Group_Code(gcDB);
+            db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);
         }
     }
 
@@ -156,7 +158,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             lst.add(groupCode);
             gcDB.put(groupID, lst);
         } else {
-            gcDB.put(groupID, Collections.singletonList(groupCode));
+            gcDB.put(groupID, Arrays.asList(groupCode));
         }
         Group_Code gc = new Group_Code(gcDB);
         db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);

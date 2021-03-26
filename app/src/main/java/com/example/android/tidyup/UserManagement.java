@@ -56,7 +56,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                         Log.w(TAG, "Error updating document", e);
                     }
                 });
-
     }
 
 

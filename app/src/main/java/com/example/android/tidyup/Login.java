@@ -2,10 +2,13 @@ package com.example.android.tidyup;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
+
+    private static String TAG_LOGIN = "Login";
 
     private String Role = "";
     private EditText mEmail, mPassword;
@@ -88,6 +93,37 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void forgotPassword(View view){
+
+    }
+    protected void sendEmail() {
+        String email = mEmail.getText().toString().trim();
+        if (TextUtils.isEmpty(email)) {
+            mEmail.setError("Email is required to send password");
+            return;
+        }
+        //String password =
+        //fauth.fetchSignInMethodsForEmail(email).
+        String[] TO = {email};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+
+
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Tidy Up Password");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Here is your password: ");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            finish();
+            Log.i(TAG_LOGIN, "Finished sending email");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(Login.this,
+                    "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Redirect the user to Create Account screen

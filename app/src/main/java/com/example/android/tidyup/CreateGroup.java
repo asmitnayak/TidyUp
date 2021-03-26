@@ -42,7 +42,7 @@ public class CreateGroup extends AppCompatActivity {
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
         i.putExtra(Intent.EXTRA_SUBJECT, "Join my group on Tidy Up ");
-        i.putExtra(Intent.EXTRA_TEXT   , "Use this join code to join my group on Tidy Up. A " +
+        i.putExtra(Intent.EXTRA_TEXT   , "Use this join code to join my group on Tidy Up, a " +
                 "platform that helps you manage chores. Here is my join code " + code + ".");
         try {
             startActivity(Intent.createChooser(i, "Send mail..."));

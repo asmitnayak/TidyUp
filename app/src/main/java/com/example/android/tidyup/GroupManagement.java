@@ -101,8 +101,13 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             lst.set(0, Boolean.toString(value));
     }
 
-    public static void removeUserToGroup(String groupID, String userID){
-
+    public static void removeUserFromGroup(String groupID, String userID){
+        if(grpDB.containsKey(groupID)){
+            ArrayList<String> userList = (ArrayList<String>) gcDB.get(groupID);
+            if(userList.contains(userID))
+                userList.remove(userID);
+            gcDB.put(groupID,userList);
+        }
     }
 
     public static void addGroupCodes(String groupID, String groupCode){

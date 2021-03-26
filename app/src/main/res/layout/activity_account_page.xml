@@ -190,7 +190,6 @@
                 android:layout_marginTop="166dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
-                android:onClick="goToLeaveGroupPage"
                 android:text="Leave Group"
                 android:textSize="12sp"
                 android:textStyle="bold"

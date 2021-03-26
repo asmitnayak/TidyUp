@@ -1,5 +1,6 @@
 package com.example.android.tidyup;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,6 +25,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+
 public class Account extends AppCompatActivity {
     private static final String COLLECTIONPATH_GROUP = "Users";
     private static final String TAG = "Account";
@@ -31,16 +35,13 @@ public class Account extends AppCompatActivity {
     private static final String KEY_PASSWORD = "Password";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
-
-
-
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_GROUP).document(fAuth.getUid());
 
     private TextView mName, mEmail, mPassword, mGroup;
     private EditText mNewUserEmail;
-    private Button mAddMembers;
+    private Button mAddMembers, mLeaveGroup;
     private String addedUserID;
     private String grpID;
     private String grpName;
@@ -56,7 +57,7 @@ public class Account extends AppCompatActivity {
         mGroup = findViewById(R.id.acGroup);
         mNewUserEmail = findViewById(R.id.acNewUserEmail);
         mAddMembers = findViewById(R.id.acAddMembersButton);
-
+        mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
         // load and display user info on Account Page
         loadUserData();
 
@@ -96,11 +97,32 @@ public class Account extends AppCompatActivity {
                 });
             }
         });
-
-    }
-
-    private void loadUserData() {
-
+        mLeaveGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (UserManagement.getUserDetails().get("Group").toString().equals("")) {
+                    AlertDialog.Builder noGroup = new AlertDialog.Builder(Account.this);
+                    noGroup.setMessage("You are not currently in a group.");
+                    noGroup.setNeutralButton("Ok", null);
+                    noGroup.show();
+                } else {
+                    AlertDialog.Builder leaveAlert = new AlertDialog.Builder(Account.this);
+                    leaveAlert.setMessage("Are you sure you want to leave " + mGroup.getText().toString() + "?");
+                    leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String userID = fAuth.getUid();
+                            GroupManagement.removeUserFromGroup(grpID, userID);
+                            mGroup.setText("No Group Yet");
+                            docRef.update("Group", "");
+                            docRef.update("GroupID", "");
+                        }
+                    });
+                    leaveAlert.setNegativeButton("Cancle", null);
+                    leaveAlert.show();
+                }
+            }
+        });
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -133,6 +155,9 @@ public class Account extends AppCompatActivity {
 
     public void updateUserInfo() {
 
+    }
+
+    private void loadUserData() {
     }
 
     public void loguot(View view){

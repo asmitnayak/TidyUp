@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +37,7 @@ public class Account extends AppCompatActivity {
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_GROUP).document(fAuth.getUid());
 
@@ -85,7 +87,8 @@ public class Account extends AppCompatActivity {
 
                              addedUserID = task.getResult().getDocuments().get(0).getId();
                              DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_GROUP).document(addedUserID);
-                             GroupManagement.addUserToGroup(grpID, addedUserID, null);
+                             // TODO: change groupName
+                             GroupManagement.addUserToGroup(grpID, addedUserID, null, null);
                              addedUserDoc.update(KEY_GroupID, grpID);
                              addedUserDoc.update(KEY_Group, grpName);
 

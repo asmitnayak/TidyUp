@@ -19,7 +19,7 @@ public class JoinGroup extends AppCompatActivity {
 
     public void onJoinGroup(View view) {
         joinCode = findViewById(R.id.joinCode);
-        String grp = GroupManagement.getGroup(joinCode.getText().toString());
+        String grp = GroupManagement.getGroup(joinCode.getText().toString()); // groupID
         UserManagement.updateUserGroup(grp, getApplicationContext());
         finish();
         startActivity(new Intent(this, TaskPage.class));

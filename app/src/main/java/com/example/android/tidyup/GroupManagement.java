@@ -1,6 +1,7 @@
 package com.example.android.tidyup;
 
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -9,14 +10,23 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.Key;
+import java.security.KeyFactory;
+import java.security.spec.KeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 import androidx.annotation.NonNull;
 
@@ -54,17 +64,21 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
-    public static void addUserToGroup(String groupID, String userID, String code){
+    public static void addUserToGroup(String groupID, String userID, String code, String groupName){
         if(grpDB.containsKey(groupID)){
             ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
             if(getGroupTask(groupID) == null)
                 lst.add(0, "false");
-            if (lst.contains(userID))
+            if(getGroupName(groupID) == null){
+                if(groupName != null)
+                    lst.add(1, "GroupName:"+groupName);
+            }
+            if(lst.contains(userID))
                 return;
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
-            grpDB.put(groupID, Arrays.asList("false", userID));
+            grpDB.put(groupID, Arrays.asList("false", "GroupName:"+groupName, userID));
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
@@ -83,6 +97,15 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         else
             return (ArrayList<String>) grpDB.get(groupID);
 
+    }
+
+    public static String getGroupName(String groupID){
+        String name = grpDB.get(groupID).get(1);
+        if(name.startsWith("GroupName:")){
+            String[] arrStr = name.split(":");
+            return arrStr[1];
+        } else
+            return null;
     }
 
     public static Boolean getGroupTask(String groupID){
@@ -160,6 +183,27 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                 Log.w(TAG, "Error reading document", e);
             }
         });
+    }
+
+    public static String getGroupID(String groupName){
+
+        Date dt = new Date();
+        groupName += dt.getTime();
+        byte[] cipherText = null;
+        try {
+
+            byte[] plaintext = groupName.getBytes();
+            KeyGenerator keygen = KeyGenerator.getInstance("AES");
+            keygen.init(256);
+            SecretKey key = keygen.generateKey();
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            cipherText = cipher.doFinal(plaintext);
+            byte[] iv = cipher.getIV();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Base64.encodeToString(cipherText, Base64.DEFAULT).replaceAll("\\n", "");
     }
 
     @Override

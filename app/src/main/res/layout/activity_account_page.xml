@@ -8,6 +8,7 @@
     android:background="@drawable/light_blue_background">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +18,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <include
+            layout="@layout/action_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -172,7 +177,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
-                android:onClick="gotToAddMemberPage"
+                android:onClick="addMembers"
                 android:text="Add \n Members"
                 android:textSize="10sp"
                 android:textStyle="bold"
@@ -190,6 +195,7 @@
                 android:layout_marginTop="166dp"
                 android:backgroundTint="@color/fontAndButtonColor"
                 android:fontFamily="@font/bad_script"
+                android:onClick="leaveGroup"
                 android:text="Leave Group"
                 android:textSize="12sp"
                 android:textStyle="bold"

@@ -5,15 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -28,7 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
-public class Account extends AppCompatActivity {
+public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private static final String COLLECTIONPATH_USERS = "Users";
     private static final String TAG = "Account";
     private static final String KEY_USERNAME = "Username";
@@ -48,6 +54,7 @@ public class Account extends AppCompatActivity {
     private String addedUserID;
     private String grpID;
     private String grpName;
+    private ImageView menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,71 +68,9 @@ public class Account extends AppCompatActivity {
         mNewUserEmail = findViewById(R.id.acNewUserEmail);
         mAddMembers = findViewById(R.id.acAddMembersButton);
         mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
+        menu = findViewById(R.id.menu);
+
         // load and display user info on Account Page
-        loadUserData();
-
-        // add members button functionality
-        mAddMembers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String newUserEmail = mNewUserEmail.getText().toString().trim();
-                if (TextUtils.isEmpty(newUserEmail)){
-                    mNewUserEmail.setError("New User Email is required");
-                    return;
-                }
-                fFirestore.collection(COLLECTIONPATH_USERS)
-                        .whereEqualTo(KEY_EMAIL, newUserEmail)
-                        .get()
-                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                             if (task.getResult().getDocuments().size() != 1){
-                                 Toast.makeText(Account.this, "Error! more than one user found with email " + newUserEmail, Toast.LENGTH_LONG).show();
-                                 Log.d(TAG, "Error! more than one user found with email " + newUserEmail);
-                                 return;
-                             }
-
-                             addedUserID = task.getResult().getDocuments().get(0).getId();
-                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
-                             GroupManagement.addUserToGroup(grpID, addedUserID, null);
-                             addedUserDoc.update(KEY_GroupID, grpID);
-                             addedUserDoc.update(KEY_Group, grpName);
-
-                        } else {
-                            Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            Log.d(TAG, "Error! " + task.getException().getMessage() + newUserEmail);
-                        }
-                    }
-                });
-            }
-        });
-        mLeaveGroup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (UserManagement.getUserDetails().get("Group").toString().equals("")) {
-                    AlertDialog.Builder noGroup = new AlertDialog.Builder(Account.this);
-                    noGroup.setMessage("You are not currently in a group.");
-                    noGroup.setNeutralButton("Ok", null);
-                    noGroup.show();
-                } else {
-                    AlertDialog.Builder leaveAlert = new AlertDialog.Builder(Account.this);
-                    leaveAlert.setMessage("Are you sure you want to leave " + mGroup.getText().toString() + "?");
-                    leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            String userID = fAuth.getUid();
-                            GroupManagement.removeUserFromGroup(grpID, userID);
-                            mGroup.setText("No Group Yet");
-                            docRef.update("Group", "");
-                            docRef.update("GroupID", "");
-                        }
-                    });
-                    leaveAlert.setNegativeButton("Cancle", null);
-                    leaveAlert.show();
-                }
-            }
-        });
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -154,41 +99,45 @@ public class Account extends AppCompatActivity {
                 Log.d(TAG, e.toString());
             }
         });
-    }
 
-    public void updateUserInfo() {
-
-    }
-
-    private void loadUserData() {
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        menu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_USERNAME);
-                    String email = documentSnapshot.getString(KEY_EMAIL);
-                    String password = documentSnapshot.getString(KEY_PASSWORD);
-                    grpID = documentSnapshot.getString(KEY_GroupID);
-                    grpName = documentSnapshot.getString(KEY_Group);
-                    mName.setText("Username: " + name);
-                    mEmail.setText("Email: "+ email);
-                    mPassword.setText("Password: " + password);
-                    if (!grpName.equals("")){
-                        mGroup.setText("Group: " + grpName);
-                    } else {
-                        mGroup.setText("Group: No Group Yet");
-                    }
-                }else {
-                    Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Account.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d(TAG, e.toString());
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(Account.this, v);
+                popup.setOnMenuItemClickListener( Account.this);
+                popup.inflate(R.menu.account_page_menu);
+                popup.show();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.account_page_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.acTaskPage:
+                startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                return true;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.acTaskPage:
+                startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void loguot(View view){
@@ -219,4 +168,64 @@ public class Account extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
+
+    public void leaveGroup(View view){
+        if (UserManagement.getUserDetails().get("Group").toString().equals("")) {
+            AlertDialog.Builder noGroup = new AlertDialog.Builder(Account.this);
+            noGroup.setMessage("You are not currently in a group.");
+            noGroup.setNeutralButton("Ok", null);
+            noGroup.show();
+        } else {
+            AlertDialog.Builder leaveAlert = new AlertDialog.Builder(Account.this);
+            leaveAlert.setMessage("Are you sure you want to leave " + mGroup.getText().toString() + "?");
+            leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String userID = fAuth.getUid();
+                    GroupManagement.removeUserFromGroup(grpID, userID);
+                    mGroup.setText("No Group Yet");
+                    docRef.update("Group", "");
+                    docRef.update("GroupID", "");
+                }
+            });
+            leaveAlert.setNegativeButton("Cancle", null);
+            leaveAlert.show();
+        }
+    }
+
+    public void addMembers(View view){
+        String newUserEmail = mNewUserEmail.getText().toString().trim();
+        if (TextUtils.isEmpty(newUserEmail)){
+            mNewUserEmail.setError("New User Email is required");
+            return;
+        }
+        fFirestore.collection(COLLECTIONPATH_USERS)
+                .whereEqualTo(KEY_EMAIL, newUserEmail)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            if (task.getResult().getDocuments().size() != 1){
+                                Toast.makeText(Account.this, "Error! more than one user found with email " + newUserEmail, Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Error! more than one user found with email " + newUserEmail);
+                                return;
+                            }
+
+                            addedUserID = task.getResult().getDocuments().get(0).getId();
+                            DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
+                            GroupManagement.addUserToGroup(grpID, addedUserID, null);
+                            addedUserDoc.update(KEY_GroupID, grpID);
+                            addedUserDoc.update(KEY_Group, grpName);
+
+                        } else {
+                            Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "Error! " + task.getException().getMessage() + newUserEmail);
+                        }
+                    }
+                });
+    }
+
+
 }

@@ -133,6 +133,61 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+    //This test should create a group and check if the group is in the database with correct info
+    private void testCreateGroupDB(){
+
+    }
+    //This test should make sure new member is added to the group given group id
+    private void testJoinGroupViaCode(String userID, String groupID){
+
+    }
+    //This test should retrieve group info from the database based on group ID
+    private void testGetGroupID(){
+
+    }
+    //This test should add a user to a group and check to see if it was added to the list in the db
+    private void testAddUserToGroup(){
+
+    }
+    //This test should make sure all members are present in the list in the db
+    private void testAddMultipleUsersToGroup(){
+
+    }
+    //This test should make sure the given user is no longer in the db list
+    private void testRemoveUserFromGroup(){
+
+    }
+    //This test should make sure all removed members are no longer in the db list
+    private void testRemoveMultipleUsersFromGroup(){
+
+    }
+    //This test should make sure the users points increase in the db when a task is completed
+    private void testUserPointIncreaseOnTaskComplete(){
+
+    }
+    //This test should make sure the task completed is no longer in the group db
+    private void testOnTaskCompleteTaskRemovedFromGroupDB(){
+
+    }
+    //This test should make sure the task completed is no longer in the user db
+    private void testOnTaskCompleteTaskRemovedFromUserDB(){
+
+    }
+    //This test should make sure all new tasks are added to the list in the group db
+    private void testOnCreateTaskAddedToGroupDB(){
+
+    }
+    //This test should make sure all new tasks assigned to a specific user are added to the list
+    // in the user db
+    private void testOnCreateTaskAddedToUserDB(){
+
+    }
+    //This test should get the full task list from db
+    private void testGetTaskListFromDB(){
+
+    }
+
+
 
 
     class A_B{

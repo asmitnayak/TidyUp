@@ -5,5 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddReward">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/light_blue_background" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/addReward"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/architects_daughter"
+            android:text="Add Reward"
+            android:textAlignment="center"
+            android:textColor="#003060"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/rewardName"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Reward Name"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/rewardDescription"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Reward Description"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/rewardPointVal"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Reward Point Value"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/addRewardButton"
+            android:layout_width="164dp"
+            android:layout_height="61dp"
+            android:layout_marginLeft="117dp"
+            android:layout_marginTop="72dp"
+            android:backgroundTint="#003060"
+            android:fontFamily="@font/architects_daughter"
+            android:onClick="onAddReward"
+            android:text="Add Reward"
+            android:textSize="14sp" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TidyUp">
-        <activity android:name=".AddReward"></activity>
+        <activity android:name=".RewardAndPenatly">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+        <activity android:name=".AddReward" />
         <activity android:name=".GroupSettings" />
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup" />
@@ -24,13 +31,8 @@
         <activity
             android:name=".Account"
             android:label="Account" />
-        <activity android:name=".Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Login"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".UpdateUserInfo" />
         <activity android:name=".AuthenticationPassword" />
         <activity android:name=".AddTaskToTaskPage" />

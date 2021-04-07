@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TidyUp">
+        <activity android:name=".ForgotPassword"></activity>
+        <activity android:name=".GroupSettings" />
         <activity android:name=".AddReward"></activity>
         <activity android:name=".GroupSettings" />
         <activity android:name=".JoinGroup" />
@@ -24,6 +26,7 @@
         <activity
             android:name=".Account"
             android:label="Account" />
+
         <activity android:name=".Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

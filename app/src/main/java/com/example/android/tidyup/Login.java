@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +33,7 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth fauth;
     private static HashMap<String, Object> userMap;
     private ProgressBar mProgressBar;
+    private TextView mForgotPassView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class Login extends AppCompatActivity {
         mLoginBtn = findViewById(R.id.loginButton);
 
         fauth = FirebaseAuth.getInstance();
+        mForgotPassView = findViewById(R.id.forgotPassView);
         mProgressBar = findViewById(R.id.lProgressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
         GroupManagement gm = new GroupManagement();
@@ -96,8 +99,10 @@ public class Login extends AppCompatActivity {
     }
 
     public void forgotPassword(View view){
-
+        startActivity(new Intent(getApplicationContext(), ForgotPassword.class));
     }
+
+
     protected void sendEmail() {
         String email = mEmail.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {

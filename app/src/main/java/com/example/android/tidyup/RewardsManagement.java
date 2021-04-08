@@ -45,6 +45,14 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         });
 
     }
+    public void automateRewardAssignment(String grpID){
+
+    }
+
+    public void AssignReward(String userID){
+
+    }
+
     @Override
     protected Void doInBackground(Void... voids) {
         return null;

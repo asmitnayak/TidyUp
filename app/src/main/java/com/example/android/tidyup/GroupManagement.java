@@ -37,6 +37,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
 
+
     protected static String getCode(){
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();

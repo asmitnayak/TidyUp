@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.widget.Spinner;
 
 import java.util.ArrayList;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class AddTaskToTaskPage extends TaskPage{
 
@@ -15,10 +18,13 @@ public class AddTaskToTaskPage extends TaskPage{
     private Spinner mSpinnerPriority;
     private Spinner mSpinnerRepetition;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task_to_task_page);
+
+
 
         Spinner spinnerPerson = findViewById(R.id.personAssignedToTask);
 

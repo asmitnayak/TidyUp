@@ -12,13 +12,19 @@
         <activity android:name=".ForgotPassword"></activity>
         <activity android:name=".GroupSettings" />
         <activity android:name=".AddReward"></activity>
-        <activity android:name=".GroupSettings" />
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.TidyUp.NoActionBar" /> <!-- <activity android:name=".LeaveGroup" /> -->
+            android:theme="@style/Theme.TidyUp.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- <activity android:name=".LeaveGroup" /> -->
         <activity
             android:name=".CreateAccount"
             android:label="CreateAccount"
@@ -27,13 +33,8 @@
             android:name=".Account"
             android:label="Account" />
 
-        <activity android:name=".Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".Login"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
         <activity android:name=".UpdateUserInfo" />
         <activity android:name=".AuthenticationPassword" />
         <activity android:name=".AddTaskToTaskPage" />

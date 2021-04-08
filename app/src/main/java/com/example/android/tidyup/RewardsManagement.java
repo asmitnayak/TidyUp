@@ -26,7 +26,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     //private static final DocumentReference docRef = fFirestore.collection("Rewards").document(fAuth.getUid());
     private static Map<String, Map<String, List<String>>> grDB;
 
-    public static int addReward(String userID, String groupID, String rewardDescription, String rewardName, int rewardVal){
+    public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB.containsKey(groupID)){
             Map<String, List<String>> groupRewardMap = new HashMap<>(grDB.get(groupID));
             if(groupRewardMap.containsKey(rewardName)){
@@ -42,6 +42,35 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
             grDB.put(groupID, groupRewardMap);
             return 1;
+        }
+    }
+    public static Map<String, List<String>> getGroupRewardsMap(String groupID){
+        Map<String, List<String>> groupRewardMap;
+        if(grDB == null){
+            readGroupRewardsDB();
+            if(grDB == null){
+                return null;
+            }
+        }
+        if(grDB.containsKey(groupID)){
+            groupRewardMap = new HashMap<>(grDB.get(groupID));
+        }else{
+            groupRewardMap = new HashMap<>();
+        }
+        return groupRewardMap;
+    }
+    public static ArrayList<String> getRewardInfo(String groupID, String rewardName){
+        Map<String, List<String>> groupRewardMap = getGroupRewardsMap(groupID);
+        ArrayList<String> rewardInfo = new ArrayList<String>();
+        if (groupRewardMap != null) {
+            if (groupRewardMap.containsKey(rewardName)) {
+                rewardInfo = (ArrayList<String>) groupRewardMap.get(rewardName);
+                return rewardInfo;
+            } else {
+                return null;
+            }
+        }else{
+            return null;
         }
     }
 
@@ -75,6 +104,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
+        readGroupRewardsDB();
         super.onPreExecute();
     }
 

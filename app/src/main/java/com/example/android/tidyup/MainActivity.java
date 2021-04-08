@@ -32,7 +32,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GroupManagement gm = new GroupManagement();
+        RewardsManagement rm = new RewardsManagement();
+        rm.execute();
         gm.execute();
+        testAddReward();
 //        fireStoreAdd2Doc();
         Button btn = (Button) findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -184,6 +187,11 @@ public class MainActivity extends AppCompatActivity {
     }
     //This test should get the full task list from db
     private void testGetTaskListFromDB(){
+
+    }
+    //This test should get the full task list from db
+    private void testAddReward(){
+        RewardsManagement.addReward("test", "test reward description" , "Test Reward Name", 15);
 
     }
 

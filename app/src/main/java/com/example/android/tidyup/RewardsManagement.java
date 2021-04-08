@@ -14,6 +14,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +25,24 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     //private static final DocumentReference docRef = fFirestore.collection("Rewards").document(fAuth.getUid());
     private static Map<String, Map<String, List<String>>> grDB;
+
     public static int addReward(String userID, String groupID, String rewardDescription, String rewardName, int rewardVal){
-        if(userID == null || groupID == null || rewardDescription == null || rewardName == null || rewardVal <= 0){
-            return -1; // Missing information
+        if(grDB.containsKey(groupID)){
+            Map<String, List<String>> groupRewardMap = new HashMap<>(grDB.get(groupID));
+            if(groupRewardMap.containsKey(rewardName)){
+                return 0; //Reward already added
+            }else{
+                groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
+                grDB.put(groupID, groupRewardMap);
+                return 1;
+            }
+
+        }else{
+            Map<String, List<String>> groupRewardMap = new HashMap<>();
+            groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
+            grDB.put(groupID, groupRewardMap);
+            return 1;
         }
-        return -1;
     }
 
     public static void readGroupRewardsDB(){

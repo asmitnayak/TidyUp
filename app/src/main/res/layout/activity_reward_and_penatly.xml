@@ -96,16 +96,18 @@
                 android:id="@+id/addReward"
                 android:layout_width="129dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:onClick="OnAddReward"
                 android:text="Add Reward" />
 
             <Button
                 android:id="@+id/addPenalty"
                 android:layout_width="129dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:onClick="OnAddPenalty"
                 android:text="Add Penalty" />
 
             <Button
@@ -113,6 +115,7 @@
                 android:layout_width="129dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="OnAssignPenalty"
                 android:text="Assign Penalty" />
         </LinearLayout>
     </LinearLayout>

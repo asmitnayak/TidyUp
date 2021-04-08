@@ -33,9 +33,9 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
 
-    public static void addGroupField() {
+    public static void addField(String fieldName) {
         Map<String, String> data = new HashMap<>();
-        data.put("Group", "");
+        data.put(fieldName, "");
 
         docRef.set(data, SetOptions.merge());
     }

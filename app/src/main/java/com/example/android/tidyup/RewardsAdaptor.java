@@ -51,7 +51,7 @@ public class RewardsAdaptor extends BaseAdapter {
         view = inflter.inflate(R.layout.rewards_list_view_layout, null);
 
         TextView reward = view.findViewById(R.id.rRewardName);
-        //reward.setText(rewardsKey.get(i));
+        reward.setText((String) rewardsKey.get(i));
 
         return view;
     }

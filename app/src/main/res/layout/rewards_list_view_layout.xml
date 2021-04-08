@@ -17,7 +17,7 @@
             android:fontFamily="@font/architects_daughter"
             android:text="- Reward Name"
             android:textColor="@color/fontAndButtonColor"
-            android:textSize="30sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

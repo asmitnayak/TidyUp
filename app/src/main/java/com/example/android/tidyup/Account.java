@@ -7,8 +7,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,8 +30,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.HashMap;
 
 public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private static final String COLLECTIONPATH_USERS = "Users";
@@ -171,6 +166,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             case R.id.acTaskPage:
                 startActivity(new Intent(getApplicationContext(), TaskPage.class));
                 return true;
+            case R.id.acRewardsAndPenaltyPage:
+                startActivity(new Intent(getApplicationContext(), RewardAndPenalty.class));
+                return true;
             default:
                 return false;
         }
@@ -220,7 +218,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getUid();
                     GroupManagement.removeUserFromGroup(grpID, userID);
-                    mGroup.setText("No Group Yet");
+                    mGroup.setText("Group: No Group Yet");
                     docRef.update("Group", "");
                     docRef.update("GroupID", "");
                 }

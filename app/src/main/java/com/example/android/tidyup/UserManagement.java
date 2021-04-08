@@ -59,6 +59,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
+
+
     private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -78,6 +80,31 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
             }
         });
         return (HashMap<String, Object>) map;
+    }
+
+    private static Map<String, Object> otherUserMap = new HashMap<>();
+    public static String getUserNameFromUID (String uid){
+        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
+        docRefUID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        otherUserMap = document.getData();
+
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        return (String) otherUserMap.get("Username");
+
     }
 
     protected static void setUsername(String username){

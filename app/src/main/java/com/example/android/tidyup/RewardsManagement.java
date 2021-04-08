@@ -23,7 +23,10 @@ import java.util.Map;
 public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    //private static final DocumentReference docRef = fFirestore.collection("Rewards").document(fAuth.getUid());
+    private static final String COLLECTIONPATH_REWARDS_PENALTIES = "Rewards_Penalties";
+    private static final String DOCUMENTPATH_REWARDS = "Rewards";
+    private static final String TAG = "UserManagement";
+    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
     private static Map<String, Map<String, List<String>>> grDB;
 
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
@@ -89,11 +92,19 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         });
 
     }
+
+
+
     public void automateRewardAssignment(String grpID){
 
     }
 
-    public void AssignReward(String userID){
+    public void calculateUserPoints(String userID){
+
+    }
+
+
+    public void AssignReward(String userID, int userPoints){
 
     }
 

@@ -5,13 +5,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class RewardAndPenatly extends AppCompatActivity {
+
+    private ListView listView;
+    private Map<String, List<Object>> rewardsMap;
+    RewardsAdaptor rewardsAdaptor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward_and_penatly);
+
+        listView = findViewById(R.id.rewardsList);
+        rewardsMap = new HashMap<>();
+        List reward1 = new ArrayList();
+        List reward2 = new ArrayList();
+        List reward3 = new ArrayList();
+        rewardsMap.put("Reward 1", reward1);
+        rewardsMap.put("Reward 2", reward2);
+        rewardsMap.put("Reward 3", reward3);
+
+        //rewardsAdaptor
     }
 
     public void OnAddReward(View view) {

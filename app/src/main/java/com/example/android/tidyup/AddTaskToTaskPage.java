@@ -9,7 +9,6 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,11 +30,12 @@ public class AddTaskToTaskPage extends TaskPage{
     private Spinner mSpinnerRepetition;
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private static Map<String, Map<String, List<String>>> taskDB;
+    /*private static Map<String, Map<String, List<String>>> taskListDB; // list of tasks
+    private static Map<String, Map<String, List<String>>> taskDB; // will store the actual info of tasks
     private static final String COLLECTIONPATH_TASK = "Task";
     private static final String DOCUMENTPATH_TASKS = "Tasks";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
-
+*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,53 +93,57 @@ public class AddTaskToTaskPage extends TaskPage{
         mSpinnerRepetition = spinnerRepetition;
     }
 
-    public static int addTaskItem(String groupID, String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
-        if(taskDB.containsKey(groupID)) {
-            Map<String, List<String>> groupTaskMap = new HashMap<>(taskDB.get(groupID));
+    /*public static int addTaskItem(String groupID, String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
+        if(taskListDB.containsKey(groupID)) {
+            Map<String, List<String>> groupTaskMap = new HashMap<>(taskListDB.get(groupID));
             if(groupTaskMap.containsKey(taskName)){
                 return 0;
             } else {
                 groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-                taskDB.put(groupID, groupTaskMap);
-                Tasks task = new Tasks(taskDB);
-                docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-                return 1;
+                taskListDB.put(groupID, groupTaskMap);
+                // Tasks task = new Tasks(taskDB);
+                // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
+                // return 1;
             }
         } else {
             Map<String, List<String>> groupTaskMap = new HashMap<>();
             groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-            taskDB.put(groupID, groupTaskMap);
-            Tasks task = new Tasks(taskDB);
-            docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-            return 1;
+            taskListDB.put(groupID, groupTaskMap);
+            // Tasks task = new Tasks(taskDB);
+            // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
+            // return 1;
         }
+        Tasks tasks = new Tasks(taskListDB);
+        fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(tasks);
+        return 1;
+
         // TaskItem addTaskItem = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
         // taskItems.add(addTaskItem);
-    }
+    }*/
 
-    public static Map<String, List<String>> getGroupTaskMap(String groupID){
+    /*public static Map<String, List<String>> getGroupTaskMap(String groupID){
         Map<String, List<String>> groupTaskMap;
-        if(taskDB == null){
+        if(taskListDB == null){
             readGroupTaskDB();
-            if(taskDB == null){
+            if(taskListDB == null){
                 return null;
             }
         }
-        if(taskDB.containsKey(groupID)){
-            groupTaskMap = new HashMap<>(taskDB.get(groupID));
+        if(taskListDB.containsKey(groupID)){
+            groupTaskMap = new HashMap<>(taskListDB.get(groupID));
         }else{
             groupTaskMap = new HashMap<>();
         }
         return groupTaskMap;
-    }
+    }*/
 
-    public static void readGroupTaskDB(){
-        DocumentReference docRef = fFirestore.collection("Task").document("Tasks");
+   /* public static void readGroupTaskDB(){
+        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Tasks taskDocument = documentSnapshot.toObject(Tasks.class);
-                taskDB = taskDocument.TaskMap;
+                taskListDB = taskDocument.TaskMap;
             }
         }).addOnFailureListener(new OnFailureListener() {
             public void onFailure(@NonNull Exception e) {
@@ -157,7 +161,13 @@ public class AddTaskToTaskPage extends TaskPage{
             this.TaskMap = customMap;
         }
         public Map<String, Map<String, List<String>>> getTaskMap() { return this.TaskMap;}
-    }
+    }*/
+
+    /*//@Override
+    protected void onPreExecute() {
+        readGroupTaskDB();
+        super.onPreExecute();
+    }*/
 
 
 
@@ -177,7 +187,7 @@ public class AddTaskToTaskPage extends TaskPage{
         String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
         int rewardInt = Integer.parseInt(rewardString);
 
-        addTaskItem(groupID, name, mPersonSpinner.getSelectedItem().toString(), rewardInt,
+        TaskManagment.addTaskItem(groupID, name, mPersonSpinner.getSelectedItem().toString(), rewardInt,
                 mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
 
         finish();

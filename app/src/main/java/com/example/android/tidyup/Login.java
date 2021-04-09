@@ -91,6 +91,8 @@ public class Login extends AppCompatActivity {
                     // check if admin move to Account.java
                     UserManagement um = new UserManagement();
                     um.execute();
+                    //test
+                    //UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")

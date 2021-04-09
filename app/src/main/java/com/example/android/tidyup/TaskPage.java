@@ -91,9 +91,10 @@ public class TaskPage extends AppCompatActivity {
 
     // when a task is selected and the completeTask button is pressed
     // the task will be removed from the task page
-    public void completeTask(View view){
+   /* public void completeTask(View view){
+        TaskManagement.removeTaskFromGroup(groupID, taskName);
 
-    }
+    }*/
 
     public void addTask(View view){
         Intent intent = new Intent(this, AddTaskToTaskPage.class);

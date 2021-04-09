@@ -13,10 +13,12 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firestore.v1.Document;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -32,10 +34,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GroupManagement gm = new GroupManagement();
+        UserManagement um = new UserManagement();
         RewardsManagement rm = new RewardsManagement();
         rm.execute();
         gm.execute();
-
+        um.execute();
+        testAddReward();
+        //testResetAllUserPoints();
 //        fireStoreAdd2Doc();
         Button btn = (Button) findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +202,20 @@ public class MainActivity extends AppCompatActivity {
         rm.execute();
         RewardsManagement.addReward("test", "test reward description" , "Test Reward Name", 15);
 
+    }
+
+    private void testResetAllUserPoints(){
+        GroupManagement gm = new GroupManagement();
+        gm.execute();
+        UserManagement um = new UserManagement();
+        um.execute();
+        UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
+    }
+
+    private void testAssignReward(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Task<DocumentSnapshot> doc = db.collection("Rewards_penalties").document("Rewards").get();
+        UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
     }
 
 

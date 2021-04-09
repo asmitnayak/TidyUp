@@ -23,15 +23,17 @@ public class AddReward extends AppCompatActivity {
     EditText rewardDescriptionEDT;
     String rewardDescription;
     EditText rewardPointValEDT;
-    List<Object> rewardsValue;
+    ArrayList<Object> rewardsValue;
     int rewardPointVal;
     int listItem;
-    private Map<String, List<String>> rewardsMap;
+    private Map<String, List<Object>> rewardsMap;
     ArrayList<String>rewardsKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_reward);
+        RewardsManagement rm = new RewardsManagement();
+        rm.execute();
         this.rewardNameEDT = findViewById(R.id.rewardName);
         this.rewardDescriptionEDT = findViewById(R.id.rewardDescription);
         this.rewardPointValEDT = findViewById(R.id.rewardPointVal);
@@ -40,14 +42,17 @@ public class AddReward extends AppCompatActivity {
         Intent intent = getIntent();
         listItem = intent.getIntExtra("listItem", -1);
         if(listItem != -1){
+            String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
             //Load in reward data
-            rewardsMap = RewardsManagement.getGroupRewardsMap(GroupManagement.getGroupIDFromUserID(fAuth.getUid()));
-            rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-            rewardNameEDT.setText(rewardsKey.get(listItem));
-            rewardsValue = new ArrayList<Object>(rewardsMap.values());
-            ArrayList<String> rewardInfo = (ArrayList<String>) rewardsValue.get(listItem);
-            rewardDescriptionEDT.setText(rewardInfo.get(0));
-            rewardPointValEDT.setText(rewardInfo.get(1));
+            rewardsMap = RewardsManagement.getGroupRewardsMap(groupID);
+            rewardsKey = RewardsManagement.getRewardNameList(rewardsMap);
+            String rewardName = rewardsKey.get(listItem);
+            if (rewardName != null) {
+                rewardNameEDT.setText(rewardName);
+                rewardsValue = RewardsManagement.getRewardInfo(groupID, rewardName);;
+                rewardDescriptionEDT.setText(rewardsValue.get(0).toString());
+                rewardPointValEDT.setText(rewardsValue.get(1).toString());
+            }
         }
 
     }
@@ -58,7 +63,7 @@ public class AddReward extends AppCompatActivity {
         this.rewardName = this.rewardNameEDT.getText().toString();
         RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getUid()),
                 this.rewardDescription, this.rewardName, this.rewardPointVal);
-        Intent intent = new Intent(this, RewardAndPenatly.class);
+        Intent intent = new Intent(this, RewardAndPenalty.class);
         startActivity(intent);
     }
 }

@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,14 +40,28 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+    private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
 
-    public static void addField(String fieldName) {
+    public static void addStringField(String fieldName) {
         Map<String, String> data = new HashMap<>();
         data.put(fieldName, "");
 
         docRef.set(data, SetOptions.merge());
     }
 
+    public static void addIntField(String fieldName) {
+        Map<String, String> data = new HashMap<>();
+        data.put(fieldName, "0");
+
+        docRef.set(data, SetOptions.merge());
+    }
+
+    public static void deleteField(String fieldName) {
+        Map<String, String> data = new HashMap<>();
+        data.put(fieldName, null);
+
+        docRef.update(fieldName, FieldValue.delete());
+    }
     public static void updateUserGroup(String newGroupID, Context cntxt) {
         docRef.update("GroupID", newGroupID,
                       "Group", GroupManagement.getGroupName(newGroupID))
@@ -64,6 +79,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     }
                 });
     }
+
+
 
 
     private static Map<String, Object> map = new HashMap<>();
@@ -87,9 +104,10 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         return (HashMap<String, Object>) map;
     }
 
-    private static Map<String, String> otherUserMap = new HashMap<>();
+    //private static Map<String, String> otherUserMap = new HashMap<>();
+    private static Map<String, List<String>> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
-//        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
+        //        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
 //        docRefUID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 //            @Override
 //            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -108,8 +126,26 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 //            }
 //        });
 
-        return otherUserMap.get(uid);
+        //return ((String) otherUserMap.get("Username"));
+        return ((List<String>)otherUserMap.get(uid)).get(0);
+    }
+    /*
+    public static String getUserPointsFromUID (String uid){
+        return ((List<String>)otherUserMap.get(uid)).get(1);
+    } */
 
+    protected static void resetAllUserPoints(String grpID){
+        ArrayList<String> membersList = GroupManagement.getGroupMemberList(grpID);
+        if(membersList == null){
+            Log.d(TAG, "Error getting Members List");
+            return;
+        }
+        for (String uid: membersList){
+            DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
+            Map<String, String> data = new HashMap<>();
+            data.put("UserPoints", "0");
+            docRefUID.set(data, SetOptions.merge());
+        }
     }
 
     protected static void setUsername(String username){
@@ -135,6 +171,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
+    private List userInfo = new ArrayList<String>();
     @Override
     protected Void doInBackground(Void... params) {
         CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
@@ -145,8 +182,13 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     List<String> list = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         list.add(document.getId());
-                        if(document.getData().get("GroupID").equals(map.get("GroupID")))
-                            otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
+                        if(document.getData().get("GroupID").equals(map.get("GroupID"))) {
+                            userInfo = new ArrayList<String>();
+                            userInfo.add((String) document.getData().get("Username"));
+                            userInfo.add((String) document.getData().get("UserPoints"));
+                            otherUserMap.put(document.getId(), userInfo);
+                            //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
+                        }
                     }
                     Log.d(TAG, "asdjlk  "+ otherUserMap.toString());
                 } else {
@@ -159,6 +201,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
+        deleteField("Password");
         super.onPreExecute();
     }
 

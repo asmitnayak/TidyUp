@@ -35,20 +35,19 @@ public class RewardAndPenalty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward_and_penatly);
-
         listView = findViewById(R.id.rewardsList);
         rewardsMap = new HashMap<>();
         List reward1 = new ArrayList();
         reward1.add("This is a random Description for reward 1");
-        reward1.add(5);
+        reward1.add("5");
         reward1.add("rrkHVlRUIsUpNWaVTgUCbaul0Zq1");
         List reward2 = new ArrayList();
         reward2.add("Reward2 description");
-        reward2.add(7);
+        reward2.add("7");
         reward2.add("rrkHVlRUIsUpNWaVTgUCbaul0Zq1");
         List reward3 = new ArrayList();
         reward3.add("Reward3 description");
-        reward3.add(9);
+        reward3.add("9");
         reward3.add("siTctFru2AcyzDguEqGE3xtnKWi2");
         rewardsMap.put("Reward 1", reward1);
         rewardsMap.put("Reward 2", reward2);
@@ -62,10 +61,9 @@ public class RewardAndPenalty extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getApplication(), RewardPopUp.class);
+                Intent intent = new Intent(getApplicationContext(), RewardPopUp.class);
                 intent.putExtra(EXTRA_REWARD_NAME, (String) rewardsKey.get(position));
-                String assignedUserUID = (String) ((List<Object>) rewardsValue.get(position)).get(2);
-
+                String assignedUserUID = (String) ((List<String>) rewardsValue.get(position)).get(2);
                 String assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
                 //Todo Debug why it returns null first time
                 if (assignedUser == null){
@@ -73,8 +71,8 @@ public class RewardAndPenalty extends AppCompatActivity {
                 }
                 Toast.makeText(RewardAndPenalty.this, assignedUser, Toast.LENGTH_LONG).show();
                 intent.putExtra(EXTRA_ASSIGNED_USER, assignedUser);
-                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<Object>) rewardsValue.get(position)).get(1));
-                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<Object>) rewardsValue.get(position)).get(0));
+                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<String>) rewardsValue.get(position)).get(1));
+                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<String>) rewardsValue.get(position)).get(0));
                 startActivity(intent);
             }
         });

@@ -26,7 +26,7 @@ public class RewardsAdaptor extends BaseAdapter {
         this.context = context;
         this.rewardsMap = rewardsMap;
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<Object>(rewardsMap.values());
+        rewardsValue = new ArrayList(rewardsMap.values());
         inflter = (LayoutInflater.from(applicationContext));
     }
 

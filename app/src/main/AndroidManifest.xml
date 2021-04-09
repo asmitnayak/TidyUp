@@ -9,20 +9,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TidyUp">
-        <activity android:name=".ForgotPassword"></activity>
+        <activity android:name=".RewardAssignmentPopUp"></activity>
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".GroupSettings" />
         <activity android:name=".RewardAndPenalty" />
-        <activity android:name=".RewardPopUp"
-            android:theme="@style/Theme.TidyUp.TransparentBack"/>
-        <activity android:name=".AddReward"></activity>
+        <activity
+            android:name=".RewardPopUp"
+            android:theme="@style/Theme.TidyUp.TransparentBack" />
+        <activity android:name=".AddReward" />
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/Theme.TidyUp.NoActionBar"/>
-
-        <!-- <activity android:name=".LeaveGroup" /> -->
+            android:theme="@style/Theme.TidyUp.NoActionBar" /> <!-- <activity android:name=".LeaveGroup" /> -->
         <activity
             android:name=".CreateAccount"
             android:label="CreateAccount"
@@ -30,22 +30,21 @@
         <activity
             android:name=".Account"
             android:label="Account" />
-
         <activity android:name=".Login">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".UpdateUserInfo" />
         <activity android:name=".AuthenticationPassword" />
         <activity android:name=".AddTaskToTaskPage" />
         <activity android:name=".TaskPage" />
 
-        <receiver android:name=".Restarter"/>
+        <receiver android:name=".Restarter" />
 
-        <service android:name=".AutomateRewardsService"/>
+        <service android:name=".AutomateRewardsService" />
 
         <meta-data
             android:name="preloaded_fonts"

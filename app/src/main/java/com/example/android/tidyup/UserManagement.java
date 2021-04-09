@@ -104,6 +104,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         return (HashMap<String, Object>) map;
     }
 
+    //private static Map<String, String> otherUserMap = new HashMap<>();
     private static Map<String, List<String>> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
         //        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
@@ -125,11 +126,13 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 //            }
 //        });
 
+        //return ((String) otherUserMap.get("Username"));
         return ((List<String>)otherUserMap.get(uid)).get(0);
     }
+    /*
     public static String getUserPointsFromUID (String uid){
         return ((List<String>)otherUserMap.get(uid)).get(1);
-    }
+    } */
 
     protected static void resetAllUserPoints(String grpID){
         ArrayList<String> membersList = GroupManagement.getGroupMemberList(grpID);
@@ -179,11 +182,13 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     List<String> list = new ArrayList<>();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         list.add(document.getId());
-                        if(document.getData().get("GroupID").equals(map.get("GroupID")))
+                        if(document.getData().get("GroupID").equals(map.get("GroupID"))) {
                             userInfo = new ArrayList<String>();
                             userInfo.add((String) document.getData().get("Username"));
                             userInfo.add((String) document.getData().get("UserPoints"));
                             otherUserMap.put(document.getId(), userInfo);
+                            //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
+                        }
                     }
                     Log.d(TAG, "asdjlk  "+ otherUserMap.toString());
                 } else {

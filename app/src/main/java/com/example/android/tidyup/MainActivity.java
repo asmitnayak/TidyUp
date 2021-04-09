@@ -32,10 +32,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         GroupManagement gm = new GroupManagement();
+        UserManagement um = new UserManagement();
         RewardsManagement rm = new RewardsManagement();
         rm.execute();
         gm.execute();
-
+        um.execute();
+        testAddReward();
+        testResetAllUserPoints();
 //        fireStoreAdd2Doc();
         Button btn = (Button) findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -197,6 +200,14 @@ public class MainActivity extends AppCompatActivity {
         rm.execute();
         RewardsManagement.addReward("test", "test reward description" , "Test Reward Name", 15);
 
+    }
+
+    private void testResetAllUserPoints(){
+        GroupManagement gm = new GroupManagement();
+        gm.execute();
+        UserManagement um = new UserManagement();
+        um.execute();
+        UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
     }
 
 

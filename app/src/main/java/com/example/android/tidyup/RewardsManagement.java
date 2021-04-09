@@ -118,7 +118,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
     }
 
-    public void calculateUserPoints(String userID){
+    public static void calculateUserPoints(String userID){
 
     }
 

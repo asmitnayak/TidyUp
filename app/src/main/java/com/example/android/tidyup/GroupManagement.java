@@ -105,12 +105,13 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             if(grpDB == null)
                 return null;
         }
-        if(!grpDB.containsKey(groupID))
+        if(!grpDB.containsKey(groupID)) {
             return null;
+        }
         else {
             ArrayList<String> returnList = new ArrayList<>(grpDB.get(groupID));
             returnList.remove(0);
-            returnList.remove(0);
+            returnList.remove(1);
             return returnList;
         }
     }

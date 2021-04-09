@@ -27,12 +27,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/acPassword"
+                android:id="@+id/acUserPoints"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/architects_daughter"
-                android:text="Password:"
+                android:text="User Points:"
                 android:textColor="@color/fontAndButtonColor"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acPassword"
+                app:layout_constraintTop_toBottomOf="@+id/acUserPoints"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView

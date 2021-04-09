@@ -159,6 +159,10 @@ public class AddTaskToTaskPage extends TaskPage{
     public void returnToTaskPage(View view) {
 
         // access the task name
+
+        EditText groupIdIn = (EditText) findViewById(R.id.taskName);
+        String groupID = groupIdIn.getText().toString();
+
         EditText nameIn = (EditText) findViewById(R.id.taskName);
         String name = nameIn.getText().toString();
 

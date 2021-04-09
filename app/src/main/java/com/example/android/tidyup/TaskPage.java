@@ -66,17 +66,22 @@ public class TaskPage extends AppCompatActivity {
     public static ArrayList<TaskItem> taskItems = new ArrayList<TaskItem>();
     CustomAdapter customAdp;
     ListView taskList;
-    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private FirebaseFirestore taskDatabase;
-    private static Map<String, List<String>> taskMapDatabase = new HashMap<>();
-    String groupID;
+    //private FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    //private FirebaseFirestore taskDatabase;
+    //private static Map<String, List<String>> taskMapDatabase = new HashMap<>();
+    //String groupID;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
-        taskDatabase = FirebaseFirestore.getInstance();
-        if(fAuth.getCurrentUser() != null)
-            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+        //taskDatabase = FirebaseFirestore.getInstance();
+        //if(fAuth.getCurrentUser() != null)
+          //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+        //try {
+        //foodItems = m.read_menu();
+        //} catch (IOException e) {
+        //    e.printStackTrace();
+        //}
 
         taskList = (ListView) findViewById(R.id.taskList);
 
@@ -95,10 +100,10 @@ public class TaskPage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void getGroupTasks(String groupID) {
-        if(taskDatabase == null)
-            return;
-    }
+    // public void getGroupTasks(String groupID) {
+        // if(taskDatabase == null)
+         //    return;
+   //  }
 
     public void setGroupTasks(String groupID) {
 

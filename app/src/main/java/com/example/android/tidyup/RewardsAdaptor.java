@@ -17,16 +17,16 @@ import java.util.Map;
 
 public class RewardsAdaptor extends BaseAdapter {
     private Context context;
-    private Map<String, List<Object>> rewardsMap;
+    private Map<String, List<String>> rewardsMap;
     private LayoutInflater inflter;
     private List<String> rewardsKey;
     private List rewardsValue;
 
-    RewardsAdaptor(Context applicationContext, Map<String, List<Object>> rewardsMap){
+    RewardsAdaptor(Context applicationContext, Map<String, List<String>> rewardsMap){
         this.context = context;
         this.rewardsMap = rewardsMap;
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<Object>(rewardsMap.values());
+        rewardsValue = new ArrayList(rewardsMap.values());
         inflter = (LayoutInflater.from(applicationContext));
     }
 

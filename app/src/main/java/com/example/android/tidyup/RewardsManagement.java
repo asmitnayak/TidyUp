@@ -94,6 +94,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         return rewardNames;
 
     }
+
+
+
+
     //Initialized grDB by reading the document from the database
     public static void readGroupRewardsDB(){
         DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
@@ -118,13 +122,36 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
     }
 
-    public static void calculateUserPoints(String userID){
-
-    }
 
 
-    public void AssignReward(String userID, int userPoints){
-
+    public static int AssignReward(String userID, String grpID, int userPoints){
+        if(grDB == null) {
+            readGroupRewardsDB();
+            if (grDB == null) {
+                return -1;
+            }
+        }
+        else {
+            Map<String, List<String>> rewardMap = RewardsManagement.getGroupRewardsMap(grpID);
+            for (Map.Entry<String, List<String>> entry : rewardMap.entrySet()) {
+                int rewardVal;
+                try {
+                    rewardVal = Integer.parseInt(((String) entry.getValue().get(1)).trim());
+                }catch (Exception e){
+                    Log.d(TAG, "Error converting rewardVal to int");
+                    return -1;
+                }
+                if (userPoints >= rewardVal){
+                    if(((String) entry.getValue().get(2)).equals(null)){
+                         entry.getValue().set(2, userID);
+                         Rewards rewards = new Rewards(grDB);
+                         fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+                         return 1;
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
     @Override

@@ -90,8 +90,6 @@ public class AutomateRewardsService extends Service {
             currTime = calendar.getTimeInMillis();
         }
         UserManagement.resetAllUserPoints(grpID);
-
-
     }
 
 

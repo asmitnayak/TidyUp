@@ -26,7 +26,7 @@ public class RewardAndPenalty extends AppCompatActivity {
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
 
     private ListView listView;
-    private Map<String, List<Object>> rewardsMap;
+    private Map<String, List<String>> rewardsMap;
     private RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
@@ -56,14 +56,14 @@ public class RewardAndPenalty extends AppCompatActivity {
         rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
         listView.setAdapter(rewardsAdaptor);
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
+        rewardsValue = new ArrayList<List<String>>(rewardsMap.values());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplication(), RewardPopUp.class);
                 intent.putExtra(EXTRA_REWARD_NAME, (String) rewardsKey.get(position));
-                String assignedUserUID = (String) ((List<Object>) rewardsValue.get(position)).get(2);
+                String assignedUserUID = (String) ((List<String>) rewardsValue.get(position)).get(2);
 
                 String assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
                 //Todo Debug why it returns null first time
@@ -72,8 +72,8 @@ public class RewardAndPenalty extends AppCompatActivity {
                 }
                 Toast.makeText(RewardAndPenalty.this, assignedUser, Toast.LENGTH_LONG).show();
                 intent.putExtra(EXTRA_ASSIGNED_USER, assignedUser);
-                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<Object>) rewardsValue.get(position)).get(1));
-                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<Object>) rewardsValue.get(position)).get(0));
+                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<String>) rewardsValue.get(position)).get(1));
+                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<String>) rewardsValue.get(position)).get(0));
                 startActivity(intent);
             }
         });

@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.auth.User;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,7 @@ public class RewardAndPenalty extends AppCompatActivity {
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
 
     private ListView listView;
-    private Map<String, List<Object>> rewardsMap;
+    private Map<String, List<String>> rewardsMap;
     private RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
@@ -55,7 +57,7 @@ public class RewardAndPenalty extends AppCompatActivity {
         rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
         listView.setAdapter(rewardsAdaptor);
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
+        rewardsValue = new ArrayList<List<String>>(rewardsMap.values());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -63,6 +65,7 @@ public class RewardAndPenalty extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), RewardPopUp.class);
                 intent.putExtra(EXTRA_REWARD_NAME, (String) rewardsKey.get(position));
                 String assignedUserUID = (String) ((List<Object>) rewardsValue.get(position)).get(2);
+
                 String assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
                 //Todo Debug why it returns null first time
                 if (assignedUser == null){

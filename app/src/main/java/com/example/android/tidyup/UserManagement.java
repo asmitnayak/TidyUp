@@ -10,12 +10,19 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.firestore.Source;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -59,8 +66,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
-
-
     private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -82,28 +87,28 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         return (HashMap<String, Object>) map;
     }
 
-    private static Map<String, Object> otherUserMap = new HashMap<>();
+    private static Map<String, String> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
-        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
-        docRefUID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        otherUserMap = document.getData();
+//        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
+//        docRefUID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        otherUserMap = document.getData();
+//
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
 
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
-
-        return (String) otherUserMap.get("Username");
+        return otherUserMap.get(uid);
 
     }
 
@@ -129,8 +134,26 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         docRef.update(KEY_Group, groupName);
     }
 
+
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected Void doInBackground(Void... params) {
+        CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
+        colRefUID.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    List<String> list = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        list.add(document.getId());
+                        if(document.getData().get("GroupID").equals(map.get("GroupID")))
+                            otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
+                    }
+                    Log.d(TAG, "asdjlk  "+ otherUserMap.toString());
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            }
+        });
         return null;
     }
 
@@ -138,4 +161,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
     }
+
+
 }

@@ -43,6 +43,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             }else{
                 groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
                 grDB.put(groupID, groupRewardMap);
+                RewardsManagement.Rewards rewards = new RewardsManagement.Rewards(grDB);
+                docRef.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
                 return 1;
             }
 
@@ -50,6 +52,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             Map<String, List<String>> groupRewardMap = new HashMap<>();
             groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
             grDB.put(groupID, groupRewardMap);
+            RewardsManagement.Rewards rewards = new RewardsManagement.Rewards(grDB);
+            docRef.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
             return 1;
         }
     }
@@ -132,8 +136,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         public Map<String, Map<String, List<String>>> rewardsMap = new HashMap<>();
         Rewards(){}
         Rewards(Map<String, Map<String, List<String>>> customMap){
+            rewardsMap = new HashMap<>();
             this.rewardsMap = customMap;
         }
-        public Map<String, Map<String, List<String>>> getRewardsMap() { return this.rewardsMap;}
+        public Map<String, Map<String, List<String>>> getRewardsMap() {
+            return this.rewardsMap;}
     }
 }

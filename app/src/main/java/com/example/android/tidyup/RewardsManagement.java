@@ -51,8 +51,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             grDB.put(groupID, groupRewardMap);
 
         }
-        RewardsManagement.Rewards rewards = new RewardsManagement.Rewards(grDB);
-        docRef.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+        Rewards rewards = new Rewards(grDB);
+        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
         return 1;
     }
     //Gets the reward map for the specific group

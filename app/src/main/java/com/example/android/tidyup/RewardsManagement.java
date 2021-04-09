@@ -96,7 +96,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
     //Initialized grDB by reading the document from the database
     public static void readGroupRewardsDB(){
-        DocumentReference docRef = fFirestore.collection("Rewards-Penalties").document("Rewards");
+        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

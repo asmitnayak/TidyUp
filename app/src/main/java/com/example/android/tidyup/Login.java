@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
 
@@ -64,6 +66,10 @@ public class Login extends AppCompatActivity {
             mEmail.setError("Email is required");
             return;
         }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            mEmail.setError("Invalid Email!");
+            return;
+        }
         if (TextUtils.isEmpty(password)){
             mPassword.setError("Password is required");
             return;
@@ -76,14 +82,15 @@ public class Login extends AppCompatActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
         //check credentials of user through firebase
-        fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     finish();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                     // check if admin move to Account.java
-
+                    UserManagement um = new UserManagement();
+                    um.execute();
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
@@ -91,7 +98,9 @@ public class Login extends AppCompatActivity {
                     else
                         startActivity(new Intent(getApplicationContext(), Account.class));
                 } else{
-                    Toast.makeText(Login.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    mPassword.setError("Invalid Username or Password");
+                    mEmail.setError("Invalid Username or Password");
+                    Toast.makeText(Login.this, "Invalid Username or Password", Toast.LENGTH_LONG).show();
                     mProgressBar.setVisibility(View.INVISIBLE);
                 }
             }

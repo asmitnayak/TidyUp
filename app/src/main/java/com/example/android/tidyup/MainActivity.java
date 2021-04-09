@@ -35,17 +35,18 @@ public class MainActivity extends AppCompatActivity {
         RewardsManagement rm = new RewardsManagement();
         rm.execute();
         gm.execute();
-        testAddReward();
+
 //        fireStoreAdd2Doc();
         Button btn = (Button) findViewById(R.id.button3);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gm.addGroupCodes("beta-test", GroupManagement.getCode());
+                testAddReward();
             }
         });
 //        GroupManagement.readGroupCodeDB();
 //        fireStoreAddObject();
+
 
     }
 
@@ -191,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
     }
     //This test should get the full task list from db
     private void testAddReward(){
+
+        RewardsManagement rm = new RewardsManagement();
+        rm.execute();
         RewardsManagement.addReward("test", "test reward description" , "Test Reward Name", 15);
 
     }

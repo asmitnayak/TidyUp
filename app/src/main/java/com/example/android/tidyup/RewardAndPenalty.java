@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.auth.User;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +65,7 @@ public class RewardAndPenalty extends AppCompatActivity {
                 Intent intent = new Intent(getApplication(), RewardPopUp.class);
                 intent.putExtra(EXTRA_REWARD_NAME, (String) rewardsKey.get(position));
                 String assignedUserUID = (String) ((List<Object>) rewardsValue.get(position)).get(2);
+
                 String assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
                 //Todo Debug why it returns null first time
                 if (assignedUser == null){

@@ -30,6 +30,12 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, Map<String, List<String>>> grDB;
 
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
+        if(grDB == null){
+            readGroupRewardsDB();
+            if(grDB == null){
+                return -1;
+            }
+        }
         if(grDB.containsKey(groupID)){
             Map<String, List<String>> groupRewardMap = new HashMap<>(grDB.get(groupID));
             if(groupRewardMap.containsKey(rewardName)){
@@ -83,7 +89,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Rewards rewardDocument = documentSnapshot.toObject(Rewards.class);
-                grDB = rewardDocument.rewardsMap;
+                grDB = rewardDocument.getRewardsMap();
+                System.out.println(grDB);
             }
         }).addOnFailureListener(new OnFailureListener() {
             public void onFailure(@NonNull Exception e) {

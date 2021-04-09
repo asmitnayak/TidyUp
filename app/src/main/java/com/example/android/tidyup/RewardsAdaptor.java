@@ -17,12 +17,12 @@ import java.util.Map;
 
 public class RewardsAdaptor extends BaseAdapter {
     private Context context;
-    private Map<String, List<Object>> rewardsMap;
+    private Map<String, List<String>> rewardsMap;
     private LayoutInflater inflter;
-    private List rewardsKey;
+    private List<String> rewardsKey;
     private List rewardsValue;
 
-    RewardsAdaptor(Context applicationContext, Map<String, List<Object>> rewardsMap){
+    RewardsAdaptor(Context applicationContext, Map<String, List<String>> rewardsMap){
         this.context = context;
         this.rewardsMap = rewardsMap;
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
@@ -51,7 +51,7 @@ public class RewardsAdaptor extends BaseAdapter {
         view = inflter.inflate(R.layout.rewards_list_view_layout, null);
 
         TextView reward = view.findViewById(R.id.rRewardName);
-        //reward.setText(rewardsKey.get(i));
+        reward.setText(rewardsKey.get(i));
 
         return view;
     }

@@ -23,10 +23,10 @@ public class AddReward extends AppCompatActivity {
     EditText rewardDescriptionEDT;
     String rewardDescription;
     EditText rewardPointValEDT;
-    ArrayList<String> rewardsValue;
+    ArrayList<Object> rewardsValue;
     int rewardPointVal;
     int listItem;
-    private Map<String, List<String>> rewardsMap;
+    private Map<String, List<Object>> rewardsMap;
     ArrayList<String>rewardsKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +50,8 @@ public class AddReward extends AppCompatActivity {
             if (rewardName != null) {
                 rewardNameEDT.setText(rewardName);
                 rewardsValue = RewardsManagement.getRewardInfo(groupID, rewardName);;
-                rewardDescriptionEDT.setText(rewardsValue.get(0));
-                rewardPointValEDT.setText(rewardsValue.get(1));
+                rewardDescriptionEDT.setText(rewardsValue.get(0).toString());
+                rewardPointValEDT.setText(rewardsValue.get(1).toString());
             }
         }
 

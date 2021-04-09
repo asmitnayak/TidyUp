@@ -189,7 +189,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        addIntField("UserPoints");
         deleteField("Password");
         super.onPreExecute();
     }

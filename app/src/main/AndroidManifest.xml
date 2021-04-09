@@ -15,6 +15,7 @@
         <activity android:name=".RewardPopUp"
             android:theme="@style/Theme.TidyUp.TransparentBack"/>
         <activity android:name=".AddReward"></activity>
+        <activity android:name=".RewardAndPenatly"></activity>
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup" />
         <activity
@@ -22,7 +23,9 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.TidyUp.NoActionBar" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- <activity android:name=".LeaveGroup" /> -->
         <activity
             android:name=".CreateAccount"

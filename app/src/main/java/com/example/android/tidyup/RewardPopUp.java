@@ -25,7 +25,6 @@ public class RewardPopUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.reward_pop_up_window);
 
         mRewardName = findViewById(R.id.puRewardName);

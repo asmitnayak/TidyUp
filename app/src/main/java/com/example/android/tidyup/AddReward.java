@@ -63,7 +63,7 @@ public class AddReward extends AppCompatActivity {
         this.rewardName = this.rewardNameEDT.getText().toString();
         RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getUid()),
                 this.rewardDescription, this.rewardName, this.rewardPointVal);
-        Intent intent = new Intent(this, RewardAndPenatly.class);
+        Intent intent = new Intent(this, RewardAndPenalty.class);
         startActivity(intent);
     }
 }

@@ -133,8 +133,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             }
         }
         else {
-            Map<String, List<String>> rewardMap = RewardsManagement.getGroupRewardsMap(grpID);
-            for (Map.Entry<String, List<String>> entry : rewardMap.entrySet()) {
+            Map<String, List<Object>> rewardMap = RewardsManagement.getGroupRewardsMap(grpID);
+            for (Map.Entry<String, List<Object>> entry : rewardMap.entrySet()) {
                 int rewardVal;
                 try {
                     rewardVal = Integer.parseInt(((String) entry.getValue().get(1)).trim());

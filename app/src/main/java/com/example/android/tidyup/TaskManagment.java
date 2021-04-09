@@ -119,8 +119,8 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             if(taskList.contains(taskName))
                 taskList.remove(taskName);
 
-            TaskManagment.Tasks gc = new TaskManagment.Tasks(taskListDB);
-            fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(gc);
+            TaskManagment.Tasks task = new TaskManagment.Tasks(taskListDB);
+            fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
 
         }
     }

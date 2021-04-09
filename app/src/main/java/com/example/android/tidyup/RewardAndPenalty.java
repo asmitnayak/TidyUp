@@ -26,7 +26,7 @@ public class RewardAndPenalty extends AppCompatActivity {
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
 
     private ListView listView;
-    private Map<String, List<String>> rewardsMap;
+    private Map<String, List<Object>> rewardsMap;
     private RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
@@ -35,7 +35,6 @@ public class RewardAndPenalty extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reward_and_penatly);
-
         listView = findViewById(R.id.rewardsList);
         rewardsMap = new HashMap<>();
         List reward1 = new ArrayList();
@@ -57,7 +56,7 @@ public class RewardAndPenalty extends AppCompatActivity {
         rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
         listView.setAdapter(rewardsAdaptor);
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<List<String>>(rewardsMap.values());
+        rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

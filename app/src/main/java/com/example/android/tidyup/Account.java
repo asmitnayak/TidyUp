@@ -36,7 +36,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private static final String TAG = "Account";
     private static final String KEY_USERNAME = "Username";
     private static final String KEY_EMAIL = "Email";
-    private static final String KEY_PASSWORD = "Password";
+    private static final String KEY_USERPOINTS = "UserPoints";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
 
@@ -45,7 +45,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
 
-    private TextView mName, mEmail, mPassword, mGroup;
+    private TextView mName, mEmail, mUserPoints, mGroup;
     private EditText mNewUserEmail;
     private Button mAddMembers, mLeaveGroup;
     private String addedUserID;
@@ -61,7 +61,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
         mName = findViewById(R.id.acName);
         mEmail = findViewById(R.id.acEmail);
-        mPassword = findViewById(R.id.acPassword);
+        mUserPoints = findViewById(R.id.acUserPoints);
 
         mGroup = findViewById(R.id.acGroup);
         mNewUserEmail = findViewById(R.id.acNewUserEmail);
@@ -80,12 +80,12 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 if (documentSnapshot.exists()){
                     String name = documentSnapshot.getString(KEY_USERNAME);
                     String email = documentSnapshot.getString(KEY_EMAIL);
-                    String password = documentSnapshot.getString(KEY_PASSWORD);
+                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
                     grpID = documentSnapshot.getString(KEY_GroupID);
                     grpName = documentSnapshot.getString(KEY_Group);
                     mName.setText("Username: " + name);
                     mEmail.setText("Email: "+ email);
-                    mPassword.setText("Password: " + password);
+                    mUserPoints.setText("UserPoints: " + userPoints);
                     if (!grpName.equals("")){
                         mGroup.setText("Group: " + grpName);
                     } else {

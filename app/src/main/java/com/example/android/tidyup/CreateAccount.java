@@ -125,11 +125,10 @@ public class CreateAccount extends AppCompatActivity {
                     Map<String, Object> userMap = new HashMap<>();
                     userMap.put("Username", username);
                     userMap.put("Email", email);
-                    userMap.put("Password", finalPassword);
+                    userMap.put("UserPoints", "0");
                     userMap.put("Role", role);
                     userMap.put("GroupID", "");
                     userMap.put("Group", "");
-
                     // Store user information into Firestore
                     fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

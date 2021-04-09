@@ -1,7 +1,11 @@
 package com.example.android.tidyup;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -26,6 +30,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final String COLLECTIONPATH_REWARDS_PENALTIES = "Rewards_Penalties";
     private static final String DOCUMENTPATH_REWARDS = "Rewards";
     private static final String TAG = "UserManagement";
+    private static final String EXTRA_REWARD_NAME = "EXTRA_REWARD_NAME";
+    private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
     private static Map<String, Map<String, List<Object>>> grDB;
 
@@ -120,6 +126,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
 
     public void automateRewardAssignment(String grpID){
+
+        getGroupRewardsMap(grpID);
 
     }
 

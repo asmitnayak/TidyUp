@@ -28,7 +28,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "UserManagement";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
     private static Map<String, Map<String, List<String>>> grDB;
-
+    //Adds a reward to a specific group
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB == null){
             readGroupRewardsDB();
@@ -53,6 +53,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             return 1;
         }
     }
+    //Gets the reward map for the specific group
     public static Map<String, List<String>> getGroupRewardsMap(String groupID){
         Map<String, List<String>> groupRewardMap;
         if(grDB == null){
@@ -68,6 +69,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         }
         return groupRewardMap;
     }
+    //Gets the specific info for the reward. Specifically description and value
     public static ArrayList<String> getRewardInfo(String groupID, String rewardName){
         Map<String, List<String>> groupRewardMap = getGroupRewardsMap(groupID);
         ArrayList<String> rewardInfo = new ArrayList<String>();
@@ -82,7 +84,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             return null;
         }
     }
-
+    //Initialized grDB by reading the document from the database
     public static void readGroupRewardsDB(){
         DocumentReference docRef = fFirestore.collection("Rewards-Penalties").document("Rewards");
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

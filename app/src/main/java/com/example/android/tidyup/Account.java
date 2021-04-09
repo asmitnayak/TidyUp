@@ -171,6 +171,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             case R.id.acTaskPage:
                 startActivity(new Intent(getApplicationContext(), TaskPage.class));
                 return true;
+            case R.id.acRewardPage:
+                startActivity(new Intent(getApplicationContext(), RewardAndPenatly.class));
+                return true;
             default:
                 return false;
         }

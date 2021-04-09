@@ -69,8 +69,8 @@ public class GroupSettingsAdapter extends BaseAdapter {
                     if(documentSnapshot.exists()){
                         String name = documentSnapshot.getString("Username");
                         memberName.setText(name);
-                        Typeface typeface = context.getResources().getFont(R.font.bad_script);
-                        memberName.setTypeface(typeface);
+                      //  Typeface typeface = context.getResources().getFont(R.font.architects_daughter);
+                       // memberName.setTypeface(typeface);
 //                        Typeface typeface = Typeface.createFromAsset(getAssets());
                     }
                 }

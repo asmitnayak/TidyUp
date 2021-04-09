@@ -20,7 +20,7 @@ public class RewardAndPenatly extends AppCompatActivity {
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     RewardsAdaptor customAdp;
     private ListView listView;
-    private Map<String, List<String>> rewardsMap;
+    private Map<String, List<Object>> rewardsMap;
     RewardsAdaptor rewardsAdaptor;
 
     @Override
@@ -39,16 +39,16 @@ public class RewardAndPenatly extends AppCompatActivity {
 
         rewardsMap = RewardsManagement.getGroupRewardsMap(
                 GroupManagement.getGroupIDFromUserID(fAuth.getUid()));
-//        customAdp = new RewardsAdaptor(getApplicationContext(), rewardsMap);
-//        listView.setAdapter(customAdp);
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(getApplicationContext(), AddReward.class);
-//                intent.putExtra("listItem", position);
-//                startActivity(intent);
-//            }
-//        });
+        customAdp = new RewardsAdaptor(getApplicationContext(), rewardsMap);
+        listView.setAdapter(customAdp);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), AddReward.class);
+                intent.putExtra("listItem", position);
+                startActivity(intent);
+            }
+        });
         //rewardsAdaptor
     }
 

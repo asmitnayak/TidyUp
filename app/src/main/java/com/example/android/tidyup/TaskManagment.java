@@ -113,6 +113,17 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             return returnList;
         }
     }*/
+    public static void removeTaskFromGroup(String groupID, String taskName){
+        if(taskListDB.containsKey(groupID)){
+            ArrayList<String> taskList = (ArrayList<String>) taskListDB.get(groupID);
+            if(taskList.contains(taskName))
+                taskList.remove(taskName);
+
+            TaskManagment.Tasks task = new TaskManagment.Tasks(taskListDB);
+            fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
+
+        }
+    }
 
     private static class Tasks{
         public Map<String, Map<String, List<String>>> TaskMap = new HashMap<>();

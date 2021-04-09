@@ -27,7 +27,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final String DOCUMENTPATH_REWARDS = "Rewards";
     private static final String TAG = "UserManagement";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
-    private static Map<String, Map<String, List<String>>> grDB;
+    private static Map<String, Map<String, List<Object>>> grDB;
+
     //Adds a reward to a specific group
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB == null){
@@ -37,7 +38,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             }
         }
         if(grDB.containsKey(groupID)){
-            Map<String, List<String>> groupRewardMap = new HashMap<>(grDB.get(groupID));
+            Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
             if(groupRewardMap.containsKey(rewardName)){
                 return 0; //Reward already added
             }else{
@@ -46,7 +47,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             }
 
         }else{
-            Map<String, List<String>> groupRewardMap = new HashMap<>();
+            Map<String, List<Object>> groupRewardMap = new HashMap<>();
             groupRewardMap.put(rewardName, Arrays.asList(new String[]{rewardDescription, String.valueOf(rewardVal), null}));
             grDB.put(groupID, groupRewardMap);
 
@@ -56,8 +57,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         return 1;
     }
     //Gets the reward map for the specific group
-    public static Map<String, List<String>> getGroupRewardsMap(String groupID){
-        Map<String, List<String>> groupRewardMap;
+    public static Map<String, List<Object>> getGroupRewardsMap(String groupID){
+        Map<String, List<Object>> groupRewardMap;
         if(grDB == null){
             readGroupRewardsDB();
             if(grDB == null){
@@ -72,13 +73,13 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         return groupRewardMap;
     }
     //Gets the specific info for the reward. Specifically description and value
-    public static ArrayList<String> getRewardInfo(String groupID, String rewardName){
-        Map<String, List<String>> groupRewardMap = getGroupRewardsMap(groupID);
-        ArrayList<String> rewardInfo = new ArrayList<String>();
+    public static ArrayList<Object> getRewardInfo(String groupID, String rewardName){
+        Map<String, List<Object>> groupRewardMap = getGroupRewardsMap(groupID);
+        List<Object> rewardInfo = new ArrayList<Object>();
         if (groupRewardMap != null) {
             if (groupRewardMap.containsKey(rewardName)) {
-                rewardInfo = (ArrayList<String>) groupRewardMap.get(rewardName);
-                return rewardInfo;
+                rewardInfo = groupRewardMap.get(rewardName);
+                return (ArrayList<Object>) rewardInfo;
             } else {
                 return null;
             }
@@ -86,7 +87,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             return null;
         }
     }
-    public static ArrayList<String> getRewardNameList(Map<String, List<String>> groupRewardMap) {
+    public static ArrayList<String> getRewardNameList(Map<String, List<Object>> groupRewardMap) {
         ArrayList<String> rewardNames = new ArrayList<String>();
         if (groupRewardMap != null){
             rewardNames = new ArrayList<String>(groupRewardMap.keySet());
@@ -166,13 +167,13 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     private static class Rewards{
-        public Map<String, Map<String, List<String>>> rewardsMap = new HashMap<>();
+        public Map<String, Map<String, List<Object>>> rewardsMap = new HashMap<>();
         Rewards(){}
-        Rewards(Map<String, Map<String, List<String>>> customMap){
+        Rewards(Map<String, Map<String, List<Object>>> customMap){
             rewardsMap = new HashMap<>();
             this.rewardsMap = customMap;
         }
-        public Map<String, Map<String, List<String>>> getRewardsMap() {
+        public Map<String, Map<String, List<Object>>> getRewardsMap() {
             return this.rewardsMap;}
     }
 }

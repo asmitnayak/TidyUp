@@ -101,12 +101,16 @@ public class AddTaskToTaskPage extends TaskPage{
             } else {
                 groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
                 taskDB.put(groupID, groupTaskMap);
+                Tasks task = new Tasks(taskDB);
+                docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
                 return 1;
             }
         } else {
             Map<String, List<String>> groupTaskMap = new HashMap<>();
             groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
             taskDB.put(groupID, groupTaskMap);
+            Tasks task = new Tasks(taskDB);
+            docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
             return 1;
         }
         // TaskItem addTaskItem = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
@@ -149,9 +153,10 @@ public class AddTaskToTaskPage extends TaskPage{
         public Map<String, Map<String, List<String>>> TaskMap = new HashMap<>();
         Tasks(){}
         Tasks(Map<String, Map<String, List<String>>> customMap){
+            TaskMap = new HashMap<>();
             this.TaskMap = customMap;
         }
-        public Map<String, Map<String, List<String>>> getRewardsMap() { return this.TaskMap;}
+        public Map<String, Map<String, List<String>>> getTaskMap() { return this.TaskMap;}
     }
 
 

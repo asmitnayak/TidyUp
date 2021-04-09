@@ -92,13 +92,13 @@
 
     <TextView
         android:id="@+id/taskRewardPenaltyValue"
-        android:layout_width="213dp"
-        android:layout_height="37dp"
+        android:layout_width="168dp"
+        android:layout_height="40dp"
         android:layout_marginStart="59dp"
         android:layout_marginTop="25dp"
-        android:text="Reward/Penalty Value"
-        android:textColor="@color/fontAndButtonColor"
         android:fontFamily="@font/architects_daughter"
+        android:text="Point Value"
+        android:textColor="@color/fontAndButtonColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,8 +109,8 @@
 
     <Spinner
         android:id="@+id/rewardPenaltyValue"
-        android:layout_width="69dp"
-        android:layout_height="51dp"
+        android:layout_width="109dp"
+        android:layout_height="50dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="21dp"
         android:layout_marginEnd="74dp"

@@ -7,9 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -24,7 +26,13 @@ public class AutomateRewardsService extends Service {
     private Calendar calendar = Calendar.getInstance();
     private static final String EXTRA_GROUPID = "EXTRA_GROUPID";
     private String grpID;
+    private MediaPlayer player;
+    public static AutomateRewardsService automateRewardsService;
 
+    public AutomateRewardsService(){
+        automateRewardsService = this;
+    }
+    /*
     @Override
     public void onCreate() {
         super.onCreate();
@@ -33,7 +41,7 @@ public class AutomateRewardsService extends Service {
         else
             startForeground(1, new Notification());
     }
-
+/*
     @RequiresApi(Build.VERSION_CODES.O)
     private void startMyOwnForeground()
     {
@@ -55,11 +63,12 @@ public class AutomateRewardsService extends Service {
                 .build();
         startForeground(2, notification);
     }
-
+*/
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        automateRewardsService = this;
         Bundle extras = intent.getExtras();
         if (extras == null) {
             grpID = null;
@@ -85,13 +94,16 @@ public class AutomateRewardsService extends Service {
 
     public void automateRewards(String grpID) {
         Long currTime = calendar.getTimeInMillis();
+        //player = MediaPlayer.create(this, Settings.System.DEFAULT_ALARM_ALERT_URI);
+        //player.setLooping(true);
+        //player.start();
 
-        while(!currTime.equals(computeStartOfThisWeek(currTime))){
-            currTime = calendar.getTimeInMillis();
+        if(currTime.equals(computeStartOfThisWeek(currTime))){
+            return;
         }
-        UserManagement.resetAllUserPoints(grpID);
-    }
+            //UserManagement.resetAllUserPoints(grpID);
 
+    }
 
 
     public static long computeStartOfThisWeek(long currTime) {

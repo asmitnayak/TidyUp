@@ -1,5 +1,7 @@
 package com.example.android.tidyup;
 
+import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -148,8 +150,10 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                 userList.remove(userID);
 
             // TODO if length of group is 2 then delete group
-            if(userList.size() == 2)
+            if(userList.size() == 2) {
                 grpDB.remove(groupID);
+                AutomateRewardsService.automateRewardsService.stopSelf();
+            }
             else
                 grpDB.put(groupID,userList);
             Group gc = new Group(grpDB);

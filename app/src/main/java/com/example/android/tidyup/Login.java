@@ -57,6 +57,9 @@ public class Login extends AppCompatActivity {
         GroupManagement gm = new GroupManagement();
         gm.execute();
 
+
+
+
     }
 
     public void login(View view) {
@@ -91,6 +94,8 @@ public class Login extends AppCompatActivity {
                     // check if admin move to Account.java
                     UserManagement um = new UserManagement();
                     um.execute();
+                    RewardsManagement rm = new RewardsManagement();
+                    rm.execute();
                     //test
                     //UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
                     userMap = UserManagement.getUserDetails();

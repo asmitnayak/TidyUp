@@ -26,7 +26,7 @@ public class RewardAndPenalty extends AppCompatActivity {
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
 
     private ListView listView;
-    private Map<String, List<String>> rewardsMap;
+    private Map<String, List<Object>> rewardsMap;
     private RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
@@ -37,6 +37,8 @@ public class RewardAndPenalty extends AppCompatActivity {
         setContentView(R.layout.activity_reward_and_penatly);
         listView = findViewById(R.id.rewardsList);
         rewardsMap = new HashMap<>();
+        rewardsMap = RewardsManagement.getGroupRewardsMap((String) UserManagement.getUserDetails().get("GroupID"));
+        /*
         List reward1 = new ArrayList();
         reward1.add("This is a random Description for reward 1");
         reward1.add("5");
@@ -51,28 +53,27 @@ public class RewardAndPenalty extends AppCompatActivity {
         reward3.add("siTctFru2AcyzDguEqGE3xtnKWi2");
         rewardsMap.put("Reward 1", reward1);
         rewardsMap.put("Reward 2", reward2);
-        rewardsMap.put("Reward 3", reward3);
-
+        rewardsMap.put("Reward 2", reward3);
+        */
         rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
         listView.setAdapter(rewardsAdaptor);
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<List<String>>(rewardsMap.values());
+        rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), RewardPopUp.class);
                 intent.putExtra(EXTRA_REWARD_NAME, (String) rewardsKey.get(position));
-                String assignedUserUID = (String) ((List<String>) rewardsValue.get(position)).get(2);
-                String assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
-                //Todo Debug why it returns null first time
-                if (assignedUser == null){
-                    Log.d(TAG, "Error User does not Exist");
+                String assignedUserUID = (String) ((List<Object>) rewardsValue.get(position)).get(2);
+                String assignedUser = "NA";
+                if (assignedUserUID != null){
+                     assignedUser = UserManagement.getUserNameFromUID(assignedUserUID);
                 }
-                Toast.makeText(RewardAndPenalty.this, assignedUser, Toast.LENGTH_LONG).show();
+
                 intent.putExtra(EXTRA_ASSIGNED_USER, assignedUser);
-                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<String>) rewardsValue.get(position)).get(1));
-                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<String>) rewardsValue.get(position)).get(0));
+                intent.putExtra(EXTRA_REWARD_VAL, (String) "" + ((List<Object>) rewardsValue.get(position)).get(1));
+                intent.putExtra(EXTRA_REWARD_DESCRIPT, (String) ((List<Object>) rewardsValue.get(position)).get(0));
                 startActivity(intent);
             }
         });

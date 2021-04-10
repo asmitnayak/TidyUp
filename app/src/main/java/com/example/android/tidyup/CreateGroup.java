@@ -100,12 +100,16 @@ public class CreateGroup extends AppCompatActivity {
         gID = GroupManagement.getGroupID(groupName.getText().toString());
         GroupManagement.addGroupCodes(gID, code);
         GroupManagement.addUserToGroup(gID,fAuth.getUid(), inviteCode.getText().toString(), groupName.getText().toString());
+        Intent intent = new Intent(this, AutomateRewardsService.class);
+        intent.putExtra("EXTRA_GROUPID", gID);
+        startService(intent);
 
         //updates user Info
         UserManagement.setUserGroup(groupName.getText().toString());
         UserManagement.setUserGroupID(gID);
         UserManagement.setUserRole("Admin");
         Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();
+        startActivity(new Intent(getApplicationContext(), Account.class));
         // go to task page???
     }
 

@@ -154,8 +154,4 @@ public class Login extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToAccountPage(View view) {
-        Intent intent = new Intent(this, Account.class);
-        startActivity(intent);
-    }
 }

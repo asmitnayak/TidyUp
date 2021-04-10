@@ -176,8 +176,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
     public void loguot(View view){
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), Login.class));
         finish();
+        startActivity(new Intent(getApplicationContext(), Login.class));
     }
 
     public void goToCreateGroupPage(View view){
@@ -218,7 +218,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getUid();
                     GroupManagement.removeUserFromGroup(grpID, userID);
-                    mGroup.setText("Group: No Group Yet");
+                    mGroup.setText(R.string.no_group);
                     docRef.update("Group", "");
                     docRef.update("GroupID", "");
                 }

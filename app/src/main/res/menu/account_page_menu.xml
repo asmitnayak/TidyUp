@@ -4,11 +4,11 @@
 
     <item android:id="@+id/acTaskPage"
         android:icon="@drawable/ic_menu_icon"
-        android:title="Task Page"
+        android:title="@string/task_page"
         app:showAsAction="never"/>
     <item android:id="@+id/acRewardsAndPenaltyPage"
         android:icon="@drawable/ic_menu_icon"
-        android:title="Rewards And Penalties"
+        android:title="@string/rewards_and_penalties"
         app:showAsAction="never"/>
 
 </menu>

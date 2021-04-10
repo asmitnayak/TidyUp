@@ -88,7 +88,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -204,7 +204,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
-        collRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        colRefUID.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -225,6 +225,23 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
+
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null) {
+                    if (value.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + value.getData());
+                        map = value.getData();
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", error);
+                }
+            }
+        });
+
         deleteField("Password");
         super.onPreExecute();
     }

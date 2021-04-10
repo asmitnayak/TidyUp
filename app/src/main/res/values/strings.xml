@@ -24,4 +24,7 @@
     <string name="code_goes_here">Code goes here</string>
     <string name="delete">Delete</string>
     <string name="member_name">Member Name</string>
+    <string name="task_page">Task Page</string>
+    <string name="rewards_and_penalties">Rewards And Penalties</string>
+    <string name="no_group">Group: No Group Yet</string>
 </resources>

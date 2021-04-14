@@ -39,6 +39,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private static final String KEY_USERPOINTS = "UserPoints";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
+    private UserManagement um;
+    private RewardsManagement rm;
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -179,6 +181,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         finish();
         startActivity(new Intent(getApplicationContext(), Login.class));
     }
+
 
     public void goToCreateGroupPage(View view){
         Intent intent = new Intent(this, CreateGroup.class);

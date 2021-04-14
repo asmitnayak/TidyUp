@@ -272,4 +272,9 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         public Map<String, Integer> getRewardUpdaterMap() {
             return this.rewardUpdaterMap;}
     }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+    }
 }

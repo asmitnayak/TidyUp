@@ -42,7 +42,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_Group = "Group";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+    private static  DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
     private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
 
     public static void addStringField(String fieldName) {
@@ -182,6 +182,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
+        docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
         CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
         colRefUID.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -246,6 +247,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
     }
 
-
-
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+    }
 }

@@ -36,6 +36,8 @@ public class Login extends AppCompatActivity {
     private static HashMap<String, Object> userMap;
     private ProgressBar mProgressBar;
     private TextView mForgotPassView;
+    private static UserManagement um;
+    private static RewardsManagement rm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +58,6 @@ public class Login extends AppCompatActivity {
         mProgressBar.setVisibility(View.INVISIBLE);
         GroupManagement gm = new GroupManagement();
         gm.execute();
-
-
 
 
     }
@@ -92,9 +92,9 @@ public class Login extends AppCompatActivity {
                     finish();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                     // check if admin move to Account.java
-                    UserManagement um = new UserManagement();
+                    um = new UserManagement();
                     um.execute();
-                    RewardsManagement rm = new RewardsManagement();
+                    rm = new RewardsManagement();
                     rm.execute();
                     //test
                     //UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
@@ -113,6 +113,8 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void forgotPassword(View view){
         startActivity(new Intent(getApplicationContext(), ForgotPassword.class));

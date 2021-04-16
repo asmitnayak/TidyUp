@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import java.util.Arrays;
 
@@ -39,7 +40,19 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
 
+    public static void setUpEmulator(){
+        // [START fs_emulator_connect]
+        // 10.0.2.2 is the special IP address to connect to the 'localhost' of
+        // the host computer from an Android emulator.
+        //FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+        db.useEmulator("10.0.2.2", 8080);
 
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build();
+        db.setFirestoreSettings(settings);
+        // [END fs_emulator_connect]
+    }
     protected static String getCode(){
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();

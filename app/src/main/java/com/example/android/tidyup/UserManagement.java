@@ -17,11 +17,11 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Source;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -45,6 +45,19 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static  DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
     private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
 
+    public static void setUpEmulator(){
+        // [START fs_emulator_connect]
+        // 10.0.2.2 is the special IP address to connect to the 'localhost' of
+        // the host computer from an Android emulator.
+        FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+        fFirestore.useEmulator("10.0.2.2", 8080);
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(false)
+                .build();
+        fFirestore.setFirestoreSettings(settings);
+        // [END fs_emulator_connect]
+    }
     public static void addStringField(String fieldName) {
         Map<String, String> data = new HashMap<>();
         data.put(fieldName, "");
@@ -96,7 +109,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         map = document.getData();
-                    } else {
                         Log.d(TAG, "No such document");
                     }
                 } else {

@@ -7,32 +7,31 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+import org.junit.runners.model.InitializationError;
 //import org.mockito.Mock;
 
 import java.util.List;
 import java.util.Map;
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-
 import static org.junit.Assert.*;
 public class GroupManagementTest {
-
-//    private GroupManagement groupManage;
+    private GroupManagement groupManage;
 //
 //    @Rule
 //    public TestRule rule = new InstantTaskExecutorRule();
 //
-//    @Before
-//    public void setUp(){
-//        groupManage = new GroupManagement();
-//        groupManage.execute();
-//        System.out.print("something");
-//    }
-//    @Test
-//    public void getGroup_invalid_code() {
-//        String s = GroupManagement.getGroup("N234j2");
-//        assertTrue(GroupManagement.getGroup("N234j2") == null);
-//    }
+    @Before
+    public void setUp(){
+       groupManage = new GroupManagement();
+       groupManage.setUpEmulator();
+        groupManage.execute();
+       System.out.print("something");
+   }
+   @Test
+    public void getGroup_invalid_code() {
+       String s = GroupManagement.getGroup("N234j2");
+       assertTrue(GroupManagement.getGroup("N234j2") == null);
+    }
 //
 //    @Test
 //    public void getGroupIDFromUserID() {

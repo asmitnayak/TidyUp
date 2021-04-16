@@ -1,7 +1,5 @@
 package com.example.android.tidyup;
 
-import android.app.Application;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -16,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import java.util.Arrays;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +27,7 @@ import javax.crypto.SecretKey;
 import androidx.annotation.NonNull;
 
 public class GroupManagement extends AsyncTask<Void, Void, Void> {
-    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseFirestore db;
     private static final String TAG = "GroupManagementFirebase";
     private static final String GROUP_CODE_DB = "GroupCodeDB";
     private static final String GROUP_CODE_DB_DOCUMENT = "test";
@@ -40,7 +37,20 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
 
-    public static void setUpEmulator(){
+    public GroupManagement(FirebaseFirestore firestore){
+        db = firestore;
+//        theUser = new User();
+    }
+
+    public GroupManagement(){
+        db = FirebaseFirestore.getInstance();
+    }
+
+    public boolean isAvailable(){
+        return false;
+    }
+
+    public void setUpEmulator(){
         // [START fs_emulator_connect]
         // 10.0.2.2 is the special IP address to connect to the 'localhost' of
         // the host computer from an Android emulator.

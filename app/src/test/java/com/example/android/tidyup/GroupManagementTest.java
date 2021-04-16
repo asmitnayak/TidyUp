@@ -1,5 +1,8 @@
 package com.example.android.tidyup;
 
+import android.content.Context;
+
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.junit.Before;
@@ -7,30 +10,50 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
+import org.junit.runner.RunWith;
 import org.junit.runners.model.InitializationError;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 //import org.mockito.Mock;
 
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+@RunWith(MockitoJUnitRunner.class)
 public class GroupManagementTest {
     private GroupManagement groupManage;
 //
 //    @Rule
 //    public TestRule rule = new InstantTaskExecutorRule();
 //
-    @Before
-    public void setUp(){
-       groupManage = new GroupManagement();
-       groupManage.setUpEmulator();
-        groupManage.execute();
-       System.out.print("something");
-   }
+
+//    @Mock
+//    GroupManagement gm;
+//
+//    @Mock
+//    Context c;
+
+//    @Before
+//    public void setUp(){
+//        FirebaseApp.initializeApp(c);
+//        gm.setUpEmulator();
+//        assertNotNull(gm);
+//        System.out.print("something");
+//   }
    @Test
     public void getGroup_invalid_code() {
-       String s = GroupManagement.getGroup("N234j2");
-       assertTrue(GroupManagement.getGroup("N234j2") == null);
+//       String s = GroupManagement.getGroup("N234j2");
+//       assertTrue(5 == 5);
+       FirebaseFirestore mockFirestore = Mockito.mock(FirebaseFirestore.class);
+//       Mockito.when(mockFirestore.isAvailable()).thenReturn();
+
+       GroupManagement gm = new GroupManagement(mockFirestore);
+       gm.setUpEmulator();
+
+       assert (4 == 4);
+
     }
 //
 //    @Test

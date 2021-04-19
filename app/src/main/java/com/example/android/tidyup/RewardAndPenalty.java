@@ -55,6 +55,7 @@ public class RewardAndPenalty extends AppCompatActivity {
         rewardsMap.put("Reward 2", reward2);
         rewardsMap.put("Reward 2", reward3);
         */
+
         rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
         listView.setAdapter(rewardsAdaptor);
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());

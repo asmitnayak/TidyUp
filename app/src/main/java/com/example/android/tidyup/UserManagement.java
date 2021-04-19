@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Source;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -109,6 +110,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         map = document.getData();
+                    } else {
                         Log.d(TAG, "No such document");
                     }
                 } else {
@@ -118,6 +120,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         });
         return (HashMap<String, Object>) map;
     }
+
 
     //private static Map<String, String> otherUserMap = new HashMap<>();
     private static Map<String, List<String>> otherUserMap = new HashMap<>();
@@ -195,6 +198,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+        map = new HashMap<>();
         CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
         colRefUID.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -217,7 +221,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
-        collRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        colRefUID.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

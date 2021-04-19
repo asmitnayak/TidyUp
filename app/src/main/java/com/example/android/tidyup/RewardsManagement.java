@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,8 +30,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static final String EXTRA_REWARD_NAME = "EXTRA_REWARD_NAME";
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
+    private static final DocumentReference ruDocRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARD_UPDATER);
     private static Map<String, Map<String, List<Object>>> grDB;
-    private static Map<String, Integer> ruDB;
+    private static Map<String, String> ruDB;
+    private static Calendar cal;
 
     //Adds a reward to a specific group
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
@@ -61,7 +64,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
-    public static int setRewardUpdater(String groupID, Integer currweek){
+    public static int setRewardUpdater(String groupID, String currweek){
         if(ruDB == null){
             readGroupRewardsDB();
             if(ruDB == null){
@@ -72,15 +75,15 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             ruDB.replace(groupID, currweek);
         }
         else {
-            ruDB.put(groupID,currweek);
+            ruDB.put(groupID, currweek);
         }
-        RewardUpdater RewardUpdater = new RewardUpdater(ruDB);
-        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARD_UPDATER).set(RewardUpdater);
+        RewardUpdater rewardUpdater = new RewardUpdater(ruDB);
+        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARD_UPDATER).set(rewardUpdater);
         return 1;
     }
 
     //Gets the specific info for the reward. Specifically description and value
-    public static Integer getRewardUpdaterInfo(String groupID){
+    public static String getRewardUpdaterInfo(String groupID){
         if(ruDB == null){
             readGroupRewardsDB();
             if(ruDB == null){
@@ -88,10 +91,12 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             }
         }
         if(ruDB.containsKey(groupID)){
-            return  ruDB.get(groupID);
+            return  ruDB.get( groupID);
         } else {
-            ruDB.put(groupID,cal.get(cal.WEEK_OF_YEAR));
-            return ruDB.get(groupID);
+            ruDB.put(groupID, String.valueOf(cal.get(cal.WEEK_OF_YEAR)));
+            RewardUpdater rewardUpdater = new RewardUpdater(ruDB);
+            fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARD_UPDATER).set(rewardUpdater);
+            return String.valueOf(cal.get(cal.WEEK_OF_YEAR));
         }
     }
 
@@ -159,8 +164,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
     //Initialized grDB by reading the document from the database
     public static void readRewardUpdaterDB(){
-        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARD_UPDATER);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        ruDocRef.get(Source.SERVER).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 RewardUpdater rewardUpdaterDocument = documentSnapshot.toObject(RewardUpdater.class);
@@ -204,8 +208,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         return -1;
     }
 
-    public static int resetRewardAssignments(){
-        String grpID = (String) UserManagement.getUserDetails().get("GroupID");
+    public static int resetRewardAssignments(String grpID){
         Map<String, List<Object>> rewardMap = getGroupRewardsMap(grpID);
         if(rewardMap.equals(null)){
             Log.d(TAG, "Error getting Members List");
@@ -214,33 +217,33 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         for (Map.Entry<String, List<Object>> entry: rewardMap.entrySet()){
             entry.getValue().set(2, null);
         }
+        Rewards rewards = new Rewards(grDB);
+        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
         return 1;
     }
 
-
-    private static Calendar cal = Calendar.getInstance();
-    private String grpID = (String) UserManagement.getUserDetails().get("GroupID");
-    private Integer listedWeek;
-    private int currWeek;
-    @Override
-    protected Void doInBackground(Void... voids) {
-
-/*
+    public static void resetUserRewards(String grpID){
+        cal = Calendar.getInstance();
         if (grpID != null) {
-            listedWeek = getRewardUpdaterInfo(grpID);
-            currWeek = cal.get(cal.WEEK_OF_YEAR);
-            if (listedWeek.intValue() != currWeek){
-                setRewardUpdater(grpID, Integer.valueOf(currWeek));
+            int listedWeek =  Integer.parseInt(getRewardUpdaterInfo(grpID));;
+            int currWeek = cal.get(cal.WEEK_OF_YEAR);
+            if (listedWeek != currWeek){
+                String sCurrWeek = String.valueOf(currWeek);
+                setRewardUpdater(grpID, sCurrWeek);
                 UserManagement.resetAllUserPoints(grpID);
-                resetRewardAssignments();
+                resetRewardAssignments(grpID);
+                Log.d(TAG, "updated Reward Updater DB");
 
             }
-            //Log.d(TAG, "updated Reward Updater DB");
-
+            Log.d(TAG, "ListedWeek: " + listedWeek);
+            Log.d(TAG, "CurrWeek " + currWeek);
         }
-*/
+    }
 
 
+
+    @Override
+    protected Void doInBackground(Void... voids) {
         return null;
     }
 
@@ -263,13 +266,13 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     private static class RewardUpdater{
-        public Map<String, Integer> rewardUpdaterMap = new HashMap<>();
+        public Map<String, String> rewardUpdaterMap = new HashMap<>();
         RewardUpdater(){}
-        RewardUpdater(Map<String, Integer> customMap){
+        RewardUpdater(Map<String, String> customMap){
             this.rewardUpdaterMap = new HashMap<>();
             this.rewardUpdaterMap = customMap;
         }
-        public Map<String, Integer> getRewardUpdaterMap() {
+        public Map<String, String> getRewardUpdaterMap() {
             return this.rewardUpdaterMap;}
     }
 

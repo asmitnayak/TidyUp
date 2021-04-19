@@ -31,6 +31,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Calendar;
+
 public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private static final String COLLECTIONPATH_USERS = "Users";
     private static final String TAG = "Account";
@@ -75,6 +77,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         pageTitle = findViewById(R.id.pageTitle);
         pageTitle.setText("Account");
 
+        //test
+
+
         // load and display user info on Account Page
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -87,6 +92,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     grpName = documentSnapshot.getString(KEY_Group);
                     mName.setText("Username: " + name);
                     mEmail.setText("Email: "+ email);
+                    if(!grpID.equals(""))
+                       // RewardsManagement.resetUserRewards(grpID);
                     mUserPoints.setText("UserPoints: " + userPoints);
                     if (!grpName.equals("")){
                         mGroup.setText("Group: " + grpName);
@@ -205,6 +212,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         finish();
         startActivity(intent);
     }
+
 
 
     public void leaveGroup(View view){

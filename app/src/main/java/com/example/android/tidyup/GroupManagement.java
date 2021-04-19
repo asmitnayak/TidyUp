@@ -136,7 +136,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         else {
             ArrayList<String> returnList = new ArrayList<>(grpDB.get(groupID));
             returnList.remove(0);
-            returnList.remove(1);
+            returnList.remove(0);
             return returnList;
         }
     }

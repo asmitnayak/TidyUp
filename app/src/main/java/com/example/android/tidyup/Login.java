@@ -33,11 +33,9 @@ public class Login extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button mLoginBtn;
     private FirebaseAuth fauth;
-    private static HashMap<String, Object> userMap;
+    private static HashMap<String, Object> userMap = new HashMap<>();
     private ProgressBar mProgressBar;
     private TextView mForgotPassView;
-    private static UserManagement um;
-    private static RewardsManagement rm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,12 +90,11 @@ public class Login extends AppCompatActivity {
                     finish();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                     // check if admin move to Account.java
-                    um = new UserManagement();
+                    UserManagement um = new UserManagement();
                     um.execute();
-                    rm = new RewardsManagement();
+                    RewardsManagement rm = new RewardsManagement();
                     rm.execute();
                     //test
-                    //UserManagement.resetAllUserPoints("t6yhC6Dm784QN6NkUZt2fnmDx5I1oBq0KI7AvMFtMxc=");
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")

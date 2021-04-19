@@ -94,7 +94,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="20dp"
                 android:ems="10"
-                android:fontFamily="@font/bad_script"
+                android:fontFamily="@font/architects_daughter"
                 android:hint="New User Email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/fontAndButtonColor"

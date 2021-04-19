@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import java.util.Arrays;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,14 +37,17 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> gcDB;
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
+    private static Calendar cal;
 
     public GroupManagement(FirebaseFirestore firestore){
         db = firestore;
+        cal = Calendar.getInstance();
 //        theUser = new User();
     }
 
     public GroupManagement(){
         db = FirebaseFirestore.getInstance();
+        cal = Calendar.getInstance();
     }
 
     public boolean isAvailable(){
@@ -110,12 +114,15 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                 if(groupName != null)
                     lst.add(1, "GroupName:"+groupName);
             }
+            if(getWeekOfYear(groupID) == null){
+                lst.add(2, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)));
+            }
             if(lst.contains(userID))
                 return 0;
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
-            grpDB.put(groupID, Arrays.asList("false", "GroupName:"+groupName, userID));
+            grpDB.put(groupID, Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)), userID));
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
@@ -135,6 +142,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         }
         else {
             ArrayList<String> returnList = new ArrayList<>(grpDB.get(groupID));
+            returnList.remove(0);
             returnList.remove(0);
             returnList.remove(0);
             return returnList;
@@ -158,12 +166,32 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    public static String getWeekOfYear(String groupID){
+        String week = grpDB.get(groupID).get(2);
+        if(week.startsWith("WeekofYear:")){
+            String[] arrStr = week.split(":");
+            return arrStr[1];
+        } else
+            return null;
+    }
+
     public static void setGroupTask(String groupID, boolean value){
         ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
         if(getGroupTask(groupID) == null)
             lst.add(0, "false");
         else
             lst.set(0, Boolean.toString(value));
+    }
+
+    public static void setWeekofYear(String groupID,  String currweek){
+        ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
+        if(getGroupTask(groupID) == null) {
+            lst.add(2, "WeekofYear:"+String.valueOf(cal.get(cal.WEEK_OF_YEAR)));
+        }
+        else
+            lst.set(2, "WeekofYear:"+currweek);
+        Group grp = new Group(grpDB);
+        db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
     }
 
     public static void removeUserFromGroup(String groupID, String userID){

@@ -87,13 +87,14 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 if (documentSnapshot.exists()){
                     String name = documentSnapshot.getString(KEY_USERNAME);
                     String email = documentSnapshot.getString(KEY_EMAIL);
-                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
+
                     grpID = documentSnapshot.getString(KEY_GroupID);
                     grpName = documentSnapshot.getString(KEY_Group);
                     mName.setText("Username: " + name);
                     mEmail.setText("Email: "+ email);
                     if(!grpID.equals(""))
-                       // RewardsManagement.resetUserRewards(grpID);
+                       RewardsManagement.resetUserRewards(grpID);
+                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
                     mUserPoints.setText("UserPoints: " + userPoints);
                     if (!grpName.equals("")){
                         mGroup.setText("Group: " + grpName);

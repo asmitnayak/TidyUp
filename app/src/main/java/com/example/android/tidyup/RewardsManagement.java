@@ -225,11 +225,11 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     public static void resetUserRewards(String grpID){
         cal = Calendar.getInstance();
         if (grpID != null) {
-            int listedWeek =  Integer.parseInt(getRewardUpdaterInfo(grpID));;
+            int listedWeek =  Integer.parseInt(GroupManagement.getWeekOfYear(grpID));;
             int currWeek = cal.get(cal.WEEK_OF_YEAR);
             if (listedWeek != currWeek){
                 String sCurrWeek = String.valueOf(currWeek);
-                setRewardUpdater(grpID, sCurrWeek);
+                GroupManagement.setWeekofYear(grpID, sCurrWeek);
                 UserManagement.resetAllUserPoints(grpID);
                 resetRewardAssignments(grpID);
                 Log.d(TAG, "updated Reward Updater DB");

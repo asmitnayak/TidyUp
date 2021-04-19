@@ -83,15 +83,15 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/addPenaltyButton"
+            android:id="@+id/assignPenaltyButton"
             android:layout_width="164dp"
             android:layout_height="61dp"
             android:layout_marginLeft="110dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="#003060"
             android:fontFamily="@font/architects_daughter"
-            android:onClick="onAddPenalty"
-            android:text="Add Penalty"
+            android:onClick="onAssignPenalty"
+            android:text="Assign Penalty"
             android:textSize="14sp" />
     </LinearLayout>
 

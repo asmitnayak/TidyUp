@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.auth.User;
@@ -18,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RewardAndPenalty extends AppCompatActivity {
+public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     private static final String TAG = "RewardAndPenalty";
     private static final String EXTRA_REWARD_NAME = "EXTRA_REWARD_NAME";
     private static final String EXTRA_ASSIGNED_USER = "EXTRA_ASSIGNED_USER";
@@ -30,6 +34,10 @@ public class RewardAndPenalty extends AppCompatActivity {
     private RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
+
+    private ImageView menu;
+    private TextView pageTitle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,10 @@ public class RewardAndPenalty extends AppCompatActivity {
         rewardsKey = new ArrayList<String>(rewardsMap.keySet());
         rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
 
+        menu = findViewById(R.id.menu);
+        pageTitle = findViewById(R.id.pageTitle);
+        pageTitle.setText("Rewards");
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -78,6 +90,28 @@ public class RewardAndPenalty extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(RewardAndPenalty.this, v);
+                popup.setOnMenuItemClickListener( RewardAndPenalty.this);
+                popup.inflate(R.menu.reward_and_penalty_menu);
+                popup.show();
+            }
+        });
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.rpAccount:
+                finish();
+                startActivity(new Intent(getApplicationContext(), Account.class));
+                return true;
+            default:
+                return false;
+        }
     }
 
     public void OnAddReward(View view) {

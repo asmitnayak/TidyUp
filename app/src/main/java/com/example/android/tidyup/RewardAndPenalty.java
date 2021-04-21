@@ -59,10 +59,12 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         penaltyListView = findViewById(R.id.penaltyList);
         penaltyMap = new HashMap<>();
         penaltyMap = PenaltyManagement.getGroupPenaltyMap(groupID);
-        penaltyAdaptor = new PenaltyAdaptor(this, penaltyMap);
-        penaltyListView.setAdapter(penaltyAdaptor);
-        penaltyKey = new ArrayList<String>(penaltyMap.keySet());
-        penaltyValue = new ArrayList<List<Object>>(penaltyMap.values());
+        if (penaltyMap != null) {
+            penaltyAdaptor = new PenaltyAdaptor(this, penaltyMap);
+            penaltyListView.setAdapter(penaltyAdaptor);
+            penaltyKey = new ArrayList<String>(penaltyMap.keySet());
+            penaltyValue = new ArrayList<List<Object>>(penaltyMap.values());
+        }
 
         menu = findViewById(R.id.menu);
         pageTitle = findViewById(R.id.pageTitle);

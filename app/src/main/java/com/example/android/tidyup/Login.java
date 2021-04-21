@@ -94,6 +94,8 @@ public class Login extends AppCompatActivity {
                     um.execute();
                     RewardsManagement rm = new RewardsManagement();
                     rm.execute();
+                    PenaltyManagement pm = new PenaltyManagement();
+                    pm.execute();
                     //test
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);

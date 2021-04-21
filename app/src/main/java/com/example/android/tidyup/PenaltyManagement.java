@@ -132,6 +132,12 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
             return this.penaltyMap;}
     }
 
+
+    @Override
+    protected void onPreExecute() {
+        readGroupPenaltyDB();
+        super.onPreExecute();
+    }
     private static class PenaltyUpdater{
         public Map<String, Integer> penaltyUpdaterMap = new HashMap<>();
         PenaltyUpdater(){}

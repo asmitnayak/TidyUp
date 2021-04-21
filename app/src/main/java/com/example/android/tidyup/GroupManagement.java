@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +37,8 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> gcDB;
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
+    private static String currGroup;
+    private static FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
     public GroupManagement(FirebaseFirestore firestore){
         db = firestore;
@@ -63,6 +66,14 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         db.setFirestoreSettings(settings);
         // [END fs_emulator_connect]
     }
+
+    public static String getCurrentGroup(){
+        String groupID = "";
+        if(fAuth.getCurrentUser() != null)
+            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+        return groupID;
+    }
+
     protected static String getCode(){
         String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         StringBuilder salt = new StringBuilder();
@@ -172,7 +183,8 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             if(userList.contains(userID))
                 userList.remove(userID);
 
-            // TODO if length of group is 2 then delete group
+            // TODO i
+            //  f length of group is 2 then delete group
             if(userList.size() == 2) {
                 grpDB.remove(groupID);
                 AutomateRewardsService.automateRewardsService.stopSelf();

@@ -63,6 +63,7 @@ public class ForgotPassword extends AppCompatActivity {
                     Toast.makeText(ForgotPassword.this, "Error! Reset Link is Not Sent " + task.getException(), Toast.LENGTH_LONG).show();
                 }
                 mProgressBar.setVisibility(View.INVISIBLE);
+                finish();
             }
         });
     }

@@ -44,26 +44,6 @@
         app:layout_constraintTop_toBottomOf="@+id/uaNewUsername"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
-        android:id="@+id/uaNewPassword"
-        android:layout_width="246dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="252dp"
-        android:ems="10"
-        android:fontFamily="@font/architects_daughter"
-        android:hint="New Password"
-        android:inputType="textPersonName|textPassword"
-        android:textColor="@color/fontAndButtonColor"
-        android:textSize="16sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.096"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/uaNewEmail"
-        app:layout_constraintVertical_bias="0.0" />
-
     <Button
         android:id="@+id/uaUpdateUsernameButton"
         android:layout_width="wrap_content"
@@ -109,14 +89,13 @@
         android:backgroundTint="@color/fontAndButtonColor"
         android:fontFamily="@font/architects_daughter"
         android:onClick="updatePassword"
-        android:text="Update"
+        android:text="Reset Password"
         android:textSize="10sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toEndOf="@+id/uaNewPassword"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uaUpdateEmailButton"
         app:layout_constraintVertical_bias="0.0" />
 

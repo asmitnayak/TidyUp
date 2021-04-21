@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AssignPenalty"><ImageView
+    android:id="@+id/imageView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scaleType="fitXY"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0"
+    app:srcCompat="@drawable/light_blue_background"
+    android:contentDescription="TODO" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/assignPenalty"
+            android:layout_width="351dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/architects_daughter"
+            android:text="Assign Penalty"
+            android:textAlignment="center"
+            android:textColor="#003060"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/penaltyName"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Penalty Name"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/reason"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Reason for Penalty"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+        <EditText
+            android:id="@+id/user"
+            android:layout_width="305dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="#003060"
+            android:ems="10"
+            android:fontFamily="@font/architects_daughter"
+            android:foregroundTint="#003060"
+            android:hint="Offending User"
+            android:textColor="#003060"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/assignPenaltyButton"
+            android:layout_width="164dp"
+            android:layout_height="61dp"
+            android:layout_marginLeft="110dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="#003060"
+            android:fontFamily="@font/architects_daughter"
+            android:onClick="onAssignPenalty"
+            android:text="Assign Penalty"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

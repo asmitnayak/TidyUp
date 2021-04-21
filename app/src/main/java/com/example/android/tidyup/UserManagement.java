@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Source;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -109,6 +110,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         map = document.getData();
+                    } else {
                         Log.d(TAG, "No such document");
                     }
                 } else {
@@ -118,6 +120,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         });
         return (HashMap<String, Object>) map;
     }
+
 
     //private static Map<String, String> otherUserMap = new HashMap<>();
     private static Map<String, List<String>> otherUserMap = new HashMap<>();
@@ -195,6 +198,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPreExecute() {
         docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+        map = new HashMap<>();
         CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
         colRefUID.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -238,23 +242,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
-
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                if (value != null) {
-                    if (value.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + value.getData());
-                        map = value.getData();
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", error);
-                }
-            }
-        });
-
         deleteField("Password");
         super.onPreExecute();
     }

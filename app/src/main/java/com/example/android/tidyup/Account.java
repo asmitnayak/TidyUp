@@ -79,7 +79,6 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
         //test
 
-
         // load and display user info on Account Page
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override

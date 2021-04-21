@@ -18,11 +18,11 @@
         app:layout_constraintVertical_bias="0.025">
 
         <TextView
-            android:id="@+id/rpuRewardName"
+            android:id="@+id/ppuPenaltyName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/architects_daughter"
-            android:text="Reward Name"
+            android:text="Penalty Name"
             android:textAlignment="viewStart"
             android:textColor="@color/fontAndButtonColor"
             android:textSize="18sp" />
@@ -38,7 +38,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/rpuUserName"
+                    android:id="@+id/ppuUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -48,25 +48,14 @@
                     android:textColor="@color/fontAndButtonColor"
                     android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/rpuRewardVal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/architects_daughter"
-                    android:text="Reward Value: 0"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/fontAndButtonColor"
-                    android:textSize="14sp" />
-
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <Button
-                    android:id="@+id/rpuButton"
+                    android:id="@+id/ppuButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -82,12 +71,12 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/rpuRewardDescription"
+            android:id="@+id/ppuPenaltyDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/architects_daughter"
-            android:text="Reward Description"
+            android:text="Penalty Description"
             android:textAlignment="viewStart"
             android:textColor="@color/fontAndButtonColor"
             android:textSize="14sp" />

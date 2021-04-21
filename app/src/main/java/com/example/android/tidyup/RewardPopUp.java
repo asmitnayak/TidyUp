@@ -27,10 +27,10 @@ public class RewardPopUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.reward_pop_up_window);
 
-        mRewardName = findViewById(R.id.puRewardName);
-        mAssignedUser = findViewById(R.id.puUserName);
-        mRewardVal = findViewById(R.id.puRewardVal);
-        mRewardDescript = findViewById(R.id.puRewardDescription);
+        mRewardName = findViewById(R.id.rpuRewardName);
+        mAssignedUser = findViewById(R.id.rpuUserName);
+        mRewardVal = findViewById(R.id.rpuRewardVal);
+        mRewardDescript = findViewById(R.id.rpuRewardDescription);
 
         Bundle extras = getIntent().getExtras();
         if (extras == null) {

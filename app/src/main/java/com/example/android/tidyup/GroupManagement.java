@@ -207,18 +207,17 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
 
     public static void removeUserFromGroup(String groupID, String userID){
         if(grpDB.containsKey(groupID)){
-            ArrayList<String> userList = (ArrayList<String>) gcDB.get(groupID);
+            ArrayList<String> userList = (ArrayList<String>) grpDB.get(groupID);
             if(userList.contains(userID))
                 userList.remove(userID);
 
             // TODO i
             //  f length of group is 2 then delete group
-            if(userList.size() == 2) {
+            if(userList.size() == 3) {
                 grpDB.remove(groupID);
-                AutomateRewardsService.automateRewardsService.stopSelf();
             }
             else
-                grpDB.put(groupID,userList);
+                grpDB.put(groupID, userList);
             Group gc = new Group(grpDB);
             db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(gc);
 

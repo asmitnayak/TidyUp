@@ -42,7 +42,7 @@ public class AddReward extends AppCompatActivity {
         Intent intent = getIntent();
         listItem = intent.getIntExtra("listItem", -1);
         if(listItem != -1){
-            String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+            String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
             //Load in reward data
             rewardsMap = RewardsManagement.getGroupRewardsMap(groupID);
             rewardsKey = RewardsManagement.getRewardNameList(rewardsMap);
@@ -61,7 +61,7 @@ public class AddReward extends AppCompatActivity {
         this.rewardPointVal = Integer.parseInt(this.rewardPointValEDT.getText().toString());
         this.rewardDescription = this.rewardDescriptionEDT.getText().toString();
         this.rewardName = this.rewardNameEDT.getText().toString();
-        RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getUid()),
+        RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid()),
                 this.rewardDescription, this.rewardName, this.rewardPointVal);
         Intent intent = new Intent(this, RewardAndPenalty.class);
         finish();

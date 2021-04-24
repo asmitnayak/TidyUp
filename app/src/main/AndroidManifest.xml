@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TidyUp">
-        <activity android:name=".AssignPenalty"></activity>
+        <activity android:name=".AssignPenalty" />
         <activity android:name=".AddPenalty" />
         <activity android:name=".ForgotPassword" />
         <activity android:name=".GroupSettings" />

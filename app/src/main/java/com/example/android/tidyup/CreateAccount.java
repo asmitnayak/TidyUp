@@ -29,8 +29,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CreateAccount extends AppCompatActivity {
-
-
     protected static final ArrayList<String> CREDENTIALS = new ArrayList<>();
 
     private EditText mUsernameView;
@@ -42,6 +40,13 @@ public class CreateAccount extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fFirestore;
     private ProgressBar mProgressBar;
+
+//    CreateAccount(FirebaseFirestore firestore,FirebaseAuth fireAuth){
+//        fAuth = fireAuth;
+//        fFirestore = firestore;
+//
+//        fAuth.useEmulator("10.0.2.2", 9099);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +123,43 @@ public class CreateAccount extends AppCompatActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
         //create user and store in Firestore
+        firebaseAuthAddUser(email, password, username, role);
+//        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//            @Override
+//            public void onComplete(@NonNull Task<AuthResult> task) {
+//                if(task.isSuccessful()){
+//                    Map<String, Object> userMap = new HashMap<>();
+//                    userMap.put("Username", username);
+//                    userMap.put("Email", email);
+//                    userMap.put("UserPoints", "0");
+//                    userMap.put("Role", role);
+//                    userMap.put("GroupID", "");
+//                    userMap.put("Group", "");
+//                    // Store user information into Firestore
+//                    fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void aVoid) {
+//                            Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+//                            mProgressBar.setVisibility(View.INVISIBLE);
+//                            finish();
+//                            startActivity(new Intent(getApplicationContext(), Account.class));
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            mProgressBar.setVisibility(View.INVISIBLE);
+//                            Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//                }else{
+//                    mProgressBar.setVisibility(View.INVISIBLE);
+//                    Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
+    }
+
+    protected void firebaseAuthAddUser(String email, String password, String username, String role){
         fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -130,7 +172,7 @@ public class CreateAccount extends AppCompatActivity {
                     userMap.put("GroupID", "");
                     userMap.put("Group", "");
                     // Store user information into Firestore
-                    fFirestore.collection("Users").document(fAuth.getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
@@ -152,6 +194,5 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
     }
-
 
 }

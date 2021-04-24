@@ -29,24 +29,24 @@ public class AddPenalty extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_reward);
+        setContentView(R.layout.activity_add_penalty);
         PenaltyManagement pm = new PenaltyManagement();
         pm.execute();
         this.penaltyNameEDT = findViewById(R.id.penaltyName);
         this.penaltyDescriptionEDT = findViewById(R.id.penaltyDescription);
-        //When a reward is clicked load reward info into addReward window
-        //This will allow the user to edit the reward.
+        //When a penalty is clicked load penalty info into addPenalty window
+        //This will allow the user to edit the penalty.
         Intent intent = getIntent();
         listItem = intent.getIntExtra("listItem", -1);
         if(listItem != -1){
             String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
-            //Load in reward data
+            //Load in penalty data
             penaltyMap = PenaltyManagement.getGroupPenaltyMap(groupID);
             penaltyKey = PenaltyManagement.getPenaltyNameList(penaltyMap);
-            String rewardName = penaltyKey.get(listItem);
-            if (rewardName != null) {
-                penaltyNameEDT.setText(rewardName);
-                penaltiesValue = RewardsManagement.getRewardInfo(groupID, rewardName);;
+            String penaltyName = penaltyKey.get(listItem);
+            if (penaltyName != null) {
+                penaltyNameEDT.setText(penaltyName);
+                penaltiesValue = PenaltyManagement.getPenaltyInfo(groupID, penaltyName);;
                 penaltyDescriptionEDT.setText(penaltiesValue.get(0).toString());
             }
         }

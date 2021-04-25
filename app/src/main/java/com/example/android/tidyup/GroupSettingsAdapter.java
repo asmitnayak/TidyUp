@@ -27,6 +27,7 @@ import java.util.Arrays;
 public class GroupSettingsAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflter;
+
     String groupID;
     ArrayList<String> members;
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();

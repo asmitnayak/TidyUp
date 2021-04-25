@@ -123,7 +123,8 @@
             android:layout_height="wrap_content"
             android:checked="false"
             android:fontFamily="@font/architects_daughter"
-            android:text="Random"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/random"
             android:textColor="#003060"
             android:textSize="20sp" />
 
@@ -133,7 +134,8 @@
             android:layout_height="wrap_content"
             android:checked="true"
             android:fontFamily="@font/architects_daughter"
-            android:text="Manual"
+            android:onClick="onRadioButtonClicked"
+            android:text="@string/manual"
             android:textColor="#003060"
             android:textSize="20sp" />
     </RadioGroup>

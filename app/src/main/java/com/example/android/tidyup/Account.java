@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -28,7 +29,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.Calendar;
@@ -112,6 +116,37 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             }
         });
 
+        docRef.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+
+                if (documentSnapshot.exists()){
+                    String name = documentSnapshot.getString(KEY_USERNAME);
+                    String email = documentSnapshot.getString(KEY_EMAIL);
+
+                    grpID = documentSnapshot.getString(KEY_GroupID);
+                    grpName = documentSnapshot.getString(KEY_Group);
+                    mName.setText("Username: " + name);
+                    mEmail.setText("Email: "+ email);
+                    if(!grpID.equals(""))
+                        RewardsManagement.resetUserRewards(grpID);
+                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
+                    mUserPoints.setText("UserPoints: " + userPoints);
+                    if (!grpName.equals("")){
+                        mGroup.setText("Group: " + grpName);
+                    } else {
+                        mGroup.setText("Group: No Group Yet");
+                    }
+                }else {
+                    Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +211,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 startActivity(new Intent(getApplicationContext(), TaskPage.class));
                 return true;
             case R.id.acRewardsAndPenaltyPage:
-                finish();
+//                finish();
                 startActivity(new Intent(getApplicationContext(), RewardAndPenalty.class));
                 return true;
             default:
@@ -193,7 +228,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
     public void goToCreateGroupPage(View view){
         Intent intent = new Intent(this, CreateGroup.class);
-        finish();
+//        finish();
         startActivity(intent);
     }
 
@@ -204,13 +239,13 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     }
     public void gotToGroupSettings(View view){
         Intent intent = new Intent(this, GroupSettings.class);
-        finish();
+//        finish();
         startActivity(intent);
     }
 
     public void goToUpdateUserInfo (View view){
         Intent intent = new Intent(this, UpdateUserInfo.class);
-        finish();
+//        finish();
         startActivity(intent);
     }
 
@@ -273,5 +308,25 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 });
     }
 
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        //Refresh your stuff here
+    }
 
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder leaveAlert = new AlertDialog.Builder(Account.this);
+        leaveAlert.setMessage("Are you sure you want to quit ?");
+        leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finishAndRemoveTask();
+                System.exit(0);
+            }
+        });
+        leaveAlert.setNegativeButton("Cancel", null);
+        leaveAlert.show();
+    }
 }

@@ -42,10 +42,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseAuth.getInstance().signOut();
-//    }
-//
-//    // redirect user to task page if user credentials are correct
-//    public void login(View view) {
+
         mEmail = findViewById(R.id.emailInput);
         mPassword = findViewById(R.id.cPasswordInput);
         mLoginBtn = findViewById(R.id.loginButton);
@@ -56,7 +53,6 @@ public class Login extends AppCompatActivity {
         mProgressBar.setVisibility(View.INVISIBLE);
         GroupManagement gm = new GroupManagement();
         gm.execute();
-
 
     }
 
@@ -100,9 +96,10 @@ public class Login extends AppCompatActivity {
                     userMap = UserManagement.getUserDetails();
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
-                        startActivity(new Intent(getApplicationContext(), Account.class));
+                        // change back from TaskPage to Account
+                        startActivity(new Intent(getApplicationContext(), TaskPage.class));
                     else
-                        startActivity(new Intent(getApplicationContext(), Account.class));
+                        startActivity(new Intent(getApplicationContext(), TaskPage.class));
                 } else{
                     mPassword.setError("Invalid Username or Password");
                     mEmail.setError("Invalid Username or Password");

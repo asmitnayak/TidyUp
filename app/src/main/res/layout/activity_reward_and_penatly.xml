@@ -37,17 +37,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/rewardAndPenalties"
-                android:layout_width="351dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/architects_daughter"
-                android:text="Rewards and Penalties"
-                android:textAlignment="center"
-                android:textColor="#003060"
-                android:textSize="50sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/pointVal"

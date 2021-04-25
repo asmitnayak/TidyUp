@@ -243,6 +243,20 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
 
         }
     }
+    public static String getGroupCode(String groupID){
+        readGroupCodeDB();
+        List<String> groupCodeList = new ArrayList<String>();
+        String groupCode = "";
+        if(gcDB != null){
+            if(groupID != null) {
+                if (gcDB.containsKey(groupID)) {
+                    groupCodeList = gcDB.get(groupID);
+                    groupCode = groupCodeList.get(0);
+                }
+            }
+        }
+        return groupCode;
+    }
 
     public static void addGroupCodes(String groupID, String groupCode){
 

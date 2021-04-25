@@ -24,13 +24,14 @@
         android:id="@+id/joinGroupText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginTop="80dp"
         android:fontFamily="@font/architects_daughter"
         android:text="@string/join_a_group"
         android:textColor="#003060"
         android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,7 +39,8 @@
         android:id="@+id/joinCode"
         android:layout_width="305dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="380dp"
+        android:layout_marginTop="240dp"
+        android:autofillHints=""
         android:backgroundTint="#003060"
         android:ems="10"
         android:fontFamily="@font/architects_daughter"
@@ -49,23 +51,21 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/joinButton"
         android:layout_width="113dp"
         android:layout_height="62dp"
-        android:layout_marginTop="584dp"
+        android:layout_marginTop="416dp"
         android:backgroundTint="#003060"
         android:fontFamily="@font/architects_daughter"
         android:onClick="onJoinGroup"
         android:text="@string/join"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

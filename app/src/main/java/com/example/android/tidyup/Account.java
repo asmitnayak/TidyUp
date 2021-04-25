@@ -266,8 +266,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     String userID = fAuth.getCurrentUser().getUid();
                     GroupManagement.removeUserFromGroup(grpID, userID);
                     mGroup.setText(R.string.no_group);
-                    docRef.update("Group", "");
-                    docRef.update("GroupID", "");
+                    docRef.update("Group", "","GroupID", "");
                 }
             });
             leaveAlert.setNegativeButton("Cancel", null);

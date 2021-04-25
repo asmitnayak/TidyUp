@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GroupSettings extends AppCompatActivity {
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private DocumentReference docRef = fFirestore.collection("Users").document(fAuth.getUid());
+    private DocumentReference docRef = fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid());
     boolean randomSetting;
     GroupSettingsAdapter customAdp;
     ListView membersList;
@@ -30,7 +30,7 @@ public class GroupSettings extends AppCompatActivity {
         setContentView(R.layout.activity_group_settings);
         membersList = (ListView) findViewById(R.id.membersList);
         if(fAuth.getCurrentUser() != null)
-            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
 
         members = GroupManagement.getGroupMemberList(groupID);
 

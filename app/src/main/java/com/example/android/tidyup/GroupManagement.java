@@ -39,18 +39,24 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, List<String>> grpDB;
     private static boolean grpRand;
     private static String currGroup;
-    private static FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private static FirebaseAuth fAuth;
     private static Calendar cal;
 
-    public GroupManagement(FirebaseFirestore firestore){
+    // Testing only
+    public GroupManagement(FirebaseFirestore firestore, FirebaseAuth fireAuth, String groupID, String groupName, String userID){
         db = firestore;
         cal = Calendar.getInstance();
-//        theUser = new User();
+        fAuth = fireAuth;
+        grpDB = new HashMap<>();
+        gcDB = new HashMap<>();
+
+        grpDB.put(groupID, new ArrayList<>(Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)), userID)));
     }
 
     public GroupManagement(){
         db = FirebaseFirestore.getInstance();
         cal = Calendar.getInstance();
+        fAuth = FirebaseAuth.getInstance();
     }
 
     public boolean isAvailable(){
@@ -74,7 +80,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     public static String getCurrentGroup(){
         String groupID = "";
         if(fAuth.getCurrentUser() != null)
-            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+            groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
         return groupID;
     }
 
@@ -133,7 +139,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
-            grpDB.put(groupID, Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)), userID));
+            grpDB.put(groupID, new ArrayList<>(Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)), userID)));
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
@@ -161,7 +167,12 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static String getGroupName(String groupID){
-        String name = grpDB.get(groupID).get(1);
+        String name = "";
+        try {
+            name = grpDB.get(groupID).get(1);
+        } catch (Exception e){
+            return null;
+        }
         if(name.startsWith("GroupName:")){
             String[] arrStr = name.split(":");
             return arrStr[1];
@@ -197,7 +208,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     public static void setWeekofYear(String groupID,  String currweek){
         ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
         if(getGroupTask(groupID) == null) {
-            lst.add(2, "WeekofYear:"+String.valueOf(cal.get(cal.WEEK_OF_YEAR)));
+            lst.add(2, "WeekofYear:"+String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
         }
         else
             lst.set(2, "WeekofYear:"+currweek);
@@ -208,16 +219,16 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     public static void removeUserFromGroup(String groupID, String userID){
         if(grpDB.containsKey(groupID)){
             ArrayList<String> userList = (ArrayList<String>) grpDB.get(groupID);
-            if(userList.contains(userID))
-                userList.remove(userID);
+            userList.remove(userID);
 
             // TODO i
             //  f length of group is 2 then delete group
             if(userList.size() == 3) {
                 grpDB.remove(groupID);
+                AutomateRewardsService.automateRewardsService.stopSelf();
             }
             else
-                grpDB.put(groupID, userList);
+                grpDB.put(groupID,userList);
             Group gc = new Group(grpDB);
             db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(gc);
 
@@ -244,6 +255,10 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Group_Code gcc = documentSnapshot.toObject(Group_Code.class);
+                if(gcc == null) {
+                    grpDB = new HashMap<>();
+                    return;
+                }
                 gcDB = gcc.grpCodeMap;
                 Log.d(TAG, gcc.grpCodeMap.toString());
                 Log.d(TAG, gcDB.toString());
@@ -262,8 +277,10 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Group gcc = documentSnapshot.toObject(Group.class);
-                if(gcc == null)
+                if(gcc == null) {
+                    grpDB = new HashMap<>();
                     return;
+                }
                 grpDB = gcc.grpMap;
                 Log.d(TAG, gcc.grpMap.toString());
                 Log.d(TAG, grpDB.toString());

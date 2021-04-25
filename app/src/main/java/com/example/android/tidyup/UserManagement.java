@@ -43,7 +43,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_Group = "Group";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private static  DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+    private static  DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
     private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
 
     public static void setUpEmulator(){
@@ -197,7 +197,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+        docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
         map = new HashMap<>();
         CollectionReference colRefUID = fFirestore.collection(COLLECTIONPATH_USERS);
         colRefUID.addSnapshotListener(new EventListener<QuerySnapshot>() {

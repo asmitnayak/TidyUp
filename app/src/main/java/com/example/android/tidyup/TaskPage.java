@@ -76,7 +76,7 @@ public class TaskPage extends AppCompatActivity {
         setContentView(R.layout.activity_task_page);
         //taskDatabase = FirebaseFirestore.getInstance();
         //if(fAuth.getCurrentUser() != null)
-          //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+          //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
         //try {
         //foodItems = m.read_menu();
         //} catch (IOException e) {

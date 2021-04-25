@@ -109,10 +109,9 @@ public class CreateGroup extends AppCompatActivity {
         UserManagement.setUserGroupID(gID);
         UserManagement.setUserRole("Admin");
         Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();
-        startActivity(new Intent(getApplicationContext(), Account.class));
+//        startActivity(new Intent(getApplicationContext(), Account.class));
         // go to task page???
-
-        // creates group in the task collection
+        finish();
     }
 
     @Override

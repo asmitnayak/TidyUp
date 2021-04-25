@@ -18,6 +18,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -43,22 +44,9 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_Group = "Group";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private static  DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
+    private static  DocumentReference docRef;
     private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
 
-    public static void setUpEmulator(){
-        // [START fs_emulator_connect]
-        // 10.0.2.2 is the special IP address to connect to the 'localhost' of
-        // the host computer from an Android emulator.
-        FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-        fFirestore.useEmulator("10.0.2.2", 8080);
-
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        fFirestore.setFirestoreSettings(settings);
-        // [END fs_emulator_connect]
-    }
     public static void addStringField(String fieldName) {
         Map<String, String> data = new HashMap<>();
         data.put(fieldName, "");
@@ -102,22 +90,22 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
-        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        map = document.getData();
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+//        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        map = document.getData();
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
         return (HashMap<String, Object>) map;
     }
 
@@ -243,6 +231,40 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
             }
         });
         deleteField("Password");
+
+        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        map = document.getData();
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+
+        docRef.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot document, @Nullable FirebaseFirestoreException error) {
+                if(error != null){
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                if (document.exists()) {
+                    Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                    map = document.getData();
+                } else {
+                    Log.d(TAG, "No such document");
+                }
+            }
+        });
+
         super.onPreExecute();
     }
 

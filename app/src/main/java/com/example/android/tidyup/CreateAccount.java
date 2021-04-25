@@ -184,6 +184,8 @@ public class CreateAccount extends AppCompatActivity {
                             Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
                             mProgressBar.setVisibility(View.INVISIBLE);
                             finish();
+                            UserManagement um = new UserManagement();
+                            um.execute();
                             startActivity(new Intent(getApplicationContext(), Account.class));
                         }
                     }).addOnFailureListener(new OnFailureListener() {

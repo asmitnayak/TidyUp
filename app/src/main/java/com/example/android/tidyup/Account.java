@@ -294,8 +294,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                 Log.d(TAG, "Error! no user with email: " + newUserEmail);
                                 return;
                             }else if (task.getResult().getDocuments().size() > 1){
-                                Toast.makeText(Account.this, "Error! more than one user found with email " + newUserEmail, Toast.LENGTH_LONG).show();
-                                Log.d(TAG, "Error! more than one user found with email " + newUserEmail);
+                                Toast.makeText(Account.this, "Error! could not add user with email " + newUserEmail, Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Error! could not add user with email  " + newUserEmail);
                                 return;
                             }
 

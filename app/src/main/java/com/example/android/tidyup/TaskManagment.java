@@ -1,43 +1,70 @@
 package com.example.android.tidyup;
 
 import android.os.AsyncTask;
-import android.os.AsyncTask;
-import android.util.Base64;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firestore.v1.WriteResult;
+
 
 import java.util.Arrays;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 import androidx.annotation.NonNull;
 
 public class TaskManagment extends AsyncTask<Void, Void, Void> {
+
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private static Map<String, Map<String, List<String>>> taskListDB; // list of tasks
     private static Map<String, Map<String, List<String>>> taskDB; // will store the actual info of tasks
+
+    private static Map<String, TaskItem> taskMap;
+
+    private static Map<String, Map<String, TaskItem>> taskItems;
+
     private static final String COLLECTIONPATH_TASK = "Task";
     private static final String DOCUMENTPATH_TASKS = "Tasks";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
 
-    public static int addTaskItem(String groupID, String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
+
+    public static int addTaskItem(String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
+
+        // both the userId and groupId are null and it is throwing errors
+        // find the group name
+  /*      String userId = fAuth.getUid();
+        System.out.println("User id : " + userId);
+        String groupId = GroupManagement.getGroupIDFromUserID(userId);
+        // right now the groupId is null which is throwing an error on linke 49
+        System.out.println("Group id : " + groupId);
+*/
+  //      DocumentReference groupRef = fFirestore.collection("Groups").document();
+        String groupId = "group1Test";
+        String taskKey = "task1";
+
+        TaskItem addTask = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
+
+        Map<String, TaskItem> taskMap = new HashMap<>();
+        taskMap.put(taskKey, addTask);
+
+        fFirestore.collection("Task").document(groupId).set(taskMap);
+        return 1;
+/*
+        // if the document exists then we add the task to that collection
+        if(document == null){
+            fFirestore.collection("Task").add(groupId);
+        }
+
         if(taskListDB.containsKey(groupID)) {
             Map<String, List<String>> groupTaskMap = new HashMap<>(taskListDB.get(groupID));
             if(groupTaskMap.containsKey(taskName)){
@@ -60,7 +87,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         TaskManagment.Tasks tasks = new TaskManagment.Tasks(taskListDB);
         fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(tasks);
         return 1;
-
+*/
         // TaskItem addTaskItem = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
         // taskItems.add(addTaskItem);
     }

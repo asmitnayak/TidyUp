@@ -9,8 +9,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.MetadataChanges;
 
 import java.util.Arrays;
 
@@ -27,12 +30,13 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static FirebaseFirestore db;
     private static final String TAG = "GroupManagementFirebase";
     private static final String GROUP_CODE_DB = "GroupCodeDB";
-    private static final String GROUP_CODE_DB_DOCUMENT = "test";
+    private static final String GROUP_CODE_DB_DOCUMENT = "Codes";
     private static final String GROUP_DB = "Groups";
     private static final String GROUP_DB_DOCUMENT = "Groups";
     private static Map<String, List<String>> gcDB;
@@ -121,6 +125,10 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     // TODO: Implement the int return type to avoid adding members to different grp, or same ones.
     public static int addUserToGroup(String groupID, String userID, String code, String groupName){
 
+        if(grpDB == null) {
+            grpDB = new HashMap<>();
+        }
+
         if(getGroupIDFromUserID(userID) != null) // already in a grp
             return -1;
         if(grpDB.containsKey(groupID)){
@@ -132,14 +140,14 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                     lst.add(1, "GroupName:"+groupName);
             }
             if(getWeekOfYear(groupID) == null){
-                lst.add(2, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)));
+                lst.add(2, "WeekofYear:" + String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)));
             }
             if(lst.contains(userID))
                 return 0;
             lst.add(userID);
             grpDB.put(groupID, lst);
         } else
-            grpDB.put(groupID, new ArrayList<>(Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(cal.WEEK_OF_YEAR)), userID)));
+            grpDB.put(groupID, new ArrayList<>(Arrays.asList("false", "GroupName:"+groupName, "WeekofYear:" + String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)), userID)));
 
         Group grp = new Group(grpDB);
         db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
@@ -198,11 +206,13 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static void setGroupTask(String groupID, boolean value){
-        ArrayList<String> lst = (ArrayList<String>) grpDB.get(groupID);
         if(getGroupTask(groupID) == null)
-            lst.add(0, "false");
+            grpDB.get(groupID).add(0, "false");
         else
-            lst.set(0, Boolean.toString(value));
+            grpDB.get(groupID).set(0, Boolean.toString(value));
+
+        Group grp = new Group(grpDB);
+        db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
     }
 
     public static void setWeekofYear(String groupID,  String currweek){
@@ -225,7 +235,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             //  f length of group is 2 then delete group
             if(userList.size() == 3) {
                 grpDB.remove(groupID);
-                AutomateRewardsService.automateRewardsService.stopSelf();
             }
             else
                 grpDB.put(groupID,userList);
@@ -236,6 +245,11 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static void addGroupCodes(String groupID, String groupCode){
+
+        if(gcDB == null) {
+            gcDB = new HashMap<>();
+        }
+
         if(gcDB.containsKey(groupID)){
             ArrayList<String> lst = new ArrayList<>(gcDB.get(groupID));
             if (lst.contains(groupCode))
@@ -249,14 +263,17 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);
     }
 
+    private static DocumentReference docRef_gc = null;
+    private static DocumentReference docRef_g = null;
+
     public static void readGroupCodeDB(){
-        DocumentReference docRef = db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        docRef_gc = db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT);
+        docRef_gc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Group_Code gcc = documentSnapshot.toObject(Group_Code.class);
                 if(gcc == null) {
-                    grpDB = new HashMap<>();
+                    gcDB = new HashMap<>();
                     return;
                 }
                 gcDB = gcc.grpCodeMap;
@@ -269,11 +286,29 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                 Log.w(TAG, "Error reading document", e);
             }
         });
+
+        docRef_gc.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                Group_Code gcc = documentSnapshot.toObject(Group_Code.class);
+                if(gcc == null) {
+                    gcDB = new HashMap<>();
+                    return;
+                }
+                gcDB = gcc.grpCodeMap;
+                Log.d(TAG, gcc.grpCodeMap.toString());
+                Log.d(TAG, gcDB.toString());
+            }
+        });
     }
 
     public static void readGroupDB(){
-        DocumentReference docRef = db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        docRef_g = db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT);
+        docRef_g.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Group gcc = documentSnapshot.toObject(Group.class);
@@ -289,6 +324,25 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Log.w(TAG, "Error reading document", e);
+            }
+        });
+
+        docRef_g.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+
+                Group gcc = documentSnapshot.toObject(Group.class);
+                if(gcc == null) {
+                    grpDB = new HashMap<>();
+                    return;
+                }
+                grpDB = gcc.grpMap;
+                Log.d(TAG, gcc.grpMap.toString());
+                Log.d(TAG, grpDB.toString());
             }
         });
     }

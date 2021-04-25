@@ -27,4 +27,6 @@
     <string name="task_page">Task Page</string>
     <string name="rewards_and_penalties">Rewards And Penalties</string>
     <string name="no_group">Group: No Group Yet</string>
+    <string name="random">Random</string>
+    <string name="manual">Manual</string>
 </resources>

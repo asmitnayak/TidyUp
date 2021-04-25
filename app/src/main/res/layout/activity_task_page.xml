@@ -1,49 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/light_blue_background"
     tools:context=".TaskPage">
-
+    <!--  android:background="@drawable/light_blue_background" -->
     <Button
         android:id="@+id/completeTask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
         android:backgroundTint="@color/fontAndButtonColor"
         android:fontFamily="@font/architects_daughter"
         android:onClick="completeTask"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/addtask"
         android:text="Complete Task"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="123dp"
-        app:layout_constraintEnd_toEndOf="@+id/taskList"
-        app:layout_constraintStart_toStartOf="@+id/taskList"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
+  <!--      app:layout_constraintEnd_toEndOf="@+id/taskList"
+        app:layout_constraintStart_toStartOf="@+id/taskList"-->
+
 
     <Button
         android:id="@+id/addtask"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="116dp"
         android:backgroundTint="@color/fontAndButtonColor"
         android:fontFamily="@font/architects_daughter"
+        android:layout_centerHorizontal="true"
         android:onClick="addTask"
         android:text="Add Task"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="150dp"
-        app:layout_constraintEnd_toEndOf="@+id/taskList"
-        app:layout_constraintStart_toStartOf="@+id/taskList"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
+     <!--   app:layout_constraintEnd_toEndOf="@+id/taskList"
+        app:layout_constraintStart_toStartOf="@+id/taskList"--> />
 
+    <TextView
+        android:id="@+id/taskNameLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="0dp"
+        android:layout_below="@+id/completeTask"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/taskSelect"
+        android:text="Name:" />
+
+    <TextView
+        android:id="@+id/taskPersonLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/taskNameLayout"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/taskSelect"
+        android:text="Person:" />
+
+    <TextView
+        android:id="@+id/taskPointValueLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/taskPersonLayout"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/taskSelect"
+        android:text="Point Value:" />
+
+    <TextView
+        android:id="@+id/taskRepetitionLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="110dp"
+        android:layout_below="@+id/completeTask"
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/taskSelect"
+        android:text="Repetition:" />
+
+    <TextView
+        android:id="@+id/taskPriorityLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/taskRepetitionLayout"
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@+id/taskSelect"
+        android:text="Priority:" />
+
+    <TextView
+        android:id="@+id/taskDateLayout"
+        android:textColor="@color/fontAndButtonColor"
+        android:fontFamily="@font/architects_daughter"
+        android:layout_width="100dp"
+        android:layout_height="27dp"
+        android:layout_below="@+id/taskPriorityLayout"
+
+        android:layout_marginStart="110dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_toEndOf="@id/taskSelect"
+        android:text="Date:" />
+
+
+    <CheckBox
+        android:id="@+id/taskSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="20dp"
+        android:layout_below="@+id/completeTask"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="18dp" />
+    <!--
     <ListView
         android:id="@+id/taskList"
-        android:layout_width="415dp"
-        android:layout_height="731dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/completeTask"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-    </ListView>
+-->
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

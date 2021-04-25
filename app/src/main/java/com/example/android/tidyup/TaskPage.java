@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -65,7 +66,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class TaskPage extends AppCompatActivity {
     public static ArrayList<TaskItem> taskItems = new ArrayList<TaskItem>();
     CustomAdapter customAdp;
+
     ListView taskList;
+    String[] tasks = new String[1];
     //private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     //private FirebaseFirestore taskDatabase;
     //private static Map<String, List<String>> taskMapDatabase = new HashMap<>();
@@ -74,21 +77,29 @@ public class TaskPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
-        //taskDatabase = FirebaseFirestore.getInstance();
-        //if(fAuth.getCurrentUser() != null)
-          //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
-        //try {
-        //foodItems = m.read_menu();
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
 
+        //taskList = findViewById(R.id.taskList);
+        tasks[0] = "Test Task 1";
+
+        ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
+        taskList.setAdapter(tasksAdapter);
+    }
+
+
+    //taskDatabase = FirebaseFirestore.getInstance();
+    //if(fAuth.getCurrentUser() != null)
+    //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
+    //try {
+    //foodItems = m.read_menu();
+    //} catch (IOException e) {
+    //    e.printStackTrace();
+    //}
+/*
         taskList = (ListView) findViewById(R.id.taskList);
 
         customAdp = new CustomAdapter(getApplicationContext(), taskItems);
         taskList.setAdapter(customAdp);
-    }
-
+  */
     // when a task is selected and the completeTask button is pressed
     // the task will be removed from the task page
    /* public void completeTask(View view){
@@ -106,8 +117,11 @@ public class TaskPage extends AppCompatActivity {
          //    return;
    //  }
 
-    public void setGroupTasks(String groupID) {
+    public void completeTask(View view){
 
     }
 
+    public void setGroupTasks(String groupID) {
+
+    }
 }

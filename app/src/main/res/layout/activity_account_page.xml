@@ -179,6 +179,7 @@
                 android:fontFamily="@font/architects_daughter"
                 android:onClick="addMembers"
                 android:text="Add \n Members"
+                android:textColor="#FFFFFF"
                 android:textSize="10sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"

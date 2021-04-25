@@ -97,9 +97,11 @@ public class Login extends AppCompatActivity {
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
                         // change back from TaskPage to Account
-                        startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                       // startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                     else
-                        startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                       // startActivity(new Intent(getApplicationContext(), TaskPage.class));
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                 } else{
                     mPassword.setError("Invalid Username or Password");
                     mEmail.setError("Invalid Username or Password");

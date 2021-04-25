@@ -40,21 +40,21 @@ public class GroupSettings extends AppCompatActivity {
         setContentView(R.layout.activity_group_settings);
         membersList = (ListView) findViewById(R.id.membersList);
         inviteCode = findViewById(R.id.linkText);
-        code = GroupManagement.getCode();
-
+        code = GroupManagement.getGroupCode(groupID);
         copyBtn = (Button) findViewById(R.id.copyButton);
         copyBtn.setEnabled(false);
 
         if(fAuth.getCurrentUser() != null)
             groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
         if(groupID != null) {
+            code = GroupManagement.getGroupCode(groupID);
             members = GroupManagement.getGroupMemberList(groupID);
             customAdp = new GroupSettingsAdapter(getApplicationContext(), members, groupID);
             membersList.setAdapter(customAdp);
             inviteCode.setText(code);
             copyBtn.setEnabled(true);
+            randomSetting = GroupManagement.getGroupTask(groupID);
         }
-        randomSetting = GroupManagement.getGroupTask(groupID);
         RadioButton manual = findViewById(R.id.manualSetting);
         RadioButton random = findViewById(R.id.randomSetting);
         if(!randomSetting){

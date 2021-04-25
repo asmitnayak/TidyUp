@@ -288,7 +288,12 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
-                            if (task.getResult().getDocuments().size() != 1){
+
+                            if (task.getResult().getDocuments().size() == 0){
+                                Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Error! no user with email: " + newUserEmail);
+                                return;
+                            }else if (task.getResult().getDocuments().size() > 1){
                                 Toast.makeText(Account.this, "Error! more than one user found with email " + newUserEmail, Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Error! more than one user found with email " + newUserEmail);
                                 return;

@@ -82,7 +82,7 @@ public class TaskPage extends AppCompatActivity {
         tasks[0] = "Test Task 1";
 
         ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-        taskList.setAdapter(tasksAdapter);
+//        taskList.setAdapter(tasksAdapter);
     }
 
 

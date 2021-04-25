@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class JoinGroup extends AppCompatActivity {
     EditText joinCode;
 
@@ -27,10 +29,8 @@ public class JoinGroup extends AppCompatActivity {
             return;
         }
 
-        UserManagement.updateUserGroup(grp, getApplicationContext());
-        UserManagement.setUserGroup(GroupManagement.getGroupName(grp));
-        UserManagement.setUserGroupID(grp);
-        UserManagement.setUserRole("User");
+        UserManagement.updateUserGroup(grp, "User", getApplicationContext());
+        GroupManagement.addUserToGroup(grp, FirebaseAuth.getInstance().getUid(), joinCode.getText().toString(), GroupManagement.getGroupName(grp));
         finish();
         startActivity(new Intent(this, TaskPage.class));
         //if(join code exists in database)

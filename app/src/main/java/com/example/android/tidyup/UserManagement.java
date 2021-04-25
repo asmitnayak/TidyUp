@@ -67,9 +67,9 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
         docRef.update(fieldName, FieldValue.delete());
     }
-    public static void updateUserGroup(String newGroupID, Context cntxt) {
+    public static void updateUserGroup(String newGroupID, String role, Context cntxt) {
         docRef.update("GroupID", newGroupID,
-                      "Group", GroupManagement.getGroupName(newGroupID))
+                      "Group", GroupManagement.getGroupName(newGroupID), "Role", role)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -113,26 +113,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     //private static Map<String, String> otherUserMap = new HashMap<>();
     private static Map<String, List<String>> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
-        //        DocumentReference docRefUID = fFirestore.collection(COLLECTIONPATH_USERS).document(uid);
-//        docRefUID.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                        otherUserMap = document.getData();
-//
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-
-        //return ((String) otherUserMap.get("Username"));
         return ((List<String>)otherUserMap.get(uid)).get(0);
     }
     /*

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/tpAccountPage"
+        android:icon="@drawable/ic_menu_icon"
+        android:title="@string/account_page"
+        app:showAsAction="never"/>
+    <item android:id="@+id/tpRewardsAndPenaltyPage"
+        android:icon="@drawable/ic_menu_icon"
+        android:title="@string/rewards_and_penalties"
+        app:showAsAction="never"/>
+</menu>

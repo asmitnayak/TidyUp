@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -41,6 +42,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     private ImageView menu;
     private TextView pageTitle;
 
+    private Button mAddReward, mAddPenalty, mAssignPenalty;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +51,25 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         setContentView(R.layout.activity_reward_and_penatly);
         String groupID = (String) UserManagement.getUserDetails().get("GroupID");
 
+        mAddReward = findViewById(R.id.addReward);
+        mAddPenalty = findViewById(R.id.addPenalty);
+        mAssignPenalty = findViewById(R.id.assignPenalty);
+
+        mAddReward.setEnabled(!groupID.equals(""));
+        mAddPenalty.setEnabled(!groupID.equals(""));
+        mAssignPenalty.setEnabled(!groupID.equals(""));
+
         rewardsListView = findViewById(R.id.rewardsList);
         rewardsMap = new HashMap<>();
         rewardsMap = RewardsManagement.getGroupRewardsMap(groupID);
-        rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
-        rewardsListView.setAdapter(rewardsAdaptor);
-        rewardsKey = new ArrayList<String>(rewardsMap.keySet());
-        rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
+        if (rewardsMap != null) {
+            rewardsAdaptor = new RewardsAdaptor(this, rewardsMap);
+            rewardsListView.setAdapter(rewardsAdaptor);
+            rewardsKey = new ArrayList<String>(rewardsMap.keySet());
+            rewardsValue = new ArrayList<List<Object>>(rewardsMap.values());
+        } else {
+
+        }
 
         penaltyListView = findViewById(R.id.penaltyList);
         penaltyMap = new HashMap<>();
@@ -64,7 +79,10 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
             penaltyListView.setAdapter(penaltyAdaptor);
             penaltyKey = new ArrayList<String>(penaltyMap.keySet());
             penaltyValue = new ArrayList<List<Object>>(penaltyMap.values());
+        } else {
+
         }
+
 
         menu = findViewById(R.id.menu);
         pageTitle = findViewById(R.id.pageTitle);

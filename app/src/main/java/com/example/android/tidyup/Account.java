@@ -302,8 +302,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                             addedUserID = task.getResult().getDocuments().get(0).getId();
                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
                             GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
-                            addedUserDoc.update(KEY_GroupID, grpID);
-                            addedUserDoc.update(KEY_Group, grpName);
+                            addedUserDoc.update(KEY_GroupID, grpID,
+                                                KEY_Group, grpName);
 
                         } else {
                             Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();

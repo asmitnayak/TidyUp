@@ -97,6 +97,12 @@ public class CreateAccount extends AppCompatActivity {
         String email = mEmailView.getText().toString().trim();
         String password = "";
         String role = mRoleSpinner.getSelectedItem().toString();
+
+        if (TextUtils.isEmpty(username)){
+            mUsernameView.setError("Username is required");
+            return;
+        }
+
         if(mPasswordView.getText().toString().trim().equals(mPasswordConfView.getText().toString().trim())){
             password = mPasswordView.getText().toString().trim();
         } else{

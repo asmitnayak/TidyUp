@@ -47,7 +47,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
 
     private TextView mName, mEmail, mUserPoints, mGroup;
     private EditText mNewUserEmail;
@@ -228,7 +228,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String userID = fAuth.getUid();
+                    String userID = fAuth.getCurrentUser().getUid();
                     GroupManagement.removeUserFromGroup(grpID, userID);
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "");

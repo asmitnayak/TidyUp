@@ -33,7 +33,7 @@ public class UpdateUserInfo extends AppCompatActivity {
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getUid());
+    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
 
     private EditText mNewUsername, mNewEmail, mNewPassword;
     private Button mReturn, mUpdateUsername, mUpdateEmail, mUpdatePassword;

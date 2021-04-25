@@ -99,7 +99,7 @@ public class CreateGroup extends AppCompatActivity {
         }
         gID = GroupManagement.getGroupID(groupName.getText().toString());
         GroupManagement.addGroupCodes(gID, code);
-        GroupManagement.addUserToGroup(gID,fAuth.getUid(), inviteCode.getText().toString(), groupName.getText().toString());
+        GroupManagement.addUserToGroup(gID,fAuth.getCurrentUser().getUid(), inviteCode.getText().toString(), groupName.getText().toString());
         Intent intent = new Intent(this, AutomateRewardsService.class);
         intent.putExtra("EXTRA_GROUPID", gID);
         startService(intent);

@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -73,7 +74,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     private TextView pageTitle;
 
     ListView taskList;
-    String[] tasks = new String[1];
+
+    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     //private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     //private FirebaseFirestore taskDatabase;
     //private static Map<String, List<String>> taskMapDatabase = new HashMap<>();
@@ -105,10 +107,11 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
             }
         });
 
-        //taskList = findViewById(R.id.taskList);
-        tasks[0] = "Test Task 1";
 
-        ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
+        //DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
+        //docRef.update(tasks);
+
+       // ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
         //if (tasksAdapter != null )
             //taskList.setAdapter(tasksAdapter);
         //action bar

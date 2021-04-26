@@ -2,6 +2,7 @@ package com.example.android.tidyup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -56,10 +57,11 @@ public class AssignPenalty extends AppCompatActivity {
                 }
             }
             if(members != null){
+                ArrayList<String> membersList = new ArrayList<String>();
                 for(String name : members){
-                    System.out.println(name);
+                    membersList.add(UserManagement.getUserNameFromUID(name));
                 }
-                if(!members.contains(offendingUser)){
+                if(!membersList.contains(offendingUser)){
                     offendingEDT.setError("Please Enter a Existing User");
                     return;
                 }
@@ -67,10 +69,12 @@ public class AssignPenalty extends AppCompatActivity {
         }
     }
     public void onAssignPenalty(View view) {
-            this.penaltyName = this.penaltyNameEDT.getText().toString();
-            this.penaltyReason = this.penaltyReasonEDT.getText().toString();
-            this.offendingUser = this.offendingEDT.getText().toString();
-            checkInput();
+        this.penaltyName = this.penaltyNameEDT.getText().toString();
+        this.penaltyReason = this.penaltyReasonEDT.getText().toString();
+        this.offendingUser = this.offendingEDT.getText().toString();
+        checkInput();
+        Intent intent = new Intent(this, RewardAndPenalty.class);
+        startActivity(intent);
 
 
     }

@@ -234,11 +234,16 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             userList.remove(userID);
             if(userList.size() == 3) {
                 grpDB.remove(groupID);
+                gcDB.remove(groupID);
+                RewardsManagement.removeRewardsMap(groupID);
+                PenaltyManagement.removePenaltyMap(groupID);
+                Group_Code gc = new Group_Code(gcDB);
+                db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);
             }
             else
                 grpDB.put(groupID,userList);
-            Group gc = new Group(grpDB);
-            db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(gc);
+            Group grp = new Group(grpDB);
+            db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(grp);
 
             DocumentReference docRef  = db.collection(COLLECTIONPATH_USERS).document(userID);
             docRef.update("Group", "",

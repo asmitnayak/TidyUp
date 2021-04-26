@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -37,30 +39,31 @@ public class AddReward extends AppCompatActivity {
         this.rewardNameEDT = findViewById(R.id.rewardName);
         this.rewardDescriptionEDT = findViewById(R.id.rewardDescription);
         this.rewardPointValEDT = findViewById(R.id.rewardPointVal);
-        //When a reward is clicked load reward info into addReward window
-        //This will allow the user to edit the reward.
-        Intent intent = getIntent();
-        listItem = intent.getIntExtra("listItem", -1);
-        if(listItem != -1){
-            String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
-            //Load in reward data
-            rewardsMap = RewardsManagement.getGroupRewardsMap(groupID);
-            rewardsKey = RewardsManagement.getRewardNameList(rewardsMap);
-            String rewardName = rewardsKey.get(listItem);
-            if (rewardName != null) {
-                rewardNameEDT.setText(rewardName);
-                rewardsValue = RewardsManagement.getRewardInfo(groupID, rewardName);;
-                rewardDescriptionEDT.setText(rewardsValue.get(0).toString());
-                rewardPointValEDT.setText(rewardsValue.get(1).toString());
-            }
-        }
 
     }
 
     public void onAddReward(View view) {
-        this.rewardPointVal = Integer.parseInt(this.rewardPointValEDT.getText().toString());
+        String rewardPointValHolder = this.rewardPointValEDT.getText().toString();
         this.rewardDescription = this.rewardDescriptionEDT.getText().toString();
         this.rewardName = this.rewardNameEDT.getText().toString();
+        if (TextUtils.isEmpty(rewardName)){
+            rewardNameEDT.setError("Please Enter a Name");
+            return;
+        }
+        if (TextUtils.isEmpty(rewardDescription)){
+            rewardDescriptionEDT.setError("Please Enter a Description");
+            return;
+        }
+        if (TextUtils.isEmpty(rewardPointValHolder)){
+            rewardPointValEDT.setError("Please Enter Point Value");
+            return;
+        }
+        try{
+            rewardPointVal = Integer.parseInt(this.rewardPointValEDT.getText().toString());
+        }catch(NumberFormatException e){
+            rewardPointValEDT.setError("Only Enter Numbers, No Other Characters Allowed");
+            return;
+        }
         RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid()),
                 this.rewardDescription, this.rewardName, this.rewardPointVal);
         Intent intent = new Intent(this, RewardAndPenalty.class);

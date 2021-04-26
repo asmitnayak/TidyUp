@@ -1,12 +1,16 @@
 package com.example.android.tidyup;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class RewardPopUp extends AppCompatActivity {
 
@@ -62,5 +66,10 @@ public class RewardPopUp extends AppCompatActivity {
 
         getWindow().setLayout((int) (width*.9),(int) (height*.3));
 
+    }
+
+    public void deleteReward(View view){
+        RewardsManagement.removeReward(GroupManagement.getGroupIDFromUserID(FirebaseAuth.getInstance().getUid()), rewardName);
+        startActivity(new Intent(getApplicationContext(), RewardAndPenalty.class));
     }
 }

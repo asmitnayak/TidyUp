@@ -1,5 +1,6 @@
 package com.example.android.tidyup;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -33,6 +34,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class GroupManagement extends AsyncTask<Void, Void, Void> {
+    private static final String COLLECTIONPATH_USERS = "Users";
     private static FirebaseFirestore db;
     private static final String TAG = "GroupManagementFirebase";
     private static final String GROUP_CODE_DB = "GroupCodeDB";
@@ -230,9 +232,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         if(grpDB.containsKey(groupID)){
             ArrayList<String> userList = (ArrayList<String>) grpDB.get(groupID);
             userList.remove(userID);
-
-            // TODO i
-            //  f length of group is 2 then delete group
             if(userList.size() == 3) {
                 grpDB.remove(groupID);
             }
@@ -241,6 +240,9 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             Group gc = new Group(grpDB);
             db.collection(GROUP_DB).document(GROUP_DB_DOCUMENT).set(gc);
 
+            DocumentReference docRef  = db.collection(COLLECTIONPATH_USERS).document(userID);
+            docRef.update("Group", "",
+                    "GroupID", "");
         }
     }
     public static String getGroupCode(String groupID){

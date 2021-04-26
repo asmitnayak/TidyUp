@@ -25,7 +25,7 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     private static final String EXTRA_REWARD_VAL = "EXTRA_REWARD_VAL";
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
     private static final String EXTRA_PENALTY_NAME = "EXTRA_PENALTY_NAME";
-    private static final String EXTRA_PENALTY_DESCRIPT = "EXTRA_PENALTY__DESCRIPT";
+    private static final String EXTRA_PENALTY_DESCRIPT = "EXTRA_PENALTY_DESCRIPT";
 
     private ListView rewardsListView;
     private Map<String, List<Object>> rewardsMap;
@@ -55,9 +55,11 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         mAddPenalty = findViewById(R.id.addPenalty);
         mAssignPenalty = findViewById(R.id.assignPenalty);
 
-        mAddReward.setEnabled(!groupID.equals(""));
-        mAddPenalty.setEnabled(!groupID.equals(""));
-        mAssignPenalty.setEnabled(!groupID.equals(""));
+        if (groupID != null) {
+            mAddReward.setEnabled(!groupID.equals(""));
+            mAddPenalty.setEnabled(!groupID.equals(""));
+            mAssignPenalty.setEnabled(!groupID.equals(""));
+        }
 
         rewardsListView = findViewById(R.id.rewardsList);
         rewardsMap = new HashMap<>();
@@ -158,6 +160,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     }
 
     public void OnAssignPenalty(View view) {
+        Intent intent = new Intent(this, AssignPenalty.class);
+        startActivity(intent);
 
     }
 }

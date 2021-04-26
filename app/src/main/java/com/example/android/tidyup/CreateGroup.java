@@ -16,9 +16,13 @@ import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateGroup extends AppCompatActivity {
     EditText groupName;
@@ -26,7 +30,7 @@ public class CreateGroup extends AppCompatActivity {
     TextView inviteCode;
     String code;
     Button copyBtn;
-
+    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private String gID;
 
@@ -104,7 +108,10 @@ public class CreateGroup extends AppCompatActivity {
         //updates user Info
         UserManagement.updateUserGroup(gID, "Admin", getApplication());
         Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();
-//
+        // add the group name directly to the task collection
+        Map<String, TaskItem> taskMap = new HashMap<>();
+        fFirestore.collection("task").document(groupName.getText().toString()).set(taskMap);
+        //
         // go to task page???
         finish();
         startActivity(new Intent(getApplicationContext(), Account.class));

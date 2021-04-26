@@ -27,7 +27,7 @@ public class GroupSettings extends AppCompatActivity {
     private DocumentReference docRef = fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid());
     boolean randomSetting;
     TextView inviteCode;
-    GroupSettingsAdapter customAdp;
+    static GroupSettingsAdapter customAdp;
     ListView membersList;
     ArrayList<String> members = new ArrayList<String>();
     String groupID;
@@ -88,5 +88,9 @@ public class GroupSettings extends AppCompatActivity {
                     GroupManagement.setGroupTask(groupID, randomSetting);
                 break;
         }
+    }
+
+    public static void updateListView(){
+        customAdp.notifyDataSetChanged();
     }
 }

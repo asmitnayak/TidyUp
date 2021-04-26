@@ -116,7 +116,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             }
         });
 
-        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {

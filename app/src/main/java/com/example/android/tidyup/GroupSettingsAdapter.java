@@ -89,6 +89,7 @@ public class GroupSettingsAdapter extends BaseAdapter {
                 // TODO Auto-generated method stub
                 GroupManagement.removeUserFromGroup(groupID, members.get(i));
                 members.remove(i);
+                GroupSettings.updateListView();
             }
         });
         return view;

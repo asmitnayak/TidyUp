@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -56,15 +57,19 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
@@ -74,7 +79,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     private TextView pageTitle;
 
     ListView taskList;
-
+    private static HashMap<String, Object> userMap = new HashMap<>();
+    private static HashMap<String, Object> userTasks = new HashMap<>();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     //private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     //private FirebaseFirestore taskDatabase;
@@ -107,8 +113,42 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
             }
         });
 
+        userMap = UserManagement.getUserDetails();
+        Object userGroup = userMap.get("Group");
 
-        //DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
+        fFirestore.collection("task")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Map<String, Object> currTaskMap = document.getData();
+                            for (Map.Entry<String,Object> entry : currTaskMap.entrySet()) {
+                                Object currTask = entry.getValue();
+                                String taskName = getTaskName(currTask.toString());
+                                String getDate = getDate(currTask.toString());
+                                String person = getPersonStr(currTask.toString());
+                                String repetition = getRepetition(currTask.toString());
+                                String priority = getPriority(currTask.toString());
+                                String reward = getReward(currTask.toString());
+                                String checked = getChecked(currTask.toString());
+
+                                System.out.println("taskName   : " + taskName);
+                                System.out.println("getDate    : " + getDate);
+                                System.out.println("person     : " + person);
+                                System.out.println("repetition : " + repetition);
+                                System.out.println("priority   : " + priority);
+                                System.out.println("reward     : " + reward);
+                                System.out.println("checked    : " + checked);
+                            }
+
+                        }
+                    }
+                });
+
+
+       // DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
         //docRef.update(tasks);
 
        // ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
@@ -117,7 +157,82 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         //action bar
 
     }
+    public String getTaskName(String str){
+        int index = str.lastIndexOf("taskName=");
+        index = index + 9;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
 
+    public String getPersonStr(String str){
+        int index = str.lastIndexOf("personAssignedToTask=");
+        index = index + 21;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getDate(String str){
+        int index = str.lastIndexOf("dateToBeCompleted=");
+        index = index + 18;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getRepetition(String str){
+        int index = str.lastIndexOf("repetition=");
+        index = index + 11;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getPriority(String str){
+        int index = str.lastIndexOf("priority=");
+        index = index + 9;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getReward(String str){
+        int index = str.lastIndexOf("rewardPenaltyPointValue=");
+        index = index + 24;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getChecked(String str){
+        int index = str.lastIndexOf("isChecked=");
+        index = index + 10;
+        String buildString = "";
+        while(str.charAt(index) != '}'){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
 
     //taskDatabase = FirebaseFirestore.getInstance();
     //if(fAuth.getCurrentUser() != null)

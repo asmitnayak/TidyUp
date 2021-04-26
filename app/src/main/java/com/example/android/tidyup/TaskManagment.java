@@ -53,43 +53,8 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
 
         docRef.update(taskName, addTask);
-        return 1;
-/*
-        int size = taskMap.size() + 1;
-        String taskKey = "task" + size;
- */
 
-/*
-        // if the document exists then we add the task to that collection
-        if(document == null){
-            fFirestore.collection("Task").add(groupId);
-        }
-
-        if(taskListDB.containsKey(groupID)) {
-            Map<String, List<String>> groupTaskMap = new HashMap<>(taskListDB.get(groupID));
-            if(groupTaskMap.containsKey(taskName)){
-                return 0;
-            } else {
-                groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-                taskListDB.put(groupID, groupTaskMap);
-                // Tasks task = new Tasks(taskDB);
-                // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-                // return 1;
-            }
-        } else {
-            Map<String, List<String>> groupTaskMap = new HashMap<>();
-            groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-            taskListDB.put(groupID, groupTaskMap);
-            // Tasks task = new Tasks(taskDB);
-            // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-            // return 1;
-        }
-        TaskManagment.Tasks tasks = new TaskManagment.Tasks(taskListDB);
-        fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(tasks);
         return 1;
-*/
-        // TaskItem addTaskItem = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
-        // taskItems.add(addTaskItem);
     }
 
     public static Map<String, List<String>> getGroupTaskMap(String groupID){
@@ -106,6 +71,26 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             groupTaskMap = new HashMap<>();
         }
         return groupTaskMap;
+    }
+
+    public static HashMap<String, Object> getGroupTaskDetails(){
+//        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+//                        map = document.getData();
+//                    } else {
+//                        Log.d(TAG, "No such document");
+//                    }
+//                } else {
+//                    Log.d(TAG, "get failed with ", task.getException());
+//                }
+//            }
+//        });
+        return (HashMap<String, Object>) userMap;
     }
 
     public static void readGroupTaskDB(){

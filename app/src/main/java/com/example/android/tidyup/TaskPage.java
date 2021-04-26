@@ -96,6 +96,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 popup.show();
             }
         });
+
         //taskList = findViewById(R.id.taskList);
         tasks[0] = "Test Task 1";
 

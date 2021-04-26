@@ -3,13 +3,17 @@ package com.example.android.tidyup;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.WriteResult;
 
 
@@ -49,6 +53,26 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         System.out.println("Group id : " + groupId);
 */
   //      DocumentReference groupRef = fFirestore.collection("Groups").document();
+        fFirestore.collection("Groups")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            int i =0;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> test = document.getData();
+                                for(Object name : test.values()){
+                                    System.out.print(i);
+                                    System.out.print(" value = ");
+                                    System.out.println(name);
+                                    i++;
+                                }
+
+                            }
+                        }
+                    }
+                });
         String groupId = "group1Test";
         String taskKey = "task1";
 
@@ -57,7 +81,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         Map<String, TaskItem> taskMap = new HashMap<>();
         taskMap.put(taskKey, addTask);
 
-        fFirestore.collection("Task").document(groupId).set(taskMap);
+        fFirestore.collection("task").document(groupId).set(taskMap);
         return 1;
 /*
         // if the document exists then we add the task to that collection

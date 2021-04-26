@@ -60,6 +60,26 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         return 1;
     }
 
+    public static int removeReward(String groupID, String rewardName){
+        if(grDB == null){
+            readGroupRewardsDB();
+            if(grDB == null){
+                return -1;
+            }
+        }
+        if(grDB.containsKey(groupID)) {
+            Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
+            if (groupRewardMap.containsKey(rewardName)) {
+                groupRewardMap.remove(rewardName);
+                grDB.replace(groupID, groupRewardMap);
+                //remove reward
+            }
+        }
+        Rewards rewards = new Rewards(grDB);
+        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+        return 1;
+    }
+
 
 
 
@@ -96,13 +116,13 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             return null;
         }
     }
+
     public static ArrayList<String> getRewardNameList(Map<String, List<Object>> groupRewardMap) {
         ArrayList<String> rewardNames = new ArrayList<String>();
         if (groupRewardMap != null){
             rewardNames = new ArrayList<String>(groupRewardMap.keySet());
         }
         return rewardNames;
-
     }
 
 
@@ -188,8 +208,6 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             Log.d(TAG, "CurrWeek " + currWeek);
         }
     }
-
-
 
     @Override
     protected Void doInBackground(Void... voids) {

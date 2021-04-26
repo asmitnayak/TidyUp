@@ -17,6 +17,9 @@
         <activity
             android:name=".RewardPopUp"
             android:theme="@style/Theme.TidyUp.TransparentBack" />
+        <activity
+            android:name=".PenaltyPopUp"
+            android:theme="@style/Theme.TidyUp.TransparentBack" />
         <activity android:name=".AddReward" />
         <activity android:name=".JoinGroup" />
         <activity android:name=".CreateGroup" />

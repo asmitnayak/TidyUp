@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
@@ -34,28 +35,21 @@ public class AddPenalty extends AppCompatActivity {
         pm.execute();
         this.penaltyNameEDT = findViewById(R.id.penaltyName);
         this.penaltyDescriptionEDT = findViewById(R.id.penaltyDescription);
-        //When a penalty is clicked load penalty info into addPenalty window
-        //This will allow the user to edit the penalty.
-        Intent intent = getIntent();
-        listItem = intent.getIntExtra("listItem", -1);
-        if(listItem != -1){
-            String groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
-            //Load in penalty data
-            penaltyMap = PenaltyManagement.getGroupPenaltyMap(groupID);
-            penaltyKey = PenaltyManagement.getPenaltyNameList(penaltyMap);
-            String penaltyName = penaltyKey.get(listItem);
-            if (penaltyName != null) {
-                penaltyNameEDT.setText(penaltyName);
-                penaltiesValue = PenaltyManagement.getPenaltyInfo(groupID, penaltyName);;
-                penaltyDescriptionEDT.setText(penaltiesValue.get(0).toString());
-            }
-        }
 
     }
 
     public void onAddPenalty(View view) {
         this.penaltyDescription = this.penaltyDescriptionEDT.getText().toString();
         this.penaltyName = this.penaltyNameEDT.getText().toString();
+        if (TextUtils.isEmpty(penaltyName)){
+            penaltyNameEDT.setError("Please Enter a Name");
+            return;
+        }
+        if (TextUtils.isEmpty(penaltyDescription)){
+            penaltyDescriptionEDT.setError("Please Enter a Description");
+            return;
+        }
+
         PenaltyManagement.addPenalty(GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid()),
                 this.penaltyDescription, this.penaltyName);
         Intent intent = new Intent(this, RewardAndPenalty.class);

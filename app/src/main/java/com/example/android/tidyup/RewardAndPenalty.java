@@ -158,6 +158,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     }
 
     public void OnAssignPenalty(View view) {
+        Intent intent = new Intent(this, AssignPenalty.class);
+        startActivity(intent);
 
     }
 }

@@ -60,7 +60,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private String grpID;
     private String grpName;
 
-    private ImageView menu;
+    private ImageView menu, backButton;
     private TextView pageTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
         //action bar
         menu = findViewById(R.id.menu);
+        backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);
         pageTitle.setText("Account");
 
@@ -154,6 +155,13 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 popup.setOnMenuItemClickListener( Account.this);
                 popup.inflate(R.menu.account_page_menu);
                 popup.show();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Account.super.onBackPressed();
             }
         });
 

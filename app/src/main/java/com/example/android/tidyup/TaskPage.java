@@ -69,7 +69,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
     public static ArrayList<TaskItem> taskItems = new ArrayList<TaskItem>();
     CustomAdapter customAdp;
-    private ImageView menu;
+    private ImageView menu, backButton;
     private TextView pageTitle;
 
     ListView taskList;
@@ -84,6 +84,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         setContentView(R.layout.activity_task_page);
 
         menu = findViewById(R.id.menu);
+        backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);
         pageTitle.setText("Tasks");
 
@@ -94,6 +95,13 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 popup.setOnMenuItemClickListener( TaskPage.this);
                 popup.inflate(R.menu.task_page_menu);
                 popup.show();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaskPage.super.onBackPressed();
             }
         });
 
@@ -153,7 +161,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
             case R.id.tpAccountPage:
                 startActivity(new Intent(getApplicationContext(),Account.class));
                 return true;
-            case R.id.acRewardsAndPenaltyPage:
+            case R.id.tpRewardsAndPenaltyPage:
 //                finish();
                 startActivity(new Intent(getApplicationContext(), RewardAndPenalty.class));
                 return true;

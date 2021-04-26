@@ -9,8 +9,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,6 +42,7 @@ public class CreateAccount extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private FirebaseFirestore fFirestore;
     private ProgressBar mProgressBar;
+    private TextView mLoginInstead;
 
 //    CreateAccount(FirebaseFirestore firestore,FirebaseAuth fireAuth){
 //        fAuth = fireAuth;
@@ -76,6 +79,7 @@ public class CreateAccount extends AppCompatActivity {
         mPasswordConfView = findViewById(R.id.passwordInputConfirm);
         mRoleSpinner = spinner;
         mCreateButton = findViewById(R.id.registerLink);
+        mLoginInstead = findViewById(R.id.cLoginInstead);
 
         fAuth = FirebaseAuth.getInstance();
         fFirestore = FirebaseFirestore.getInstance();
@@ -89,6 +93,14 @@ public class CreateAccount extends AppCompatActivity {
             finish();
         }
         */
+
+        mLoginInstead.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(getApplicationContext(), Login.class));
+            }
+        });
 
     }
 

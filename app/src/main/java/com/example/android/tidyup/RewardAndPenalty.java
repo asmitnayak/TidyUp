@@ -39,7 +39,7 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     private List penaltyKey;
     private List penaltyValue;
 
-    private ImageView menu;
+    private ImageView menu, backButton;
     private TextView pageTitle;
 
     private Button mAddReward, mAddPenalty, mAssignPenalty;
@@ -89,6 +89,7 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         menu = findViewById(R.id.menu);
         pageTitle = findViewById(R.id.pageTitle);
         pageTitle.setText("Rewards and Penalties");
+        backButton = findViewById(R.id.back_button);
 
         rewardsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -132,6 +133,13 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
                 popup.setOnMenuItemClickListener( RewardAndPenalty.this);
                 popup.inflate(R.menu.reward_and_penalty_menu);
                 popup.show();
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RewardAndPenalty.super.onBackPressed();
             }
         });
     }

@@ -3,12 +3,14 @@ package com.example.android.tidyup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +23,7 @@ public class ForgotPassword extends AppCompatActivity {
     private Button mResetPassword;
     private ProgressBar mProgressBar;
     private FirebaseAuth fAuth;
+    private TextView mLoginInstead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class ForgotPassword extends AppCompatActivity {
         mResetPassword = findViewById(R.id.fpResetPasswordButton);
         mProgressBar = findViewById(R.id.fpProgressBar);
         mProgressBar.setVisibility(View.INVISIBLE);
+        mLoginInstead = findViewById(R.id.fpLoginInstead);
 
         fAuth = FirebaseAuth.getInstance();
         
@@ -38,6 +42,14 @@ public class ForgotPassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 resetPassword();
+            }
+        });
+
+        mLoginInstead.setOnClickListener (new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(getApplicationContext(), Login.class));
             }
         });
     }
@@ -70,6 +82,8 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
     }
+
+
 
 
 }

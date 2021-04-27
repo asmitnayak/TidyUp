@@ -57,7 +57,7 @@ public class AddTaskToTaskPage extends TaskPage{
         int index = str.lastIndexOf("Group=");
         index = index + 6;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -68,7 +68,7 @@ public class AddTaskToTaskPage extends TaskPage{
         int index = str.lastIndexOf("Username=");
         index = index + 9;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }

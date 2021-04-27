@@ -80,38 +80,6 @@ public class AddTaskToTaskPage extends TaskPage{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task_to_task_page);
 
-        CollectionReference groupNames = fFirestore.collection("Groups");
-
-        Spinner spinnerPerson = findViewById(R.id.personAssignedToTask);
-
-        ArrayList<String> personList = new ArrayList<>();
- /*       userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");
-        String userGrpStr = userGroup.toString();
-
-        fFirestore.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    Map<String, Object> currTaskMap = document.getData();
-                    String group = getGroup(currTaskMap.toString());
-                    String name;
-                    if(group.equals(userGrpStr)){
-                        name = getName(currTaskMap.toString());
-                        name.trim();
-                        personList.add(name);
-                    }
-                }
-            }
-        });
-        System.out.println("Person list size : " + personList.size());
-*/
-        personList.add("person 1");
-        personList.add("person 2");
-        ArrayAdapter<String> personListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, personList);
-        personListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPerson.setAdapter(personListAdapter);
-
         Spinner spinnerRewardPenaltyValue = findViewById(R.id.rewardPenaltyValue);
         ArrayList<String> pointList = new ArrayList<>();
         pointList.add("1");
@@ -142,7 +110,7 @@ public class AddTaskToTaskPage extends TaskPage{
         repetitionListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRepetition.setAdapter(repetitionListAdapter);
 
-        mPersonSpinner = spinnerPerson;
+       // mPersonSpinner = spinnerPerson;
         mSpinnerRewardPenaltyValue = spinnerRewardPenaltyValue;
         mSpinnerPriority = spinnerPriority;
         mSpinnerRepetition = spinnerRepetition;
@@ -280,13 +248,16 @@ public class AddTaskToTaskPage extends TaskPage{
         EditText nameIn = (EditText) findViewById(R.id.taskName);
         String name = nameIn.getText().toString();
 
+        EditText person = (EditText) findViewById(R.id.personAssignedToTask);
+        String personStr = person.getText().toString();
+
         EditText dueDate = (EditText) findViewById(R.id.taskDueDate);
         String date = dueDate.getText().toString();
 
         String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
         int rewardInt = Integer.parseInt(rewardString);
 
-        TaskManagment.addTaskItem(name, mPersonSpinner.getSelectedItem().toString(), rewardInt,
+        TaskManagment.addTaskItem(name, personStr, rewardInt,
                 mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
 
         finish();

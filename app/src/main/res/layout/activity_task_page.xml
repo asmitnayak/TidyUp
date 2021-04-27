@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/taskNameLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/completeTask"
             android:layout_marginStart="0dp"
@@ -60,7 +60,7 @@
 
         <TextView
             android:id="@+id/taskPersonLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskNameLayout"
             android:layout_marginStart="0dp"
@@ -73,7 +73,7 @@
 
         <TextView
             android:id="@+id/taskPointValueLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskPersonLayout"
             android:layout_marginStart="0dp"
@@ -86,10 +86,10 @@
 
         <TextView
             android:id="@+id/taskRepetitionLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_below="@+id/completeTask"
-            android:layout_marginStart="110dp"
+            android:layout_below="@+id/taskPointValueLayout"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/taskSelect"
             android:fontFamily="@font/architects_daughter"
@@ -98,10 +98,10 @@
 
         <TextView
             android:id="@+id/taskPriorityLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskRepetitionLayout"
-            android:layout_marginStart="110dp"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/taskSelect"
@@ -111,10 +111,10 @@
 
         <TextView
             android:id="@+id/taskDateLayout"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskPriorityLayout"
-            android:layout_marginStart="110dp"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
 
             android:layout_marginTop="8dp"
@@ -134,15 +134,15 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="18dp" />
-        <!--
-        <ListView
-            android:id="@+id/taskList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/completeTask"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
-    -->
+        <!--        <ListView-->
+        <!--            android:id="@+id/taskList"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_below="@+id/completeTask"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent" />-->
+
+
     </RelativeLayout>
 </LinearLayout>

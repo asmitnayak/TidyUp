@@ -85,7 +85,7 @@ public class AddTaskToTaskPage extends TaskPage{
         Spinner spinnerPerson = findViewById(R.id.personAssignedToTask);
 
         ArrayList<String> personList = new ArrayList<>();
-   /*     userMap = UserManagement.getUserDetails();
+ /*       userMap = UserManagement.getUserDetails();
         Object userGroup = userMap.get("Group");
         String userGrpStr = userGroup.toString();
 
@@ -103,11 +103,11 @@ public class AddTaskToTaskPage extends TaskPage{
                     }
                 }
             }
-        });*/
-
+        });
+        System.out.println("Person list size : " + personList.size());
+*/
         personList.add("person 1");
         personList.add("person 2");
-
         ArrayAdapter<String> personListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, personList);
         personListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPerson.setAdapter(personListAdapter);

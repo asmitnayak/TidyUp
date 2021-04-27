@@ -174,12 +174,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                     String repetition = documentSnapshot.getString(KEY_REPETITION);
                     String date = documentSnapshot.getString(KEY_DATE);
 
-                    mtaskName.setText("taskName: " + name);
-                    mtaskPerson.setText("personAssignedToTask: " + person);
-                    mtaskPoint.setText("rewardPenaltyPointValue: " + point);
-                    mtaskPriority.setText("priority: " + priority);
-                    mtaskRepetition.setText("repetition: " + repetition);
-                    mtaskDate.setText("dateToBeCompleted: " + date);
+
 
                 }else {
                     Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
@@ -222,13 +217,21 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                                 String reward = getReward(currTask.toString());
                                 String checked = getChecked(currTask.toString());
 
+
+                                mtaskName.setText("taskName: " + taskName);
+                                mtaskPerson.setText("personAssignedToTask: " + person);
+                                mtaskPoint.setText("rewardPenaltyPointValue: " + reward);
+                                mtaskPriority.setText("priority: " + priority);
+                                mtaskRepetition.setText("repetition: " + repetition);
+                                mtaskDate.setText("dateToBeCompleted: " + getDate);
+                                /*
                                 System.out.println("taskName   : " + taskName);
                                 System.out.println("getDate    : " + getDate);
                                 System.out.println("person     : " + person);
                                 System.out.println("repetition : " + repetition);
                                 System.out.println("priority   : " + priority);
                                 System.out.println("reward     : " + reward);
-                                System.out.println("checked    : " + checked);
+                                System.out.println("checked    : " + checked);*/
                             }
 
                         }
@@ -304,7 +307,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("rewardPenaltyPointValue=");
         index = index + 24;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }

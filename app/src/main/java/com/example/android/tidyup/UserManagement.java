@@ -152,7 +152,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     protected static void setUserRole(String role){
         docRef.update(KEY_ROLE, role);
     }
-
+    protected static void setToken(String token) {docRef.update("Token", token);}
+    protected static String getUserTokenFromUID(String uid){return otherUserMap.get(uid).get(3);}
     protected static void setUserGroupID(String groupID){
         docRef.update(KEY_GroupID, groupID);
     }
@@ -185,6 +186,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                             userInfo.add((String) document.getData().get("Username"));
                             userInfo.add((String) document.getData().get("UserPoints"));
                             userInfo.add((String) document.getData().get("Email"));
+                            userInfo.add((String) document.getData().get("Token"));
                             otherUserMap.put(document.getId(), userInfo);
                             //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
                         }
@@ -207,6 +209,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                             userInfo.add((String) document.getData().get("Username"));
                             userInfo.add((String) document.getData().get("UserPoints"));
                             userInfo.add((String) document.getData().get("Email"));
+                            userInfo.add((String) document.getData().get("Token"));
                             otherUserMap.put(document.getId(), userInfo);
                             //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
                         }
@@ -251,6 +254,8 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
+
+        addStringField("Token");
 
         super.onPreExecute();
     }

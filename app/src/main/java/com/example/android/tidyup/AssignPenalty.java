@@ -41,7 +41,7 @@ public class AssignPenalty extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(offendingUser)){
-            offendingEDT.setError("Please Enter A User");
+            offendingEDT.setError("Please Enter A User Email");
             return;
         }
         groupID = (String) UserManagement.getUserDetails().get("GroupID");
@@ -57,35 +57,31 @@ public class AssignPenalty extends AppCompatActivity {
                     }
                 }
             }
-            if(members != null){
-                ArrayList<String> membersList = new ArrayList<String>();
-                for(String name : members){
-                    membersList.add(UserManagement.getUserNameFromUID(name));
-                }
-                if(!membersList.contains(offendingUser)){
-                    offendingEDT.setError("Please Enter a Existing User");
-                    return;
-                }
-            }
         }
+
+    }
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
     }
     public void onAssignPenalty(View view) {
         this.penaltyName = this.penaltyNameEDT.getText().toString();
         this.penaltyReason = this.penaltyReasonEDT.getText().toString();
         this.offendingUser = this.offendingEDT.getText().toString();
         checkInput();
-
-//        Intent i = new Intent(Intent.ACTION_SEND);
-//        i.setType("message/rfc822");
-//        i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-//        i.putExtra(Intent.EXTRA_SUBJECT, "You have been assigned a penalty ");
-//        i.putExtra(Intent.EXTRA_TEXT, "Your penalty is " + penaltyName +
-//                        ". The reason you are receiving this penalty is " + penaltyReason);
-//        try {
-//            startActivity(Intent.createChooser(i, "Send mail..."));
-//        } catch (android.content.ActivityNotFoundException ex) {
-//            Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
-//        }
+        if(isValid(offendingUser)) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{offendingUser});
+            i.putExtra(Intent.EXTRA_SUBJECT, "You have been assigned a penalty ");
+            i.putExtra(Intent.EXTRA_TEXT, "Your penalty is " + penaltyName +
+                    ". The reason you are receiving this penalty is " + penaltyReason);
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
+        }
 
         Intent intent = new Intent(this, RewardAndPenalty.class);
         startActivity(intent);

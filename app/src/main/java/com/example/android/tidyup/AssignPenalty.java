@@ -25,6 +25,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
     //EditText offendingEDT;
     String offendingUser;
     String groupID;
+    private String offendingUserUID;
     LinearLayout radioGroupLayout;
     RadioGroup rgroup;
     Map<String, List<Object>> penaltyMap;
@@ -106,9 +107,26 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
             i.putExtra(Intent.EXTRA_TEXT, "Your penalty is " + penaltyName +
                     ". The reason you are receiving this penalty is " + penaltyReason);
             try {
+                switch (PenaltyManagement.assignPenalty(groupID, penaltyName, offendingUserUID)){
+                    case -1:
+                        Toast.makeText(AssignPenalty.this, "No Penalty Database found", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 0:
+                        Toast.makeText(AssignPenalty.this, "No Penalty Database found for current Group named" + GroupManagement.getGroupName(groupID), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 1:
+                        Toast.makeText(AssignPenalty.this, "Successfully assigned penalty" + penaltyName + " to user " + UserManagement.getUserNameFromUID(offendingUserUID), Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(AssignPenalty.this, "No PenaltyName found with name " + penaltyName, Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                }
                 startActivity(Intent.createChooser(i, "Send mail..."));
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            } catch (Exception e){
+                Toast.makeText(AssignPenalty.this, "Error! " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -121,7 +139,8 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         try {
-            offendingUser = UserManagement.getEmailFromUID(membersList.get((int) ((RadioButton) v).getId() - 1));
+            offendingUserUID = membersList.get((int) ((RadioButton) v).getId() - 1);
+            offendingUser = UserManagement.getEmailFromUID(offendingUserUID);
         }catch (Exception e){
             Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }

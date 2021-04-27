@@ -207,10 +207,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         userMap = UserManagement.getUserDetails();
         Object userGroup = userMap.get("Group");
 
-        fFirestore.collection("task")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
+        fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -325,36 +322,10 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    //taskDatabase = FirebaseFirestore.getInstance();
-    //if(fAuth.getCurrentUser() != null)
-    //  groupID = GroupManagement.getGroupIDFromUserID(fAuth.getUid());
-    //try {
-    //foodItems = m.read_menu();
-    //} catch (IOException e) {
-    //    e.printStackTrace();
-    //}
-/*
-        taskList = (ListView) findViewById(R.id.taskList);
-
-        customAdp = new CustomAdapter(getApplicationContext(), taskItems);
-        taskList.setAdapter(customAdp);
-  */
-    // when a task is selected and the completeTask button is pressed
-    // the task will be removed from the task page
-   /* public void completeTask(View view){
-        TaskManagement.removeTaskFromGroup(groupID, taskName);
-
-    }*/
-
     public void addTask(View view){
         Intent intent = new Intent(this, AddTaskToTaskPage.class);
         startActivity(intent);
     }
-
-    // public void getGroupTasks(String groupID) {
-        // if(taskDatabase == null)
-         //    return;
-   //  }
 
     public void completeTask(View view){
 

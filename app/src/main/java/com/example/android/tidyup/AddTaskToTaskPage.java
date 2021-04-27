@@ -18,13 +18,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import android.view.View.OnClickListener;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class AddTaskToTaskPage extends TaskPage{
 
@@ -46,7 +51,29 @@ public class AddTaskToTaskPage extends TaskPage{
     private Button addTaskButton;
     private EditText taskName;
     private EditText date;
+    private static HashMap<String, Object> userMap = new HashMap<>();
 
+    public String getGroup(String str){
+        int index = str.lastIndexOf("Group=");
+        index = index + 6;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
+
+    public String getName(String str){
+        int index = str.lastIndexOf("Username=");
+        index = index + 9;
+        String buildString = "";
+        while(str.charAt(index) != ','){
+            buildString += str.charAt(index);
+            index++;
+        }
+        return buildString;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +85,29 @@ public class AddTaskToTaskPage extends TaskPage{
         Spinner spinnerPerson = findViewById(R.id.personAssignedToTask);
 
         ArrayList<String> personList = new ArrayList<>();
-        personList.add("Asmit");
-        personList.add("Alvin");
-        personList.add("Kao");
-        personList.add("Monica");
-        personList.add("Lucas");
-        personList.add("Sarah");
+   /*     userMap = UserManagement.getUserDetails();
+        Object userGroup = userMap.get("Group");
+        String userGrpStr = userGroup.toString();
+
+        fFirestore.collection("Users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Map<String, Object> currTaskMap = document.getData();
+                    String group = getGroup(currTaskMap.toString());
+                    String name;
+                    if(group.equals(userGrpStr)){
+                        name = getName(currTaskMap.toString());
+                        name.trim();
+                        personList.add(name);
+                    }
+                }
+            }
+        });*/
+
+        personList.add("person 1");
+        personList.add("person 2");
+
         ArrayAdapter<String> personListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, personList);
         personListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPerson.setAdapter(personListAdapter);

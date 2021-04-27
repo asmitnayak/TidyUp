@@ -95,9 +95,9 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         return email.matches(regex);
     }
     public void onAssignPenalty(View view) {
-        this.penaltyName = this.penaltyNameEDT.getText().toString();
-        this.penaltyReason = this.penaltyReasonEDT.getText().toString();
-        //this.offendingUser = this.offendingEDT.getText().toString();
+        this.penaltyName = this.penaltyNameEDT.getText().toString().toLowerCase();
+        this.penaltyReason = this.penaltyReasonEDT.getText().toString().toLowerCase();
+        //this.offendingUser = this.offendingEDT.getText().toString().toLowerCase();
         checkInput();
         if(isValid(offendingUser)) {
             Intent i = new Intent(Intent.ACTION_SEND);

@@ -302,7 +302,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     for(int i=0;i<memberList.size();i++){
                         String otherId = memberList.get(i);
                         String userToken = UserManagement.getUserTokenFromUID(otherId);
-                        sendNotifications(userToken, "Tidy Up",arr[1] + " has left the group");
+                        NotificationManager.sendNotifications(userToken, "Tidy Up",arr[1] + " has left the group",getApplicationContext(),apiService);
                     }
                     finish();
                     startActivity(new Intent(getApplicationContext(), Account.class));
@@ -375,25 +375,6 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         });
     }
 
-    public void sendNotifications(String usertoken, String title, String message) {
-        Data data = new Data(title, message);
-        NotificationSender sender = new NotificationSender(data, usertoken);
-        apiService.sendNotifcation(sender).enqueue(new Callback<MyResponse>() {
-            @Override
-            public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
-                if (response.code() == 200) {
-                    if (response.body().success != 1) {
-                        Toast.makeText(Account.this, "Failed ", Toast.LENGTH_LONG);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MyResponse> call, Throwable t) {
-
-            }
-        });
-    }
     //@Override
     public void onResume()
     {  // After a pause OR at startup

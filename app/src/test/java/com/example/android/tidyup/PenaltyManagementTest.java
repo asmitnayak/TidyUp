@@ -1,4 +1,8 @@
 package com.example.android.tidyup;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
@@ -35,4 +39,42 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PenaltyManagementTest {
+    private PenaltyManagement pm;
+
+    @Before
+    public void setUp() {
+
+        /////////////////////////////////
+        //////   MOCKING CLASSES   //////
+        /////////////////////////////////
+
+        FirebaseFirestore mockFirestore = mock(FirebaseFirestore.class);
+        FirebaseAuth mockFireAuth = mock(FirebaseAuth.class);
+        FirebaseUser mockFireUser = mock(FirebaseUser.class);
+        CollectionReference mockCollections = mock(CollectionReference.class);
+        DocumentReference mockDocs = mock(DocumentReference.class);
+
+        ///////////////////////////////////
+        //////   MOCKING FUNCTIONS   //////
+        ///////////////////////////////////
+
+        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
+        doReturn("example").when(mockFireUser).getUid();
+        doReturn(mockCollections).when(mockFirestore).collection(anyString());
+        doReturn(mockDocs).when(mockCollections).document(anyString());
+
+        //////////////////////////////////
+        //////   Penalty Management  //////
+        //////////////////////////////////
+
+        pm = new PenaltyManagement(mockFirestore, mockFireAuth, "gid1", "group1", "example");
+        GroupManagement.addGroupCodes("gid1","gc1");
+        GroupManagement.addGroupCodes("gid2","gc2");
+        GroupManagement.addGroupCodes("gid3","gc3");
+        GroupManagement.addGroupCodes("gid1","gc4");
+
+        GroupManagement.addUserToGroup("gid1","example","gc11","group1");
+        GroupManagement.addUserToGroup("gid2","test","gc21","group2");
+
+    }
 }

@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
-    private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+    private static FirebaseAuth fAuth;
+    private static FirebaseFirestore fFirestore;
     private static final String COLLECTIONPATH_REWARDS_PENALTIES = "Rewards_Penalties";
     private static final String DOCUMENTPATH_PENALTY = "Penalty";
     private static final String DOCUMENTPATH_REWARD_UPDATER = "PenaltyUpdater";
@@ -31,6 +31,23 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
     private static final String EXTRA_PENALTY_DESCRIPT = "EXTRA_PENALTY_DESCRIPT";
     private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY);
     private static Map<String, Map<String, List<Object>>> grDB;
+    private static Calendar cal;
+
+    // Testing only
+    public PenaltyManagement(FirebaseFirestore firestore, FirebaseAuth fireAuth, String groupID, String groupName, String userID) {
+        fFirestore = firestore;
+        cal = Calendar.getInstance();
+        fAuth = fireAuth;
+        grDB = new HashMap<>();
+
+
+        //grDB.put(groupID, new ArrayList<>(Arrays.asList("false", "GroupName:" + groupName, "WeekofYear:" + String.valueOf(cal.get(Calendar.WEEK_OF_YEAR)), userID)));
+    }
+    public PenaltyManagement(){
+       fFirestore = FirebaseFirestore.getInstance();
+       fAuth = FirebaseAuth.getInstance();
+       cal = Calendar.getInstance();
+    }
     //Initialized grDB by reading the document from the database
     public static void readGroupPenaltyDB() {
         DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY);

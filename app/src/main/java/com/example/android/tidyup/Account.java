@@ -161,9 +161,11 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Account.super.onBackPressed();
+                finish();
+                //Account.super.onBackPressed();
             }
         });
+
 
         mGroup.addTextChangedListener(new TextWatcher() {
             @Override
@@ -172,7 +174,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 String[] arr = str.split(":");
                 if(arr.length < 2)
                     return;
-                mAddMembers.setEnabled(!arr[1].equalsIgnoreCase("No Group Yet"));
+                mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
             }
 
             @Override
@@ -276,11 +278,14 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "",
                     "GroupID", "");
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Account.class));
                 }
             });
             leaveAlert.setNegativeButton("Cancel", null);
             leaveAlert.show();
         }
+
     }
 
     public void addMembers(View view){
@@ -312,6 +317,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                             GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
                             addedUserDoc.update(KEY_GroupID, grpID,
                                                 KEY_Group, grpName);
+                            mNewUserEmail.setText("");
 
                         } else {
                             Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();

@@ -195,7 +195,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TaskPage.super.onBackPressed();
+                finish();
+                //TaskPage.super.onBackPressed();
             }
         });
 

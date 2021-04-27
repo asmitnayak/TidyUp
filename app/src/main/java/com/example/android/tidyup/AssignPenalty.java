@@ -3,32 +3,61 @@ package com.example.android.tidyup;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AssignPenalty extends AppCompatActivity {
+public class AssignPenalty extends AppCompatActivity implements View.OnClickListener{
     EditText penaltyNameEDT;
     String penaltyName;
     EditText penaltyReasonEDT;
     String penaltyReason;
-    EditText offendingEDT;
+    //EditText offendingEDT;
     String offendingUser;
     String groupID;
+    LinearLayout radioGroupLayout;
+    RadioGroup rgroup;
     Map<String, List<Object>> penaltyMap;
+    private List<String> membersList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assign_penalty);
         this.penaltyNameEDT = findViewById(R.id.penaltyName);
         this.penaltyReasonEDT = findViewById(R.id.reason);
-        this.offendingEDT = findViewById(R.id.user);
+        radioGroupLayout = findViewById(R.id.apRewardButtonGroup);
+
+        membersList = GroupManagement.getGroupMemberList((String) UserManagement.getUserDetails().get("GroupID"));
+        rgroup = new RadioGroup(this);
+        rgroup.setOrientation(RadioGroup.VERTICAL);
+        RadioGroup.LayoutParams r12;
+        try {
+            for (int i = 0; i < membersList.size(); i++) {
+                RadioButton r1 = new RadioButton(this);
+                r1.setText(UserManagement.getUserNameFromUID(membersList.get(i)));
+                Typeface font = Typeface.createFromAsset(getAssets(), "fonts/ArchitectsDaughter-Regular.ttf");
+                r1.setTypeface(font);
+                r1.setTextSize(20);
+                r1.setTextColor(getApplication().getResources().getColor(R.color.fontAndButtonColor));
+                r1.setId(i + 1);
+                r1.setOnClickListener(this);
+                r12 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
+                rgroup.addView(r1, r12);
+            }
+            radioGroupLayout.addView(rgroup);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     public void checkInput(){
@@ -41,7 +70,7 @@ public class AssignPenalty extends AppCompatActivity {
             return;
         }
         if (TextUtils.isEmpty(offendingUser)){
-            offendingEDT.setError("Please Enter A User Email");
+            //offendingEDT.setError("Please Enter A User Email");
             return;
         }
         groupID = (String) UserManagement.getUserDetails().get("GroupID");
@@ -67,7 +96,7 @@ public class AssignPenalty extends AppCompatActivity {
     public void onAssignPenalty(View view) {
         this.penaltyName = this.penaltyNameEDT.getText().toString();
         this.penaltyReason = this.penaltyReasonEDT.getText().toString();
-        this.offendingUser = this.offendingEDT.getText().toString();
+        //this.offendingUser = this.offendingEDT.getText().toString();
         checkInput();
         if(isValid(offendingUser)) {
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -87,5 +116,14 @@ public class AssignPenalty extends AppCompatActivity {
         startActivity(intent);
 
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        try {
+            offendingUser = UserManagement.getEmailFromUID(membersList.get((int) ((RadioButton) v).getId() - 1));
+        }catch (Exception e){
+            Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

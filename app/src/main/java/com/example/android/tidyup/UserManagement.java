@@ -115,6 +115,11 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     public static String getUserNameFromUID (String uid){
         return ((List<String>)otherUserMap.get(uid)).get(0);
     }
+
+    public static String getEmailFromUID (String uid){
+        return ((List<String>)otherUserMap.get(uid)).get(2);
+    }
+
     /*
     public static String getUserPointsFromUID (String uid){
         return ((List<String>)otherUserMap.get(uid)).get(1);
@@ -179,6 +184,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                             userInfo = new ArrayList<String>();
                             userInfo.add((String) document.getData().get("Username"));
                             userInfo.add((String) document.getData().get("UserPoints"));
+                            userInfo.add((String) document.getData().get("Email"));
                             otherUserMap.put(document.getId(), userInfo);
                             //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
                         }
@@ -200,6 +206,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                             userInfo = new ArrayList<String>();
                             userInfo.add((String) document.getData().get("Username"));
                             userInfo.add((String) document.getData().get("UserPoints"));
+                            userInfo.add((String) document.getData().get("Email"));
                             otherUserMap.put(document.getId(), userInfo);
                             //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
                         }

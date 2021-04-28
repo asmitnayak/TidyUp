@@ -105,6 +105,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     private static final String KEY_DATE= "dateToBeCompleted";
     private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
 
+
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_TASKS).document(fAuth.getCurrentUser().getUid());
 
@@ -115,6 +116,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
 
+        Map<String, Map<String, Object>> test = TaskManagment.getGroupTaskMap("test");
+/*
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);
@@ -127,7 +130,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
 
-// load and display user info on Task Page
+    // load and display user info on Task Page
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -199,10 +202,16 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 //TaskPage.super.onBackPressed();
             }
         });
+*/
+        mtaskName = findViewById(R.id.taskNameLayout);
+        mtaskPerson = findViewById(R.id.taskPersonLayout);
+        mtaskPoint = findViewById(R.id.taskPointValueLayout);
+        mtaskPriority = findViewById(R.id.taskPriorityLayout);
+        mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
+        mtaskDate = findViewById(R.id.taskDateLayout);
 
         userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");
-
+        Object userGroup = userMap.get("Group");;
         fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -217,7 +226,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                                 String priority = getPriority(currTask.toString());
                                 String reward = getReward(currTask.toString());
                                 String checked = getChecked(currTask.toString());
-
 
                                 mtaskName.setText("taskName: " + taskName);
                                 mtaskPerson.setText("personAssignedToTask: " + person);
@@ -249,7 +257,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         //action bar
 
     }
-    public String getTaskName(String str){
+    public static String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");
         index = index + 9;
         String buildString = "";
@@ -260,7 +268,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getPersonStr(String str){
+    public static String getPersonStr(String str){
         int index = str.lastIndexOf("personAssignedToTask=");
         index = index + 21;
         String buildString = "";
@@ -271,7 +279,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getDate(String str){
+    public static String getDate(String str){
         int index = str.lastIndexOf("dateToBeCompleted=");
         index = index + 18;
         String buildString = "";
@@ -282,7 +290,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getRepetition(String str){
+    public static String getRepetition(String str){
         int index = str.lastIndexOf("repetition=");
         index = index + 11;
         String buildString = "";
@@ -293,7 +301,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getPriority(String str){
+    public static String getPriority(String str){
         int index = str.lastIndexOf("priority=");
         index = index + 9;
         String buildString = "";
@@ -304,7 +312,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getReward(String str){
+    public static String getReward(String str){
         int index = str.lastIndexOf("rewardPenaltyPointValue=");
         index = index + 24;
         String buildString = "";
@@ -315,7 +323,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getChecked(String str){
+    public static String getChecked(String str){
         int index = str.lastIndexOf("isChecked=");
         index = index + 10;
         String buildString = "";

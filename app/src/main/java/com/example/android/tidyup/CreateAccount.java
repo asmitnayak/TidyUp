@@ -189,6 +189,8 @@ public class CreateAccount extends AppCompatActivity {
                     userMap.put("Role", role);
                     userMap.put("GroupID", "");
                     userMap.put("Group", "");
+                    userMap.put("Task", "");
+
                     // Store user information into Firestore
                     fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

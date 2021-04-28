@@ -213,7 +213,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     public static void resetUserRewards(String grpID){
         cal = Calendar.getInstance();
         if (grpID != null) {
-            int listedWeek =  Integer.parseInt(GroupManagement.getWeekOfYear(grpID));;
+            int listedWeek =  Integer.parseInt(GroupManagement.getWeekOfYear(grpID));
             int currWeek = cal.get(cal.WEEK_OF_YEAR);
             if (listedWeek != currWeek){
                 String sCurrWeek = String.valueOf(currWeek);

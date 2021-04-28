@@ -139,7 +139,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RewardAndPenalty.super.onBackPressed();
+                finish();
+                //RewardAndPenalty.super.onBackPressed();
             }
         });
     }

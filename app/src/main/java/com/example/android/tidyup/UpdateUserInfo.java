@@ -90,6 +90,7 @@ public class UpdateUserInfo extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
                                     UserManagement.setUserEmail(newEmail);
+                                    mNewEmail.setText("");
                                     Toast.makeText(UpdateUserInfo.this, "Email Updated", Toast.LENGTH_LONG).show();
                                     Log.d(TAG, "User email updated");
                                 } else {

@@ -57,39 +57,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.903" />
 
-    <TextView
-        android:id="@+id/taskAssignToPerson"
-        android:layout_width="107dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="25dp"
-        android:text="Person"
-        android:textColor="@color/fontAndButtonColor"
+
+    <EditText
+        android:id="@+id/personAssignedToTask"
+        android:layout_width="281dp"
+        android:layout_height="55dp"
+        android:layout_below="@+id/taskName"
+        android:ems="10"
         android:fontFamily="@font/architects_daughter"
+        android:hint="Person "
+        android:textColor="@color/fontAndButtonColor"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.43" />
-
-    <Spinner
-        android:id="@+id/personAssignedToTask"
-        android:layout_width="163dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="74dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.431" />
-
+        app:layout_constraintVertical_bias="0.442" />
 
     <TextView
         android:id="@+id/taskRewardPenaltyValue"

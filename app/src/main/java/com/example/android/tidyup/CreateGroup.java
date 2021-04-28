@@ -68,7 +68,10 @@ public class CreateGroup extends AppCompatActivity {
             }
         });
     }
-
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
     public void onInvite(View view) {
         if (TextUtils.isEmpty(groupName.getText().toString())){
             groupName.setError("Group Name is required");
@@ -76,16 +79,22 @@ public class CreateGroup extends AppCompatActivity {
         }
         memberEmail = findViewById(R.id.memberEmail);
         String email = memberEmail.getText().toString().trim();
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("message/rfc822");
-        i.putExtra(Intent.EXTRA_EMAIL  , new String[]{email});
-        i.putExtra(Intent.EXTRA_SUBJECT, "Join my group on Tidy Up ");
-        i.putExtra(Intent.EXTRA_TEXT   , "Use this join code to join my group on Tidy Up, a " +
-                "platform that helps you manage chores. Here is my join code " + code + ".");
-        try {
-            startActivity(Intent.createChooser(i, "Send mail..."));
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(CreateGroup.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email)){
+            memberEmail.setError("Please Enter A User");
+            return;
+        }
+        if(isValid(email)) {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
+            i.putExtra(Intent.EXTRA_SUBJECT, "Join my group on Tidy Up ");
+            i.putExtra(Intent.EXTRA_TEXT, "Use this join code to join my group on Tidy Up, a " +
+                    "platform that helps you manage chores. Here is my join code " + code + ".");
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(CreateGroup.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

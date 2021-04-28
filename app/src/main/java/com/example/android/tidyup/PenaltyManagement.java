@@ -83,10 +83,10 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
             }
         }
         if(grDB.containsKey(groupID)) {
-            Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
-            if (groupRewardMap.containsKey(penaltyName)) {
-                groupRewardMap.remove(penaltyName);
-                grDB.replace(groupID, groupRewardMap);
+            Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));
+            if (groupPenaltyMap.containsKey(penaltyName)) {
+                groupPenaltyMap.remove(penaltyName);
+                grDB.replace(groupID, groupPenaltyMap);
                 //remove penalty
                 PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);
                 fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY).set(penalty);
@@ -153,6 +153,27 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
         }
         return penaltyNames;
 
+    }
+
+    public static int assignPenalty(String groupID, String penaltyName, String uid){
+        if(grDB == null){
+            readGroupPenaltyDB();
+            if(grDB == null){
+                return -1;
+            }
+        }
+        if(grDB.containsKey(groupID)) {
+            Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));
+            if(groupPenaltyMap.containsKey(penaltyName)){
+                groupPenaltyMap.get(penaltyName).set(1, uid);
+                grDB.replace(groupID, groupPenaltyMap);
+                PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);
+                fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY).set(penalty);
+                return 1; // correctly assigned penalty
+            }
+            return 2;// penalty Name does not exist
+        }
+        return 0; // map for grpId does not exist
     }
 
 

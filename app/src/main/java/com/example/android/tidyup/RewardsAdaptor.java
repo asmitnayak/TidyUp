@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,7 @@ public class RewardsAdaptor extends BaseAdapter {
 
         TextView reward = view.findViewById(R.id.rRewardName);
         reward.setText(rewardsKey.get(i));
+
 
         return view;
     }

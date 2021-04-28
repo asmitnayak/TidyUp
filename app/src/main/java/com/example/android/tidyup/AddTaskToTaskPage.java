@@ -1,6 +1,7 @@
 package com.example.android.tidyup;
 
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -268,12 +269,25 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
 
         EditText nameIn = (EditText) findViewById(R.id.taskName);
         String name = nameIn.getText().toString();
+        if (TextUtils.isEmpty(name)){
+            nameIn.setError("Please Enter a Task Name");
+            return;
+        }
 
         EditText person = (EditText) findViewById(R.id.personAssignedToTask);
         String personStr = person.getText().toString();
 
         EditText dueDate = (EditText) findViewById(R.id.taskDueDate);
         String date = dueDate.getText().toString();
+        if (TextUtils.isEmpty(date)){
+            dueDate.setError("Please Enter a Date");
+            return;
+        }
+        if(!isValid(date)) {
+            dueDate.setError("Please Enter a Date in Format ##/##");
+            return;
+
+        }
 
         String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
         int rewardInt = Integer.parseInt(rewardString);
@@ -282,6 +296,10 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
                 mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
 
         finish();
+    }
+    static boolean isValid(String date) {
+        String regex = "\\d\\d/\\d\\d";
+        return date.matches(regex);
     }
     @Override
     public void onClick(View v) {

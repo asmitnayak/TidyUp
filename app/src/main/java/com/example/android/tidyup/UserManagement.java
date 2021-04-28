@@ -257,7 +257,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         });
 
         addStringField("Token");
-
         super.onPreExecute();
     }
 

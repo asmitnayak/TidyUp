@@ -12,7 +12,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firestore.v1.WriteResult;
@@ -26,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
@@ -42,7 +46,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
     private static final String COLLECTIONPATH_TASK = "Task";
     private static final String DOCUMENTPATH_TASKS = "Tasks";
-    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
+    private static  DocumentReference docRef;
 
     private static final String TAG = "task";
     private static final String KEY_TASKNAME= "taskName";
@@ -52,6 +56,8 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static final String KEY_REPETITION= "repetition";
     private static final String KEY_DATE= "dateToBeCompleted";
     private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
+
+    private static String groupName;
 
 
     public static int addTaskItem(String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
@@ -67,7 +73,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
         //taskItems.put(userGroup.toString(), addTask);
         if(displayMap == null){
-            readGroupTaskDB();
+            updateDocRef(groupId);
             if(displayMap == null){
                 return -1;
             }
@@ -86,14 +92,14 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         String groupID = GroupManagement.getGroupID(userGroup.toString());
         Map<String, Map<String, Object>> groupTaskMap;
         if (displayMap == null) {
-            readGroupTaskDB();
+            updateDocRef(groupID);
             if (displayMap == null) {
                 return null;
             }
         }
-        if (displayMap.containsKey(groupID)) {
+        if (displayMap.containsKey(userMap.toString())) {
             groupTaskMap = new HashMap<>();
-            groupTaskMap = (HashMap) displayMap.get(groupID);
+            groupTaskMap = (HashMap) displayMap.get(userMap);
         } else {
             groupTaskMap = new HashMap<>();
         }
@@ -223,8 +229,16 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         return (HashMap<String, Object>) userMap;
     }
 
-    public static void readGroupTaskDB(){
-        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
+    protected void setGroupName(String groupName){
+        this.groupName = groupName;
+    }
+
+    protected static void updateDocRef(String groupID){
+        readGroupTaskDB(groupID);
+    }
+    public static void readGroupTaskDB( String groupID){
+
+        docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -239,6 +253,9 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
     }
 
+    private interface FirestoreCallback{
+        void onCallback(TaskManagment.Tasks taskDocument);
+    }
     /*public static ArrayList<String> getGroupTaskList(String groupID){
         if(taskListDB == null){
             readGroupTaskDB();
@@ -263,7 +280,6 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
             TaskManagment.Tasks task = new TaskManagment.Tasks(displayMap);
             fFirestore.collection(COLLECTIONPATH_TASK).document(groupID).set(task);
-
         }
     }
 
@@ -278,12 +294,13 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        readGroupTaskDB();
+        readGroupTaskDB((String) UserManagement.getUserDetails().get("groupID"));
         super.onPreExecute();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
+
         return null;
     }
 }

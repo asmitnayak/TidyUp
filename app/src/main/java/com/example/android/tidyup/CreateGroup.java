@@ -119,7 +119,7 @@ public class CreateGroup extends AppCompatActivity {
         Toast.makeText(CreateGroup.this, "You are now Admin of Group " + groupName.getText().toString(), Toast.LENGTH_LONG).show();
         // add the group name directly to the task collection
         Map<String, TaskItem> taskMap = new HashMap<>();
-        fFirestore.collection("task").document(groupName.getText().toString()).set(taskMap);
+        fFirestore.collection("task").document(gID).set(taskMap);
         //
         // go to task page???
         finish();

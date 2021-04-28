@@ -82,6 +82,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         try {
             setContentView(R.layout.activity_account_page);
 
+
             mName = findViewById(R.id.acName);
             mEmail = findViewById(R.id.acEmail);
             mUserPoints = findViewById(R.id.acUserPoints);
@@ -114,8 +115,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         grpName = documentSnapshot.getString(KEY_Group);
                         mName.setText("Username: " + name);
                         mEmail.setText("Email: " + email);
-                        if (!grpID.equals(""))
+                        if (!grpID.equals("")) {
                             RewardsManagement.resetUserRewards(grpID);
+                        }
                         String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
                         mUserPoints.setText("UserPoints: " + userPoints);
                         if (!grpName.equals("")) {
@@ -212,6 +214,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             });
         }catch (Exception e){
             Toast.makeText(getApplicationContext(), "Error! " + e.getMessage(), Toast.LENGTH_LONG ).show();
+
         }
 
     }

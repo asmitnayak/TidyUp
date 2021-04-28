@@ -60,6 +60,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void login(View view) {
+
         String email = mEmail.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)){
@@ -95,8 +96,14 @@ public class Login extends AppCompatActivity {
                     rm.execute();
                     PenaltyManagement pm = new PenaltyManagement();
                     pm.execute();
-                    //test
                     userMap = UserManagement.getUserDetails();
+                    //while(userMap.size() == 0){
+                    //    userMap = UserManagement.getUserDetails();
+                    //}
+                    //TaskManagment tm = new TaskManagment();
+                    //tm.execute();
+                    //test
+
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
                         // change back from TaskPage to Account

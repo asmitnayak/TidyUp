@@ -21,14 +21,14 @@ import java.util.Map;
 public class CustomAdapter extends BaseAdapter {
     private Context context;
     //ArrayList<TaskItem> tasks;
-    private Map<String, Map<String, Object>>tasks;
+    private Map<String, Object>tasks;
     //private Map<String, TaskItem>tasks;
     private List<String> tasksKey;
     private List tasksValues;
     //public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, Map<String, Map<String, Object>> tasks) {
+    public CustomAdapter(Context applicationContext, Map<String, Object> tasks) {
         this.context = context;
         this.tasks = tasks;
         tasksKey = new ArrayList<String>(tasks.keySet());

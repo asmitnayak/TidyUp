@@ -86,7 +86,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
     ListView taskList;
     //ArrayList<String> tasks = new ArrayList<String>();
-    private Map<String, Map<String, Object>>tasks;
+    private Map<String, Object>tasks;
     private static HashMap<String, Object> userMap = new HashMap<>();
     private CustomAdapter customAdaptor;
     private List tasksKey;
@@ -124,10 +124,25 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
         taskList = (ListView) findViewById(R.id.taskList);
         //String groupID = (String) UserManagement.getUserDetails().get("GroupID");
+
         userMap = UserManagement.getUserDetails();
         Object userGroup1 = userMap.get("Group");
-        tasks = new HashMap<>();
-        tasks = TaskManagment.getGroupTaskMap(userGroup1.toString());
+        //tasks = new HashMap<>();
+        //tasks = TaskManagment.getGroupTaskMap(userGroup1.toString());
+        DocumentReference docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                tasks = documentSnapshot.getData();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TaskFirebase", "Error reading document", e);
+            }
+        });
+
+
+
         customAdaptor = new CustomAdapter(this, tasks);
         taskList.setAdapter(customAdaptor);
         tasksKey = new ArrayList<String>(tasks.keySet());
@@ -266,6 +281,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 //        //action bar
 //
    }
+
     public String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");
         index = index + 9;

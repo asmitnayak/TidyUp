@@ -79,136 +79,140 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_account_page);
+        try {
+            setContentView(R.layout.activity_account_page);
 
-        mName = findViewById(R.id.acName);
-        mEmail = findViewById(R.id.acEmail);
-        mUserPoints = findViewById(R.id.acUserPoints);
+            mName = findViewById(R.id.acName);
+            mEmail = findViewById(R.id.acEmail);
+            mUserPoints = findViewById(R.id.acUserPoints);
 
-        mGroup = findViewById(R.id.acGroup);
-        mNewUserEmail = findViewById(R.id.acNewUserEmail);
-        mAddMembers = findViewById(R.id.acAddMembersButton);
-        mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
+            mGroup = findViewById(R.id.acGroup);
+            mNewUserEmail = findViewById(R.id.acNewUserEmail);
+            mAddMembers = findViewById(R.id.acAddMembersButton);
+            mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
 
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
-        UpdateToken();
+            apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+            UpdateToken();
 
-        //action bar
-        menu = findViewById(R.id.menu);
-        backButton = findViewById(R.id.back_button);
-        pageTitle = findViewById(R.id.pageTitle);
-        pageTitle.setText("Account");
+            //action bar
+            menu = findViewById(R.id.menu);
+            backButton = findViewById(R.id.back_button);
+            pageTitle = findViewById(R.id.pageTitle);
+            pageTitle.setText("Account");
 
-        //test
+            //test
 
-        // load and display user info on Account Page
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_USERNAME);
-                    String email = documentSnapshot.getString(KEY_EMAIL);
+            // load and display user info on Account Page
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString(KEY_USERNAME);
+                        String email = documentSnapshot.getString(KEY_EMAIL);
 
-                    grpID = documentSnapshot.getString(KEY_GroupID);
-                    grpName = documentSnapshot.getString(KEY_Group);
-                    mName.setText("Username: " + name);
-                    mEmail.setText("Email: "+ email);
-                    if(!grpID.equals(""))
-                       RewardsManagement.resetUserRewards(grpID);
-                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
-                    mUserPoints.setText("UserPoints: " + userPoints);
-                    if (!grpName.equals("")){
-                        mGroup.setText("Group: " + grpName);
+                        grpID = documentSnapshot.getString(KEY_GroupID);
+                        grpName = documentSnapshot.getString(KEY_Group);
+                        mName.setText("Username: " + name);
+                        mEmail.setText("Email: " + email);
+                        if (!grpID.equals(""))
+                            RewardsManagement.resetUserRewards(grpID);
+                        String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
+                        mUserPoints.setText("UserPoints: " + userPoints);
+                        if (!grpName.equals("")) {
+                            mGroup.setText("Group: " + grpName);
+                        } else {
+                            mGroup.setText("Group: No Group Yet");
+                        }
                     } else {
-                        mGroup.setText("Group: No Group Yet");
+                        Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(Account.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d(TAG, e.toString());
-            }
-        });
-
-        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.w(TAG, "listen:error", error);
-                    return;
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Account.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    Log.d(TAG, e.toString());
                 }
+            });
 
-                if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_USERNAME);
-                    String email = documentSnapshot.getString(KEY_EMAIL);
+            docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                    if (error != null) {
+                        Log.w(TAG, "listen:error", error);
+                        return;
+                    }
 
-                    grpID = documentSnapshot.getString(KEY_GroupID);
-                    grpName = documentSnapshot.getString(KEY_Group);
-                    mName.setText("Username: " + name);
-                    mEmail.setText("Email: "+ email);
-                    if(!grpID.equals(""))
-                        RewardsManagement.resetUserRewards(grpID);
-                    String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
-                    mUserPoints.setText("UserPoints: " + userPoints);
-                    if (!grpName.equals("")){
-                        mGroup.setText("Group: " + grpName);
+                    if (documentSnapshot.exists()) {
+                        String name = documentSnapshot.getString(KEY_USERNAME);
+                        String email = documentSnapshot.getString(KEY_EMAIL);
+
+                        grpID = documentSnapshot.getString(KEY_GroupID);
+                        grpName = documentSnapshot.getString(KEY_Group);
+                        mName.setText("Username: " + name);
+                        mEmail.setText("Email: " + email);
+                        if (!grpID.equals(""))
+                            RewardsManagement.resetUserRewards(grpID);
+                        String userPoints = documentSnapshot.getString(KEY_USERPOINTS);
+                        mUserPoints.setText("UserPoints: " + userPoints);
+                        if (!grpName.equals("")) {
+                            mGroup.setText("Group: " + grpName);
+                        } else {
+                            mGroup.setText("Group: No Group Yet");
+                        }
                     } else {
-                        mGroup.setText("Group: No Group Yet");
+                        Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }
-                }else {
-                    Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
 
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                PopupMenu popup = new PopupMenu(Account.this, v);
-                popup.setOnMenuItemClickListener( Account.this);
-                popup.inflate(R.menu.account_page_menu);
-                popup.show();
-            }
-        });
+            menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popup = new PopupMenu(Account.this, v);
+                    popup.setOnMenuItemClickListener(Account.this);
+                    popup.inflate(R.menu.account_page_menu);
+                    popup.show();
+                }
+            });
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                //Account.super.onBackPressed();
-            }
-        });
+            backButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    //Account.super.onBackPressed();
+                }
+            });
 
 
-        mGroup.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                String str = s.toString();
-                String[] arr = str.split(":");
-                if(arr.length < 2)
-                    return;
-                mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
-            }
+            mGroup.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    String str = s.toString();
+                    String[] arr = str.split(":");
+                    if (arr.length < 2)
+                        return;
+                    mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String str = s.toString();
-                String[] arr = str.split(":");
-                if(arr.length < 2)
-                    return;
-                mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    String str = s.toString();
+                    String[] arr = str.split(":");
+                    if (arr.length < 2)
+                        return;
+                    mAddMembers.setEnabled(!arr[1].trim().equalsIgnoreCase("No Group Yet"));
 
-            }
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                @Override
+                public void afterTextChanged(Editable s) {
 
-            }
-        });
+                }
+            });
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error! " + e.getMessage(), Toast.LENGTH_LONG ).show();
+        }
 
     }
 

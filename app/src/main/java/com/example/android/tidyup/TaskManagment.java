@@ -162,7 +162,6 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
                 Log.w("TaskFirebase", "Error reading document", e);
             }
         });
-
     }
 
     /*public static ArrayList<String> getGroupTaskList(String groupID){

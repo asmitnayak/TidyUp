@@ -102,12 +102,15 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         //this.offendingUser = this.offendingEDT.getText().toString().toLowerCase();
         checkInput();
         if(isValid(offendingUser)) {
+            /*
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{offendingUser});
             i.putExtra(Intent.EXTRA_SUBJECT, "You have been assigned a penalty ");
             i.putExtra(Intent.EXTRA_TEXT, "Your penalty is " + penaltyName +
                     ". The reason you are receiving this penalty is " + penaltyReason);
+            startActivity(Intent.createChooser(i, "Send mail..."));
+            */
             try {
                 switch (PenaltyManagement.assignPenalty(groupID, penaltyName, offendingUserUID)){
                     case -1:
@@ -127,7 +130,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                         break;
                     default:
                 }
-                startActivity(Intent.createChooser(i, "Send mail..."));
+
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             } catch (Exception e){
@@ -137,7 +140,6 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
 
         Intent intent = new Intent(this, RewardAndPenalty.class);
         startActivity(intent);
-
 
     }
 

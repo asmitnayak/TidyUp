@@ -116,7 +116,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
 
-        Map<String, Map<String, Object>> test = TaskManagment.getGroupTaskMap("test");
+       // Map<String, Map<String, Object>> test = TaskManagment.getGroupTaskMap("test");
 /*
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
@@ -211,11 +211,12 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskDate = findViewById(R.id.taskDateLayout);
 
         userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");;
-        fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        Object userGroup = userMap.get("Group");
+        DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot document = task.getResult();
                             Map<String, Object> currTaskMap = document.getData();
                             for (Map.Entry<String,Object> entry : currTaskMap.entrySet()) {
                                 Object currTask = entry.getValue();
@@ -243,9 +244,10 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                                 System.out.println("checked    : " + checked);*/
                             }
 
-                        }
+
                     }
                 });
+
 
 
        // DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());

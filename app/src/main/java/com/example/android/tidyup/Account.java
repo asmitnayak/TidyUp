@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,8 +35,19 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.auth.User;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.installations.FirebaseInstallations;
+import com.google.firebase.installations.InstallationTokenResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
     private static final String COLLECTIONPATH_USERS = "Users";
@@ -60,6 +72,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private String grpID;
     private String grpName;
 
+    private APIService apiService;
+
     private ImageView menu, backButton;
     private TextView pageTitle;
     @Override
@@ -75,6 +89,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         mNewUserEmail = findViewById(R.id.acNewUserEmail);
         mAddMembers = findViewById(R.id.acAddMembersButton);
         mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
+
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
+        UpdateToken();
 
         //action bar
         menu = findViewById(R.id.menu);
@@ -274,10 +291,19 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getCurrentUser().getUid();
+                    String tempGrpID = grpID;
                     GroupManagement.removeUserFromGroup(grpID, userID);
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "",
                     "GroupID", "");
+                    ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
+                    String str = mName.getText().toString();
+                    String[] arr = str.split(":");
+                    for(int i=0;i<memberList.size();i++){
+                        String otherId = memberList.get(i);
+                        String userToken = UserManagement.getUserTokenFromUID(otherId);
+                        NotificationManager.sendNotifications(userToken, "Tidy Up",arr[1] + " has left the group",getApplicationContext(),apiService);
+                    }
                     finish();
                     startActivity(new Intent(getApplicationContext(), Account.class));
                 }
@@ -327,7 +353,29 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 });
     }
 
-    @Override
+    private void UpdateToken(){
+        FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        Task<String> refreshToken= FirebaseMessaging.getInstance().getToken().continueWithTask(new Continuation<String, Task<String>>() {
+            @Override
+            public Task<String> then(@NonNull Task<String> task) throws Exception {
+                if(!task.isSuccessful()){
+                    throw task.getException();
+                }
+                return FirebaseMessaging.getInstance().getToken();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+                    String sToken = task.getResult();
+                    Token token= new Token(sToken);
+                    UserManagement.setToken(token.getToken());
+                }
+            }
+        });
+    }
+
+    //@Override
     public void onResume()
     {  // After a pause OR at startup
         super.onResume();
@@ -348,4 +396,5 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         leaveAlert.setNegativeButton("Cancel", null);
         leaveAlert.show();
     }
+
 }

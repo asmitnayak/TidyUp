@@ -43,9 +43,9 @@ public class AddReward extends AppCompatActivity {
     }
 
     public void onAddReward(View view) {
-        String rewardPointValHolder = this.rewardPointValEDT.getText().toString();
-        this.rewardDescription = this.rewardDescriptionEDT.getText().toString();
-        this.rewardName = this.rewardNameEDT.getText().toString();
+        String rewardPointValHolder = this.rewardPointValEDT.getText().toString().toLowerCase();
+        this.rewardDescription = this.rewardDescriptionEDT.getText().toString().toLowerCase();
+        this.rewardName = this.rewardNameEDT.getText().toString().toLowerCase();
         if (TextUtils.isEmpty(rewardName)){
             rewardNameEDT.setError("Please Enter a Name");
             return;

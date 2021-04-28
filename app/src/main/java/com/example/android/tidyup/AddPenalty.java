@@ -39,8 +39,8 @@ public class AddPenalty extends AppCompatActivity {
     }
 
     public void onAddPenalty(View view) {
-        this.penaltyDescription = this.penaltyDescriptionEDT.getText().toString();
-        this.penaltyName = this.penaltyNameEDT.getText().toString();
+        this.penaltyDescription = this.penaltyDescriptionEDT.getText().toString().toLowerCase();
+        this.penaltyName = this.penaltyNameEDT.getText().toString().toLowerCase();
         if (TextUtils.isEmpty(penaltyName)){
             penaltyNameEDT.setError("Please Enter a Name");
             return;

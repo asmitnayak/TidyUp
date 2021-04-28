@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AssignPenalty extends AppCompatActivity implements View.OnClickListener{
+    private APIService apiService;
     EditText penaltyNameEDT;
     String penaltyName;
     EditText penaltyReasonEDT;
@@ -38,6 +39,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         this.penaltyReasonEDT = findViewById(R.id.reason);
         radioGroupLayout = findViewById(R.id.apRewardButtonGroup);
 
+        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
         membersList = GroupManagement.getGroupMemberList((String) UserManagement.getUserDetails().get("GroupID"));
         rgroup = new RadioGroup(this);
         rgroup.setOrientation(RadioGroup.VERTICAL);
@@ -95,9 +97,9 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         return email.matches(regex);
     }
     public void onAssignPenalty(View view) {
-        this.penaltyName = this.penaltyNameEDT.getText().toString();
-        this.penaltyReason = this.penaltyReasonEDT.getText().toString();
-        //this.offendingUser = this.offendingEDT.getText().toString();
+        this.penaltyName = this.penaltyNameEDT.getText().toString().toLowerCase();
+        this.penaltyReason = this.penaltyReasonEDT.getText().toString().toLowerCase();
+        //this.offendingUser = this.offendingEDT.getText().toString().toLowerCase();
         checkInput();
         if(isValid(offendingUser)) {
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -116,6 +118,9 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                         break;
                     case 1:
                         Toast.makeText(AssignPenalty.this, "Successfully assigned penalty" + penaltyName + " to user " + UserManagement.getUserNameFromUID(offendingUserUID), Toast.LENGTH_SHORT).show();
+                        String userToken = UserManagement.getUserTokenFromUID(offendingUserUID);
+                        NotificationManager.sendNotifications(userToken, "Tidy Up",  "Your penalty is " + penaltyName +
+                                ". The reason you are receiving this penalty is " + penaltyReason, getApplicationContext(),apiService);
                         break;
                     case 2:
                         Toast.makeText(AssignPenalty.this, "No PenaltyName found with name " + penaltyName, Toast.LENGTH_SHORT).show();

@@ -12,86 +12,91 @@
     <RelativeLayout
         android:id="@+id/box1"
         android:layout_width="400dp"
-        android:layout_height="104dp">
+        android:layout_height="200dp">
 
         <TextView
             android:id="@+id/taskNameLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
+            android:layout_below="@+id/completeTask"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/taskSelect"
-            android:text="Name:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Name:"
+            android:textColor="@color/fontAndButtonColor" />
+
         <TextView
             android:id="@+id/taskPersonLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/taskNameLayout"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/taskSelect"
-            android:text="Person:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Person:"
+            android:textColor="@color/fontAndButtonColor" />
 
         <TextView
             android:id="@+id/taskPointValueLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_below="@id/taskPersonLayout"
+            android:layout_below="@+id/taskPersonLayout"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/taskSelect"
-            android:text="Point Value:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Point Value:"
+            android:textColor="@color/fontAndButtonColor" />
 
         <TextView
             android:id="@+id/taskRepetitionLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_marginStart="110dp"
+            android:layout_below="@+id/taskPointValueLayout"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_toEndOf="@+id/taskSelect"
-            android:text="Repetition:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Repetition:"
+            android:textColor="@color/fontAndButtonColor" />
 
         <TextView
             android:id="@+id/taskPriorityLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_below="@+id/taskNameLayout"
-            android:layout_marginStart="110dp"
+            android:layout_below="@+id/taskRepetitionLayout"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/taskSelect"
-            android:text="Priority:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Priority:"
+            android:textColor="@color/fontAndButtonColor" />
 
         <TextView
             android:id="@+id/taskDateLayout"
-            android:textColor="@color/fontAndButtonColor"
-            android:fontFamily="@font/architects_daughter"
-            android:layout_width="100dp"
+            android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_below="@id/taskPriorityLayout"
-            android:layout_marginStart="110dp"
+            android:layout_below="@+id/taskPriorityLayout"
+            android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
+
             android:layout_marginTop="8dp"
             android:layout_toEndOf="@id/taskSelect"
-            android:text="Date:" />
+            android:fontFamily="@font/architects_daughter"
+            android:text="Date:"
+            android:textColor="@color/fontAndButtonColor" />
 
 
         <CheckBox
             android:id="@+id/taskSelect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/completeTask"
             android:layout_alignParentStart="true"
             android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"

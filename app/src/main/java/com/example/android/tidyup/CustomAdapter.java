@@ -22,6 +22,7 @@ public class CustomAdapter extends BaseAdapter {
     private Context context;
     //ArrayList<TaskItem> tasks;
     private Map<String, Map<String, Object>>tasks;
+    //private Map<String, TaskItem>tasks;
     private List<String> tasksKey;
     private List tasksValues;
     //public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();

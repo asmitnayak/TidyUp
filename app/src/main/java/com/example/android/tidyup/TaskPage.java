@@ -85,7 +85,14 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     private TextView pageTitle;
 
     ListView taskList;
+    //ArrayList<String> tasks = new ArrayList<String>();
+    private Map<String, Map<String, Object>>tasks;
     private static HashMap<String, Object> userMap = new HashMap<>();
+    private CustomAdapter customAdaptor;
+    private List tasksKey;
+    private List tasksValues;
+
+    //private static HashMap<String, Object> userMap = new HashMap<>();
     private static HashMap<String, Object> userTasks = new HashMap<>();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
 
@@ -96,14 +103,14 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
     //tags for taskItem details
     private static final String COLLECTIONPATH_TASKS = "task";
-    private static final String TAG = "task";
-    private static final String KEY_TASKNAME= "taskName";
-    private static final String KEY_PERSON = "personAssignedToTask";
-    private static final String KEY_POINT= "rewardPenaltyPointValue";
-    private static final String KEY_PRIORITY= "priority";
-    private static final String KEY_REPETITION= "repetition";
-    private static final String KEY_DATE= "dateToBeCompleted";
-    private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
+//    private static final String TAG = "task";
+//    private static final String KEY_TASKNAME= "taskName";
+//    private static final String KEY_PERSON = "personAssignedToTask";
+//    private static final String KEY_POINT= "rewardPenaltyPointValue";
+//    private static final String KEY_PRIORITY= "priority";
+//    private static final String KEY_REPETITION= "repetition";
+//    private static final String KEY_DATE= "dateToBeCompleted";
+//    private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_TASKS).document(fAuth.getCurrentUser().getUid());
@@ -114,6 +121,17 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
+
+        taskList = (ListView) findViewById(R.id.taskList);
+        //String groupID = (String) UserManagement.getUserDetails().get("GroupID");
+        userMap = UserManagement.getUserDetails();
+        Object userGroup1 = userMap.get("Group");
+        tasks = new HashMap<>();
+        tasks = TaskManagment.getGroupTaskMap(userGroup1.toString());
+        customAdaptor = new CustomAdapter(this, tasks);
+        taskList.setAdapter(customAdaptor);
+        tasksKey = new ArrayList<String>(tasks.keySet());
+        tasksValues = new ArrayList(tasks.values());
 
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
@@ -127,60 +145,60 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
 
-// load and display user info on Task Page
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_TASKNAME);
-                    String person = documentSnapshot.getString(KEY_PERSON);
-                    String point = documentSnapshot.getString(KEY_POINT);
-                    String priority = documentSnapshot.getString(KEY_PRIORITY);
-                    String repetition = documentSnapshot.getString(KEY_REPETITION);
-                    String date = documentSnapshot.getString(KEY_DATE);
-
-                    mtaskName.setText("taskName: " + name);
-                    mtaskPerson.setText("personAssignedToTask: " + person);
-                    mtaskPoint.setText("rewardPenaltyPointValue: " + point);
-                    mtaskPriority.setText("priority: " + priority);
-                    mtaskRepetition.setText("repetition: " + repetition);
-                    mtaskDate.setText("dateToBeCompleted: " + date);
-
-                }else {
-                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(TaskPage.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
-                Log.d(TAG, e.toString());
-            }
-        });
-
-        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                if (error != null) {
-                    Log.w(TAG, "listen:error", error);
-                    return;
-                }
-
-                if (documentSnapshot.exists()){
-                    String name = documentSnapshot.getString(KEY_TASKNAME);
-                    String person = documentSnapshot.getString(KEY_PERSON);
-                    String point = documentSnapshot.getString(KEY_POINT);
-                    String priority = documentSnapshot.getString(KEY_PRIORITY);
-                    String repetition = documentSnapshot.getString(KEY_REPETITION);
-                    String date = documentSnapshot.getString(KEY_DATE);
-
-
-
-                }else {
-                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+//// load and display user info on Task Page
+//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()){
+//                    String name = documentSnapshot.getString(KEY_TASKNAME);
+//                    String person = documentSnapshot.getString(KEY_PERSON);
+//                    String point = documentSnapshot.getString(KEY_POINT);
+//                    String priority = documentSnapshot.getString(KEY_PRIORITY);
+//                    String repetition = documentSnapshot.getString(KEY_REPETITION);
+//                    String date = documentSnapshot.getString(KEY_DATE);
+//
+//                    mtaskName.setText("Task Name: " + name);
+//                    mtaskPerson.setText("Person Assigned: " + person);
+//                    mtaskPoint.setText("Point Value: " + point);
+//                    mtaskPriority.setText("Priority Level: " + priority);
+//                    mtaskRepetition.setText("Repetition: " + repetition);
+//                    mtaskDate.setText("Due Date: " + date);
+//
+//                }else {
+//                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                Toast.makeText(TaskPage.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
+//                Log.d(TAG, e.toString());
+//            }
+//        });
+//
+//        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+//                if (error != null) {
+//                    Log.w(TAG, "listen:error", error);
+//                    return;
+//                }
+//
+//                if (documentSnapshot.exists()){
+//                    String name = documentSnapshot.getString(KEY_TASKNAME);
+//                    String person = documentSnapshot.getString(KEY_PERSON);
+//                    String point = documentSnapshot.getString(KEY_POINT);
+//                    String priority = documentSnapshot.getString(KEY_PRIORITY);
+//                    String repetition = documentSnapshot.getString(KEY_REPETITION);
+//                    String date = documentSnapshot.getString(KEY_DATE);
+//
+//
+//
+//                }else {
+//                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+//                }
+//            }
+//        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,52 +220,52 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         userMap = UserManagement.getUserDetails();
         Object userGroup = userMap.get("Group");
 
-        fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Map<String, Object> currTaskMap = document.getData();
-                            for (Map.Entry<String,Object> entry : currTaskMap.entrySet()) {
-                                Object currTask = entry.getValue();
-                                String taskName = getTaskName(currTask.toString());
-                                String getDate = getDate(currTask.toString());
-                                String person = getPersonStr(currTask.toString());
-                                String repetition = getRepetition(currTask.toString());
-                                String priority = getPriority(currTask.toString());
-                                String reward = getReward(currTask.toString());
-                                String checked = getChecked(currTask.toString());
-
-
-                                mtaskName.setText("taskName: " + taskName);
-                                mtaskPerson.setText("personAssignedToTask: " + person);
-                                mtaskPoint.setText("rewardPenaltyPointValue: " + reward);
-                                mtaskPriority.setText("priority: " + priority);
-                                mtaskRepetition.setText("repetition: " + repetition);
-                                mtaskDate.setText("dateToBeCompleted: " + getDate);
-                                /*
-                                System.out.println("taskName   : " + taskName);
-                                System.out.println("getDate    : " + getDate);
-                                System.out.println("person     : " + person);
-                                System.out.println("repetition : " + repetition);
-                                System.out.println("priority   : " + priority);
-                                System.out.println("reward     : " + reward);
-                                System.out.println("checked    : " + checked);*/
-                            }
-
-                        }
-                    }
-                });
-
-
-       // DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
-        //docRef.update(tasks);
-
-       // ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-        //if (tasksAdapter != null )
-            //taskList.setAdapter(tasksAdapter);
-        //action bar
-
-    }
+//        fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        for (QueryDocumentSnapshot document : task.getResult()) {
+//                            Map<String, Object> currTaskMap = document.getData();
+//                            for (Map.Entry<String,Object> entry : currTaskMap.entrySet()) {
+//                                Object currTask = entry.getValue();
+//                                String taskName = getTaskName(currTask.toString());
+//                                String getDate = getDate(currTask.toString());
+//                                String person = getPersonStr(currTask.toString());
+//                                String repetition = getRepetition(currTask.toString());
+//                                String priority = getPriority(currTask.toString());
+//                                String reward = getReward(currTask.toString());
+//                                String checked = getChecked(currTask.toString());
+//
+//
+//                                mtaskName.setText("Task Name: " + taskName);
+//                                mtaskPerson.setText("Person Assigned: " + person);
+//                                mtaskPoint.setText("Point Value: " + reward);
+//                                mtaskPriority.setText("Priority Level: " + priority);
+//                                mtaskRepetition.setText("Repetition: " + repetition);
+//                                mtaskDate.setText("Due Date: " + getDate);
+//                                /*
+//                                System.out.println("taskName   : " + taskName);
+//                                System.out.println("getDate    : " + getDate);
+//                                System.out.println("person     : " + person);
+//                                System.out.println("repetition : " + repetition);
+//                                System.out.println("priority   : " + priority);
+//                                System.out.println("reward     : " + reward);
+//                                System.out.println("checked    : " + checked);*/
+//                            }
+//
+//                        }
+//                    }
+//                });
+//
+//
+//       // DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
+//        //docRef.update(tasks);
+//
+//       // ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
+//        //if (tasksAdapter != null )
+//            //taskList.setAdapter(tasksAdapter);
+//        //action bar
+//
+   }
     public String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");
         index = index + 9;

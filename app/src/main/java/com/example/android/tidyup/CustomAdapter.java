@@ -4,28 +4,35 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CustomAdapter extends BaseAdapter {
-    Context context;
-    ArrayList<TaskItem> tasks;
-    public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();
+    private Context context;
+    //ArrayList<TaskItem> tasks;
+    private Map<String, Map<String, Object>>tasks;
+    //private Map<String, TaskItem>tasks;
+    private List<String> tasksKey;
+    private List tasksValues;
+    //public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, ArrayList<TaskItem> food) {
+    public CustomAdapter(Context applicationContext, Map<String, Map<String, Object>> tasks) {
         this.context = context;
         this.tasks = tasks;
+        tasksKey = new ArrayList<String>(tasks.keySet());
+        tasksValues = new ArrayList(tasks.values());
         inflter = (LayoutInflater.from(applicationContext));
     }
 
@@ -53,25 +60,43 @@ public class CustomAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.task_page_layout, null);
 
         TextView taskNameV = (TextView) view.findViewById(R.id.taskNameLayout);
-        taskNameV.setText(tasks.get(i).getTaskName());
+        taskNameV.setText(tasksKey.get(i));
 
         TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
-        personV.setText(String.format(Locale.getDefault(),"%2f",tasks.get(i).getPersonAssignedToTask()));
+        personV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
 
         TextView pointValueV = (TextView) view.findViewById(R.id.taskPointValueLayout);
-        pointValueV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getRewardPenaltyPointValue()));
+        pointValueV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("rewardPenaltyPointValue"));
 
         TextView repetitionV = (TextView) view.findViewById(R.id.taskRepetitionLayout);
-        repetitionV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getRepetition()));
+        repetitionV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("repetition"));
 
         TextView priorityV = (TextView) view.findViewById(R.id.taskPriorityLayout);
-        priorityV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getPriority()));
+        priorityV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("priority"));
 
         TextView dateV = (TextView) view.findViewById(R.id.taskDateLayout);
-        dateV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getDateToBeCompleted()));
+        dateV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("dateToBeCompleted"));
 
         CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
-        cb.setChecked(tasks.get(i).getIsChecked());
+        cb.setChecked((boolean)((HashMap<String, Object>)tasksValues.get(i)).get("isChecked"));
+//
+//        TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
+//        personV.setText(String.format(Locale.getDefault(),"%2f",tasks.get(i).getPersonAssignedToTask()));
+//
+//        TextView pointValueV = (TextView) view.findViewById(R.id.taskPointValueLayout);
+//        pointValueV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getRewardPenaltyPointValue()));
+//
+//        TextView repetitionV = (TextView) view.findViewById(R.id.taskRepetitionLayout);
+//        repetitionV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getRepetition()));
+//
+//        TextView priorityV = (TextView) view.findViewById(R.id.taskPriorityLayout);
+//        priorityV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getPriority()));
+//
+//        TextView dateV = (TextView) view.findViewById(R.id.taskDateLayout);
+//        dateV.setText(String.format(Locale.getDefault(),"%d",tasks.get(i).getDateToBeCompleted()));
+//
+//        CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
+//        cb.setChecked(tasks.get(i).getIsChecked());
 
 /*
         cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

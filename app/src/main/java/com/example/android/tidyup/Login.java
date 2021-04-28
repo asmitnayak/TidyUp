@@ -42,17 +42,20 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseAuth.getInstance().signOut();
+        try {
+            mEmail = findViewById(R.id.emailInput);
+            mPassword = findViewById(R.id.cPasswordInput);
+            mLoginBtn = findViewById(R.id.loginButton);
 
-        mEmail = findViewById(R.id.emailInput);
-        mPassword = findViewById(R.id.cPasswordInput);
-        mLoginBtn = findViewById(R.id.loginButton);
-
-        fauth = FirebaseAuth.getInstance();
-        mForgotPassView = findViewById(R.id.forgotPassView);
-        mProgressBar = findViewById(R.id.lProgressBar);
-        mProgressBar.setVisibility(View.INVISIBLE);
-        GroupManagement gm = new GroupManagement();
-        gm.execute();
+            fauth = FirebaseAuth.getInstance();
+            mForgotPassView = findViewById(R.id.forgotPassView);
+            mProgressBar = findViewById(R.id.lProgressBar);
+            mProgressBar.setVisibility(View.INVISIBLE);
+            GroupManagement gm = new GroupManagement();
+            gm.execute();
+        }catch (Exception e){
+                Toast.makeText(getApplicationContext(), "Error! " + e.getMessage(), Toast.LENGTH_LONG ).show();
+            }
 
     }
 

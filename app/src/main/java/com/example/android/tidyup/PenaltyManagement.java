@@ -29,7 +29,7 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "PenaltyManagement";
     private static final String EXTRA_PENALTY_NAME = "EXTRA_PENALTY_NAME";
     private static final String EXTRA_PENALTY_DESCRIPT = "EXTRA_PENALTY_DESCRIPT";
-    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY);
+    private static DocumentReference docRef;
     private static Map<String, Map<String, List<Object>>> grDB;
     private static Calendar cal;
 
@@ -47,6 +47,7 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
        fFirestore = FirebaseFirestore.getInstance();
        fAuth = FirebaseAuth.getInstance();
        cal = Calendar.getInstance();
+       docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY);
     }
     //Initialized grDB by reading the document from the database
     public static void readGroupPenaltyDB() {

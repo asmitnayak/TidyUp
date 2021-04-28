@@ -220,6 +220,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
+        addStringField("Token");
         deleteField("Password");
 
         docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -340,6 +340,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
                             addedUserID = task.getResult().getDocuments().get(0).getId();
                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
+                            if (!((String) addedUserDoc.get().getResult().getData().get(KEY_GroupID)).equals("")){
+                                
+                            }
                             GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
                             addedUserDoc.update(KEY_GroupID, grpID,
                                                 KEY_Group, grpName);

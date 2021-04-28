@@ -1,12 +1,16 @@
 package com.example.android.tidyup;
 
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.os.Bundle;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -31,7 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-public class AddTaskToTaskPage extends TaskPage{
+public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
 
     private Spinner mPersonSpinner;
     private Spinner mSpinnerRewardPenaltyValue;
@@ -52,7 +56,12 @@ public class AddTaskToTaskPage extends TaskPage{
     private EditText taskName;
     private EditText date;
     private static HashMap<String, Object> userMap = new HashMap<>();
+    LinearLayout radioGroupLayout;
+    RadioGroup rgroup;
+    String userUID;
+    String user;
 
+    private List<String> membersList;
     public String getGroup(String str){
         int index = str.lastIndexOf("Group=");
         index = index + 6;
@@ -90,15 +99,28 @@ public class AddTaskToTaskPage extends TaskPage{
         ArrayAdapter<String> pointListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, pointList);
         pointListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerRewardPenaltyValue.setAdapter(pointListAdapter);
-
-        Spinner spinnerPriority = findViewById(R.id.taskPriorityValue);
-        ArrayList<String> priorityList = new ArrayList<>();
-        priorityList.add("High");
-        priorityList.add("Medium");
-        priorityList.add("Low");
-        ArrayAdapter<String> priorityListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, priorityList);
-        priorityListAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPriority.setAdapter(priorityListAdapter);
+        radioGroupLayout = findViewById(R.id.apRewardButtonGroup);
+        membersList = GroupManagement.getGroupMemberList((String) UserManagement.getUserDetails().get("GroupID"));
+        rgroup = new RadioGroup(this);
+        rgroup.setOrientation(RadioGroup.VERTICAL);
+        RadioGroup.LayoutParams r12;
+        try {
+            for (int i = 0; i < membersList.size(); i++) {
+                RadioButton r1 = new RadioButton(this);
+                r1.setText(UserManagement.getUserNameFromUID(membersList.get(i)));
+                Typeface font = Typeface.createFromAsset(getAssets(), "fonts/ArchitectsDaughter-Regular.ttf");
+                r1.setTypeface(font);
+                r1.setTextSize(20);
+                r1.setTextColor(getApplication().getResources().getColor(R.color.fontAndButtonColor));
+                r1.setId(i + 1);
+                r1.setOnClickListener(this);
+                r12 = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.MATCH_PARENT);
+                rgroup.addView(r1, r12);
+            }
+            radioGroupLayout.addView(rgroup);
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
 
         Spinner spinnerRepetition = findViewById(R.id.taskRepetitionValue);
         ArrayList<String> repetitionList = new ArrayList<>();
@@ -112,7 +134,6 @@ public class AddTaskToTaskPage extends TaskPage{
 
        // mPersonSpinner = spinnerPerson;
         mSpinnerRewardPenaltyValue = spinnerRewardPenaltyValue;
-        mSpinnerPriority = spinnerPriority;
         mSpinnerRepetition = spinnerRepetition;
 
 /*
@@ -261,6 +282,15 @@ public class AddTaskToTaskPage extends TaskPage{
                 mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
 
         finish();
+    }
+    @Override
+    public void onClick(View v) {
+        try {
+            userUID = membersList.get((int) ((RadioButton) v).getId() - 1);
+            user = UserManagement.getEmailFromUID(userUID);
+        }catch (Exception e){
+            Toast.makeText(AddTaskToTaskPage.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+        }
     }
     
 }

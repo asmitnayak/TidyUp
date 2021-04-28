@@ -23,23 +23,84 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+    <!--android:onClick="returnToTaskPage" -->
+
+
+    <TextView
+        android:id="@+id/taskRewardPenaltyValue"
+        android:layout_width="133dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/architects_daughter"
+        android:text="Point Value"
+        android:textColor="@color/fontAndButtonColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.481" />
+
+    <RadioGroup
+        android:id="@+id/apRewardButtonGroup"
+        android:layout_width="284dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.511"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskRewardPenaltyValue" />
+
     <EditText
         android:id="@+id/taskName"
         android:layout_width="281dp"
         android:layout_height="55dp"
         android:ems="10"
+        android:fontFamily="@font/architects_daughter"
         android:hint="Name"
         android:textColor="@color/fontAndButtonColor"
-        android:fontFamily="@font/architects_daughter"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.347" />
+        app:layout_constraintVertical_bias="0.345" />
 
-    <!--android:onClick="returnToTaskPage" -->
+    <TextView
+        android:id="@+id/taskRepetition"
+        android:layout_width="111dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/architects_daughter"
+        android:text="Repetition"
+        android:textColor="@color/fontAndButtonColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.747" />
+
+    <Spinner
+        android:id="@+id/taskRepetitionValue"
+        android:layout_width="145dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="74dp"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.927"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.761" />
+
     <Button
         android:id="@+id/addTaskButton"
         android:layout_width="wrap_content"
@@ -52,11 +113,26 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.474"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.903" />
+        app:layout_constraintVertical_bias="0.839" />
 
+    <EditText
+        android:id="@+id/taskDueDate"
+        android:layout_width="281dp"
+        android:layout_height="55dp"
+        android:ems="10"
+        android:fontFamily="@font/architects_daughter"
+        android:hint="Due Date DD/MM"
+        android:textColor="@color/fontAndButtonColor"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.687" />
 
     <EditText
         android:id="@+id/personAssignedToTask"
@@ -70,27 +146,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.442" />
-
-    <TextView
-        android:id="@+id/taskRewardPenaltyValue"
-        android:layout_width="168dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="25dp"
-        android:fontFamily="@font/architects_daughter"
-        android:text="Point Value"
-        android:textColor="@color/fontAndButtonColor"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.530" />
+        app:layout_constraintVertical_bias="0.424" />
 
     <Spinner
         android:id="@+id/rewardPenaltyValue"
@@ -103,91 +162,9 @@
         android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.922"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.530" />
-
-    <TextView
-        android:id="@+id/taskPriority"
-        android:layout_width="86dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="25dp"
-        android:text="Priority"
-        android:textColor="@color/fontAndButtonColor"
-        android:fontFamily="@font/architects_daughter"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.630" />
-
-    <Spinner
-        android:id="@+id/taskPriorityValue"
-        android:layout_width="163dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="74dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.630" />
-
-    <EditText
-        android:id="@+id/taskDueDate"
-        android:layout_width="281dp"
-        android:layout_height="55dp"
-        android:ems="10"
-        android:hint="Due Date DD/MM"
-        android:textColor="@color/fontAndButtonColor"
-        android:fontFamily="@font/architects_daughter"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.43"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.742" />
-
-    <TextView
-        android:id="@+id/taskRepetition"
-        android:layout_width="111dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="59dp"
-        android:layout_marginTop="25dp"
-        android:text="Repetition"
-        android:textColor="@color/fontAndButtonColor"
-        android:fontFamily="@font/architects_daughter"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.830" />
-
-    <Spinner
-        android:id="@+id/taskRepetitionValue"
-        android:layout_width="163dp"
-        android:layout_height="53dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="21dp"
-        android:layout_marginEnd="74dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.830" />
+        app:layout_constraintVertical_bias="0.494" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

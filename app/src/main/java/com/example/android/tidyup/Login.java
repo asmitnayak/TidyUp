@@ -93,6 +93,7 @@ public class Login extends AppCompatActivity {
                     finish();
                     Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_LONG).show();
                     // check if admin move to Account.java
+
                     UserManagement um = new UserManagement();
                     um.execute();
                     RewardsManagement rm = new RewardsManagement();

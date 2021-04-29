@@ -294,7 +294,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        readGroupTaskDB((String) UserManagement.getUserDetails().get("groupID"));
+        readGroupTaskDB((String) UserManagement.getUserDetails().get("GroupID"));
         super.onPreExecute();
     }
 

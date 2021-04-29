@@ -33,6 +33,8 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import static com.example.android.tidyup.Login.done;
+
 public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String COLLECTIONPATH_USERS = "Users";
     private static final String TAG = "UserManagement";
@@ -106,6 +108,11 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 //                }
 //            }
 //        });
+//        try {
+//            done.await(); //it will wait till the response is received from firebase.
+//        } catch(InterruptedException e) {
+//            e.printStackTrace();
+//        }
         return (HashMap<String, Object>) map;
     }
 
@@ -197,7 +204,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 }
             }
         });
-        colRefUID.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        colRefUID.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
@@ -214,6 +221,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                             //otherUserMap.put(document.getId(), (String) document.getData().get("Username"));
                         }
                     }
+                    done.countDown();
                     Log.d(TAG, "asdjlk  "+ otherUserMap.toString());
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -228,11 +236,17 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
+                    String grpID = "";
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         map = document.getData();
+                        grpID = (String) map.get("GroupID");
                     } else {
                         Log.d(TAG, "No such document");
+                    }
+                    if (grpID != null && !grpID.isEmpty()) {
+                        TaskManagment tm = new TaskManagment();
+                        tm.execute();
                     }
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());

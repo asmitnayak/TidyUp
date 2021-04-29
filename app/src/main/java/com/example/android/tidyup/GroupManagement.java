@@ -251,7 +251,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         }
     }
     public static String getGroupCode(String groupID){
-        readGroupCodeDB();
+//        readGroupCodeDB();
         List<String> groupCodeList = new ArrayList<String>();
         String groupCode = "";
         if(gcDB != null){
@@ -386,7 +386,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Base64.encodeToString(cipherText, Base64.DEFAULT).replaceAll("\\n", "").replaceAll("[^a-zA-Z0-9]", "");
+        return Base64.encodeToString(cipherText, Base64.DEFAULT).replaceAll("\\n", "");
     }
 
     @Override

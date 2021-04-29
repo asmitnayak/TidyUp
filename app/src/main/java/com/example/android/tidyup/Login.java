@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 
 public class Login extends AppCompatActivity {
 
@@ -36,6 +37,8 @@ public class Login extends AppCompatActivity {
     private static HashMap<String, Object> userMap = new HashMap<>();
     private ProgressBar mProgressBar;
     private TextView mForgotPassView;
+
+    public static CountDownLatch done = new CountDownLatch(1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,13 +100,6 @@ public class Login extends AppCompatActivity {
                     PenaltyManagement pm = new PenaltyManagement();
                     pm.execute();
                     userMap = UserManagement.getUserDetails();
-                    //while(userMap.size() == 0){
-                    //    userMap = UserManagement.getUserDetails();
-                    //}
-                    //TaskManagment tm = new TaskManagment();
-                    //tm.execute();
-                    //test
-
                     mProgressBar.setVisibility(View.INVISIBLE);
                     if(userMap.get("Group") != "")
                         // change back from TaskPage to Account

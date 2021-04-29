@@ -43,7 +43,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     private static final String GROUP_DB_DOCUMENT = "Groups";
     private static Map<String, List<String>> gcDB;
     private static Map<String, List<String>> grpDB;
-    private static boolean grpRand;
     private static String currGroup;
     private static FirebaseAuth fAuth;
     private static Calendar cal;

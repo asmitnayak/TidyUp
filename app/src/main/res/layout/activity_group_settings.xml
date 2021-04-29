@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".GroupSettings">
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/light_blue_background" />
-
     <TextView
         android:id="@+id/joinGroupText"
         android:layout_width="wrap_content"
@@ -34,32 +21,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/assignText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/architects_daughter"
-        android:text="Assign Task Settings:"
-        android:textColor="#003060"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/joinGroupText" />
-
-    <TextView
         android:id="@+id/groupLinkText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="18dp"
         android:fontFamily="@font/architects_daughter"
         android:text="Group Code"
         android:textColor="#003060"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        tools:layout_editor_absoluteY="91dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -110,48 +82,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup"
-        android:layout_width="289dp"
-        android:layout_height="98dp"
-        android:layout_marginStart="36dp"
-        android:clickable="true"
-        android:onClick="onRadioButtonClicked"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/assignText">
-
-        <RadioButton
-            android:id="@+id/randomSetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:fontFamily="@font/architects_daughter"
-            android:onClick="onRadioButtonClicked"
-            android:text="@string/random"
-            android:textColor="#003060"
-            android:textSize="20sp" />
-
-        <RadioButton
-            android:id="@+id/manualSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:fontFamily="@font/architects_daughter"
-            android:onClick="onRadioButtonClicked"
-            android:text="@string/manual"
-            android:textColor="#003060"
-            android:textSize="20sp" />
-    </RadioGroup>
-
     <ListView
         android:id="@+id/membersList"
         android:layout_width="331dp"
         android:layout_height="208dp"
-        android:layout_marginTop="368dp"
+        android:layout_marginTop="216dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></ListView>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/light_blue_background" />
+    </ListView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

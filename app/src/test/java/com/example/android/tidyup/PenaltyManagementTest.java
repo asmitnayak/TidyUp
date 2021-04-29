@@ -21,6 +21,7 @@ import org.w3c.dom.Document;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,13 +69,30 @@ public class PenaltyManagementTest {
         //////////////////////////////////
 
         pm = new PenaltyManagement(mockFirestore, mockFireAuth, "gid1", "group1", "example");
-        PenaltyManagement.addPenalty("gid1", "This is a penalty", "Penalty1" );
-        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2" );
-        PenaltyManagement.addPenalty("gid3", "This is a penalty", "Penalty3");
-        PenaltyManagement.addPenalty("gid4", "This is a penalty", "Penalty4");
+        PenaltyManagement.addPenalty("gid1", "This is a penalty", "Penalty1");
+    }
 
-        GroupManagement.addUserToGroup("gid1","example","gc11","group1");
-        GroupManagement.addUserToGroup("gid2","test","gc21","group2");
+    @Test
+    public void getGroupPenaltyMap(){
+        String expectedName  = "Penalty2";
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a penalty");
+        expectedValues.add(null);
+        HashMap<String, List<Object>> map = (HashMap<String, List<Object>>) PenaltyManagement.getGroupPenaltyMap("gid1");
+        String actualName = (String) PenaltyManagement.getGroupPenaltyMap("gid1").keySet().toArray()[0];
+        ArrayList<Object> actualValues = (ArrayList<Object>) map.get("Penalty1");
+        assertEquals(expectedName, actualName);
+        assertEquals(expectedValues, actualValues);
 
     }
+    @Test
+    public void addAnotherPenaltyGroup(){
+        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2" );
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Penalty2");
+
+        assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid2")));
+    }
+
 }
+

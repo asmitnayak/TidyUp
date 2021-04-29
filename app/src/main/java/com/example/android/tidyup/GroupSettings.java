@@ -25,7 +25,6 @@ public class GroupSettings extends AppCompatActivity {
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private DocumentReference docRef = fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid());
-    boolean randomSetting;
     TextView inviteCode;
     static GroupSettingsAdapter customAdp;
     ListView membersList;
@@ -53,16 +52,7 @@ public class GroupSettings extends AppCompatActivity {
             membersList.setAdapter(customAdp);
             inviteCode.setText(code);
             copyBtn.setEnabled(true);
-            randomSetting = GroupManagement.getGroupTask(groupID);
-        }
-        RadioButton manual = findViewById(R.id.manualSetting);
-        RadioButton random = findViewById(R.id.randomSetting);
-        if(!randomSetting){
-            manual.setChecked(true);
-            random.setChecked(false);
-        }else if(randomSetting){
-            manual.setChecked(false);
-            random.setChecked(true);
+;
         }
 
     }
@@ -71,24 +61,7 @@ public class GroupSettings extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText("Invite Code", inviteCode.getText().toString());
         clipboard.setPrimaryClip(clip);
     }
-    public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
-        switch (view.getId()) {
-            case R.id.randomSetting:
-                if (checked)
-                    randomSetting = true;
-                    GroupManagement.setGroupTask(groupID, randomSetting);
-                break;
-            case R.id.manualSetting:
-                if (checked)
-                    randomSetting = false;
-                    GroupManagement.setGroupTask(groupID, randomSetting);
-                break;
-        }
-    }
 
     public static void updateListView(){
         customAdp.notifyDataSetChanged();

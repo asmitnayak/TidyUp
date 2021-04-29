@@ -288,10 +288,11 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             });
             createAlert.setNegativeButton("Cancel", null);
             createAlert.show();
+        }else {
+            Intent intent = new Intent(this, CreateGroup.class);
+            finish();
+            startActivity(intent);
         }
-        Intent intent = new Intent(this, CreateGroup.class);
-        finish();
-        startActivity(intent);
     }
 
     public void goToJoinGroupPage(View view){

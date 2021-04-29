@@ -59,8 +59,8 @@ public class PenaltyManagementTest {
         //////   MOCKING FUNCTIONS   //////
         ///////////////////////////////////
 
-        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
-        doReturn("example").when(mockFireUser).getUid();
+//        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
+//        doReturn("example").when(mockFireUser).getUid();
         doReturn(mockCollections).when(mockFirestore).collection(anyString());
         doReturn(mockDocs).when(mockCollections).document(anyString());
 
@@ -86,11 +86,21 @@ public class PenaltyManagementTest {
 
     }
     @Test
+    public void getGroupPenaltyMapNonExistent(){
+        assertTrue(PenaltyManagement.getGroupPenaltyMap("gid2").isEmpty());
+
+    }
+    @Test
     public void addAnotherPenaltyGroup(){
         PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2");
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Penalty2");
         assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid2")));
+    }
+    @Test
+    public void addPenaltyReturn(){
+        assertEquals(1, PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2"));
+
     }
     @Test
     public void getNewlyAddedPenaltyMap(){
@@ -105,6 +115,86 @@ public class PenaltyManagementTest {
         assertEquals(expectedName, actualName);
         assertEquals(expectedValues, actualValues);
 
+    }
+    @Test
+    public void addPenaltyToExistingPenaltyList(){
+        PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty3");
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Penalty3");
+        expected.add("Penalty1");
+        assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid1")));
+    }
+    @Test
+    public void addPenaltyToExistingPenaltyListDuplicate(){
+        PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty1");
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Penalty1");
+        assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid1")));
+    }
+    @Test
+    public void addPenaltyToExistingPenaltyListDuplicateReturn(){
+        ArrayList<String> expected = new ArrayList<>();
+        assertEquals(0, PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty1"));
+    }
+    @Test
+    public void removePenalty(){
+        PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty3");
+        PenaltyManagement.removePenalty("gid1", "Penalty3");
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Penalty1");
+        assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid1")));
+    }
+    @Test
+    public void removePenaltyReturn(){
+        PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty3");
+        assertEquals(1, PenaltyManagement.removePenalty("gid1", "Penalty3"));
+    }
+    @Test
+    public void removePenaltyNonExistentReturn(){
+        assertEquals(0, PenaltyManagement.removePenalty("gid1", "Penalty3"));
+    }
+    @Test
+    public void removeNonExistentPenalty(){
+        PenaltyManagement.addPenalty("gid1", "This is a new penalty", "Penalty3");
+        int expected = 0;
+        assertEquals(expected, PenaltyManagement.removePenalty("gid1", "Penalty2"));
+    }
+    @Test
+    public void removePenaltyMap(){
+        PenaltyManagement.addPenalty("gid2", "This is a new penalty", "Penalty3");
+        PenaltyManagement.removePenaltyMap("gid2");
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid2")));
+    }
+    @Test
+    public void removePenaltyMapNonExistentGroup(){
+        int expected = 0 ;
+        assertEquals(expected, PenaltyManagement.removePenaltyMap("gid2"));
+
+    }
+    @Test
+    public void assignPenaltyReturn(){
+        assertEquals(1,PenaltyManagement.assignPenalty("gid1","Penalty1", "example"));
+    }
+    @Test
+    public void assignPenalty(){
+        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2");
+        String expectedName  = "Penalty2";
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a penalty");
+        expectedValues.add("example");
+        HashMap<String, List<Object>> map = (HashMap<String, List<Object>>) PenaltyManagement.getGroupPenaltyMap("gid2");
+        ArrayList<Object> actualValues = (ArrayList<Object>) map.get("Penalty2");
+        PenaltyManagement.assignPenalty("gid2","Penalty2", "example");
+        assertEquals(expectedValues,actualValues);
+    }
+    @Test
+    public void assignPenaltyNonExistentPenaltyReturn(){
+        assertEquals(2,PenaltyManagement.assignPenalty("gid1","Penalty3", "example"));
+    }
+    @Test
+    public void assignPenaltyMapNonExistentReturn(){
+        assertEquals(0,PenaltyManagement.assignPenalty("gid2","Penalty1", "example"));
     }
 
 }

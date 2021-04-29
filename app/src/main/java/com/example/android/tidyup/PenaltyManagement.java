@@ -149,21 +149,21 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
-    //Gets the specific info for the penalty. Specifically description and value
-    public static ArrayList<Object> getPenaltyInfo(String groupID, String penaltyName){
-        Map<String, List<Object>> groupPenaltyMap = getGroupPenaltyMap(groupID);
-        List<Object> penaltyInfo = new ArrayList<Object>();
-        if (groupPenaltyMap != null) {
-            if (groupPenaltyMap.containsKey(penaltyName)) {
-                penaltyInfo = groupPenaltyMap.get(penaltyName);
-                return (ArrayList<Object>) penaltyInfo;
-            } else {
-                return null;
-            }
-        }else{
-            return null;
-        }
-    }
+//    //Gets the specific info for the penalty. Specifically description and value
+//    public static ArrayList<Object> getPenaltyInfo(String groupID, String penaltyName){
+//        Map<String, List<Object>> groupPenaltyMap = getGroupPenaltyMap(groupID);
+//        List<Object> penaltyInfo = new ArrayList<Object>();
+//        if (groupPenaltyMap != null) {
+//            if (groupPenaltyMap.containsKey(penaltyName)) {
+//                penaltyInfo = groupPenaltyMap.get(penaltyName);
+//                return (ArrayList<Object>) penaltyInfo;
+//            } else {
+//                return null;
+//            }
+//        }else{
+//            return null;
+//        }
+//    }
     public static ArrayList<String> getPenaltyNameList(Map<String, List<Object>> groupPenaltyMap) {
         ArrayList<String> penaltyNames = new ArrayList<String>();
         if (groupPenaltyMap != null){

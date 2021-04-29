@@ -276,6 +276,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         }
     }*/
     public static void removeTaskFromGroup(String groupID, String taskName){
+        /*
         if(displayMap.containsKey(groupID)){
             ArrayList<String> taskList = (ArrayList<String>) displayMap.get(groupID);
             if(taskList.contains(taskName))
@@ -284,6 +285,9 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             TaskManagment.Tasks task = new TaskManagment.Tasks(displayMap);
             fFirestore.collection(COLLECTIONPATH_TASK).document(groupID).set(task);
         }
+
+         */
+
     }
 
     private static class Tasks{

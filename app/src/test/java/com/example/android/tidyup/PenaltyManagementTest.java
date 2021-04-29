@@ -74,7 +74,7 @@ public class PenaltyManagementTest {
 
     @Test
     public void getGroupPenaltyMap(){
-        String expectedName  = "Penalty2";
+        String expectedName  = "Penalty1";
         ArrayList<Object> expectedValues = new ArrayList<Object>();
         expectedValues.add("This is a penalty");
         expectedValues.add(null);

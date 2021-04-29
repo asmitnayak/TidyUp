@@ -191,8 +191,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
 
-
-
 //// load and display user info on Task Page
 //        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 //            @Override

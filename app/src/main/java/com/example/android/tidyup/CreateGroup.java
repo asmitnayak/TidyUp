@@ -126,7 +126,7 @@ public class CreateGroup extends AppCompatActivity {
         //
         // go to task page???
         finish();
-        startActivity(new Intent(getApplicationContext(), Account.class));
+        startActivity(new Intent(this, Account.class));
     }
 
     @Override

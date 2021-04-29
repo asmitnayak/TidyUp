@@ -270,7 +270,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getCurrentUser().getUid();
                     String tempGrpID = grpID;
-                    GroupManagement.removeUserFromGroup(grpID, userID);
+
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "",
                             "GroupID", "");
@@ -282,16 +282,15 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         String userToken = UserManagement.getUserTokenFromUID(otherId);
                         NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
                     }
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), CreateGroup.class));
+                    GroupManagement.removeUserFromGroup(grpID, userID);
                 }
             });
             createAlert.setNegativeButton("Cancel", null);
             createAlert.show();
+        } else {
+            finish();
+            startActivity(new Intent(getApplicationContext(), CreateGroup.class));
         }
-        Intent intent = new Intent(this, CreateGroup.class);
-        finish();
-        startActivity(intent);
     }
 
     public void goToJoinGroupPage(View view){

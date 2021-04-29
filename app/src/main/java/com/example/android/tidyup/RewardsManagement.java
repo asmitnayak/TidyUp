@@ -21,16 +21,29 @@ import java.util.List;
 import java.util.Map;
 
 public class RewardsManagement extends AsyncTask<Void, Void, Void> {
-    private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+    private static FirebaseAuth fAuth;// = FirebaseAuth.getInstance();
+    private static FirebaseFirestore fFirestore;// = FirebaseFirestore.getInstance();
     private static final String COLLECTIONPATH_REWARDS_PENALTIES = "Rewards_Penalties";
     private static final String DOCUMENTPATH_REWARDS = "Rewards";
     private static final String TAG = "RewardsManagement";
     private static final String EXTRA_REWARD_NAME = "EXTRA_REWARD_NAME";
     private static final String EXTRA_REWARD_DESCRIPT = "EXTRA_REWARD_DESCRIPT";
-    private static final DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
+    private static DocumentReference docRef;
     private static Map<String, Map<String, List<Object>>> grDB;
     private static Calendar cal;
+
+    public RewardsManagement(FirebaseAuth fireAuth, FirebaseFirestore fireStore){
+        fAuth = fireAuth;
+        fFirestore = fireStore;
+        docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
+        grDB = new HashMap<>();
+    }
+
+    public RewardsManagement(){
+        fAuth = FirebaseAuth.getInstance();
+        fFirestore = FirebaseFirestore.getInstance();
+        docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);
+    }
 
     //Adds a reward to a specific group
     public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
@@ -61,12 +74,12 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static int removeReward(String groupID, String rewardName){
-        if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
-                return -1;
-            }
-        }
+//        if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
+//                return -1;
+//            }
+//        }
         if(grDB.containsKey(groupID)) {
             Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
             if (groupRewardMap.containsKey(rewardName)) {
@@ -83,12 +96,12 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static int removeRewardsMap(String groupID){
-        if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
-                return -1;
-            }
-        }
+//        if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
+//                return -1;
+//            }
+//        }
         if(grDB.containsKey(groupID)) {
             grDB.remove(groupID);
             Rewards rewards = new Rewards(grDB);

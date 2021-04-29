@@ -44,7 +44,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static Map<String, Map<String, Object>> taskItems;
     private static Map<String, Map<String, Object>> displayMap;
 
-    private static final String COLLECTIONPATH_TASK = "Task";
+    private static final String COLLECTIONPATH_TASK = "task";
     private static final String DOCUMENTPATH_TASKS = "Tasks";
     private static  DocumentReference docRef;
 
@@ -243,7 +243,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 TaskManagment.Tasks taskDocument = documentSnapshot.toObject(TaskManagment.Tasks.class);
-                displayMap = taskDocument.TaskMap;
+                displayMap = taskDocument.taskMap;
             }
         }).addOnFailureListener(new OnFailureListener() {
             public void onFailure(@NonNull Exception e) {
@@ -284,12 +284,15 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     }
 
     private static class Tasks{
-        public Map<String, Map<String, Object>> TaskMap = new HashMap<>();
+        public Map<String, Map<String, Object>> taskMap = new HashMap<>();
+
+        Tasks(){}
+
         Tasks(Map<String, Map<String, Object>> customMap){
-            TaskMap = new HashMap<>();
-            this.TaskMap = customMap;
+            taskMap = new HashMap<>();
+            this.taskMap = customMap;
         }
-        public Map<String, Map<String, Object>> getTaskMap() { return this.TaskMap;}
+        public Map<String, Map<String, Object>> getTaskMap() { return this.taskMap;}
     }
 
     @Override

@@ -60,14 +60,12 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static String groupName;
 
 
-    public static int addTaskItem(String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
-        TaskItem addTask = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
+    public static int addTaskItem(String taskName, String person, int pointValue, String dateToBeCompleted, String repetition) {
+        TaskItem addTask = new TaskItem(taskName, person, pointValue, dateToBeCompleted, repetition);
 
-        userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");
-        String groupId = GroupManagement.getGroupID(userGroup.toString());
+        String groupId = (String) UserManagement.getUserDetails().get("GroupID");
 
-        DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
+        DocumentReference docRef = fFirestore.collection("task").document(groupId);
 
         docRef.update(taskName, addTask);
 

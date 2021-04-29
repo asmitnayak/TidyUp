@@ -64,24 +64,12 @@
             android:text="Repetition:"
             android:textColor="@color/fontAndButtonColor" />
 
-        <TextView
-            android:id="@+id/taskPriorityLayout"
-            android:layout_width="250dp"
-            android:layout_height="27dp"
-            android:layout_below="@+id/taskRepetitionLayout"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_toEndOf="@+id/taskSelect"
-            android:fontFamily="@font/architects_daughter"
-            android:text="Priority:"
-            android:textColor="@color/fontAndButtonColor" />
 
         <TextView
             android:id="@+id/taskDateLayout"
             android:layout_width="250dp"
             android:layout_height="27dp"
-            android:layout_below="@+id/taskPriorityLayout"
+            android:layout_below="@+id/taskRepetitionLayout"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
 

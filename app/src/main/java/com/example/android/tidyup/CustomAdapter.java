@@ -66,13 +66,10 @@ public class CustomAdapter extends BaseAdapter {
         personV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
 
         TextView pointValueV = (TextView) view.findViewById(R.id.taskPointValueLayout);
-        pointValueV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("rewardPenaltyPointValue"));
+        pointValueV.setText(String.valueOf(((HashMap<String, Object>) tasksValues.get(i)).get("rewardPenaltyPointValue")));
 
         TextView repetitionV = (TextView) view.findViewById(R.id.taskRepetitionLayout);
         repetitionV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("repetition"));
-
-        TextView priorityV = (TextView) view.findViewById(R.id.taskPriorityLayout);
-        priorityV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("priority"));
 
         TextView dateV = (TextView) view.findViewById(R.id.taskDateLayout);
         dateV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("dateToBeCompleted"));

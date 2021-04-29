@@ -1,5 +1,6 @@
 package com.example.android.tidyup;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.Log;
@@ -293,14 +294,13 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
             String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
             int rewardInt = Integer.parseInt(rewardString);
 
-            TaskManagment.addTaskItem(name, userUID, rewardInt,
-                    mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
+            TaskManagment.addTaskItem(name, user, rewardInt, date, mSpinnerRepetition.getSelectedItem().toString());
 
-            finish();
+            startActivity(new Intent(getApplicationContext(), TaskPage.class));
         }catch (Exception e){
-            Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.d(TAG, e.toString());
-        }
+            //Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
+            //Log.d(TAG, e.toString());
+       }
     }
     static boolean isValid(String date) {
         String regex = "\\d\\d/\\d\\d";
@@ -309,7 +309,7 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         try {
-            userUID = membersList.get((int) ((RadioButton) v).getId() - 1);
+            user = UserManagement.getUserNameFromUID(membersList.get((int) ((RadioButton) v).getId() - 1));
         }catch (Exception e){
             Toast.makeText(AddTaskToTaskPage.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }

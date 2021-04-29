@@ -139,19 +139,21 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         });
 
  */
-        docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
+        docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Map<String, Object> taskDB = documentSnapshot.getData();
-                customAdaptor = new CustomAdapter(getApplicationContext(), taskDB);
-                taskList.setAdapter(customAdaptor);
-                tasksKey = new ArrayList<String>(tasks.keySet());
-                tasksValues = new ArrayList(tasks.values());
-
+                if(documentSnapshot.exists()) {
+                    Map<String, Object> taskDB = documentSnapshot.getData();
+                    customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
+                    taskList.setAdapter(customAdaptor);
+                    tasksKey = new ArrayList<String>(tasks.keySet());
+                    tasksValues = new ArrayList(tasks.values());
+                }else {
+                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                }
             }
         });
-
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);
@@ -160,7 +162,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskName = findViewById(R.id.taskNameLayout);
         mtaskPerson = findViewById(R.id.taskPersonLayout);
         mtaskPoint = findViewById(R.id.taskPointValueLayout);
-        mtaskPriority = findViewById(R.id.taskPriorityLayout);
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
 

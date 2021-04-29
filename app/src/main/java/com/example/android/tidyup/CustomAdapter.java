@@ -60,19 +60,19 @@ public class CustomAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.task_page_layout, null);
 
         TextView taskNameV = (TextView) view.findViewById(R.id.taskNameLayout);
-        taskNameV.setText(tasksKey.get(i));
+        taskNameV.setText("Task Name: " + tasksKey.get(i));
 
         TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
-        personV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
+        personV.setText("Person Assigned: " +(String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
 
         TextView pointValueV = (TextView) view.findViewById(R.id.taskPointValueLayout);
-        pointValueV.setText(String.valueOf(((HashMap<String, Object>) tasksValues.get(i)).get("rewardPenaltyPointValue")));
+        pointValueV.setText("Point Value: " +String.valueOf(((HashMap<String, Object>) tasksValues.get(i)).get("rewardPenaltyPointValue")));
 
         TextView repetitionV = (TextView) view.findViewById(R.id.taskRepetitionLayout);
-        repetitionV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("repetition"));
+        repetitionV.setText("Repetition: " +(String)((HashMap<String, Object>)tasksValues.get(i)).get("repetition"));
 
         TextView dateV = (TextView) view.findViewById(R.id.taskDateLayout);
-        dateV.setText((String)((HashMap<String, Object>)tasksValues.get(i)).get("dateToBeCompleted"));
+        dateV.setText("Due Date: " +(String)((HashMap<String, Object>)tasksValues.get(i)).get("dateToBeCompleted"));
 
         CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
         cb.setChecked((boolean)((HashMap<String, Object>)tasksValues.get(i)).get("isChecked"));

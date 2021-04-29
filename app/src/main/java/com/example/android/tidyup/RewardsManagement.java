@@ -32,7 +32,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, Map<String, List<Object>>> grDB;
     private static Calendar cal;
 
-    public RewardsManagement(FirebaseAuth fireAuth, FirebaseFirestore fireStore){
+    public RewardsManagement( FirebaseAuth fireAuth, FirebaseFirestore fireStore){
         fAuth = fireAuth;
         fFirestore = fireStore;
         docRef = fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS);

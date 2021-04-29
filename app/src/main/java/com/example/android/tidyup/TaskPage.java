@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -395,8 +396,11 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
         TaskItem addTask;
         if(cb.isChecked()){
-            taskName = findViewById(R.id.taskNameLayout);
+            ViewGroup viewParent = (ViewGroup) view.getParent();
+            TextView taskName = (TextView) viewParent.getChildAt(0);
+
             String taskNameStr = taskName.getText().toString();
+
 
             DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

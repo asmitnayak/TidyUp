@@ -37,7 +37,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
-
+    private static final String TAG = "AddTaskToTaskPage.class";
     private Spinner mPersonSpinner;
     private Spinner mSpinnerRewardPenaltyValue;
     private Spinner mSpinnerPriority;
@@ -266,36 +266,41 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
 
    //     EditText groupIdIn = (EditText) findViewById(R.id.taskName)
         //    String groupID = groupIdIn.getText().toString();
+        try {
+            EditText nameIn = (EditText) findViewById(R.id.taskName);
+            String name = nameIn.getText().toString();
 
-        EditText nameIn = (EditText) findViewById(R.id.taskName);
-        String name = nameIn.getText().toString();
-        if (TextUtils.isEmpty(name)){
-            nameIn.setError("Please Enter a Task Name");
-            return;
+            if (TextUtils.isEmpty(name)) {
+                nameIn.setError("Please Enter a Task Name");
+                return;
+            }
+
+            //EditText person = (EditText) findViewById(R.id.personAssignedToTask);
+            //String personStr = person.getText().toString();
+
+            EditText dueDate = (EditText) findViewById(R.id.taskDueDate);
+            String date = dueDate.getText().toString();
+            if (TextUtils.isEmpty(date)) {
+                dueDate.setError("Please Enter a Date");
+                return;
+            }
+            if (!isValid(date)) {
+                dueDate.setError("Please Enter a Date in Format ##/##");
+                return;
+
+            }
+
+            String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
+            int rewardInt = Integer.parseInt(rewardString);
+
+            TaskManagment.addTaskItem(name, userUID, rewardInt,
+                    mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
+
+            finish();
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.d(TAG, e.toString());
         }
-
-        EditText person = (EditText) findViewById(R.id.personAssignedToTask);
-        String personStr = person.getText().toString();
-
-        EditText dueDate = (EditText) findViewById(R.id.taskDueDate);
-        String date = dueDate.getText().toString();
-        if (TextUtils.isEmpty(date)){
-            dueDate.setError("Please Enter a Date");
-            return;
-        }
-        if(!isValid(date)) {
-            dueDate.setError("Please Enter a Date in Format ##/##");
-            return;
-
-        }
-
-        String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
-        int rewardInt = Integer.parseInt(rewardString);
-
-        TaskManagment.addTaskItem(name, personStr, rewardInt,
-                mSpinnerPriority.getSelectedItem().toString(), date, mSpinnerRepetition.getSelectedItem().toString());
-
-        finish();
     }
     static boolean isValid(String date) {
         String regex = "\\d\\d/\\d\\d";
@@ -305,7 +310,6 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
     public void onClick(View v) {
         try {
             userUID = membersList.get((int) ((RadioButton) v).getId() - 1);
-            user = UserManagement.getEmailFromUID(userUID);
         }catch (Exception e){
             Toast.makeText(AddTaskToTaskPage.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }

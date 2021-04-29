@@ -42,7 +42,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static ArrayList<TaskItem> taskList;
     private static HashMap<String, Object> userMap = new HashMap<>();
     private static Map<String, Map<String, Object>> taskItems;
-    private static Map<String, Map<String, Object>> displayMap;
+    private static Map<String, Object> displayMap;
 
     private static final String COLLECTIONPATH_TASK = "task";
     private static final String DOCUMENTPATH_TASKS = "Tasks";
@@ -79,31 +79,36 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             }
         }
 
-        Map<String, Object> add = displayMap.get(groupId);
+        Map<String, Object> add = (Map<String, Object> ) displayMap.get(groupId);
         add.put(taskName, addTask);
         displayMap.put(groupId, add);
+        docRef.set(displayMap);
 
         return 1;
     }
-
-    public static Map<String, Map<String, Object>> getGroupTaskMap(String groupName) {
+    public static Map<String, Object> getDisplayMap(){
+        return displayMap;
+    }
+    public static Map<String, Object> getGroupTaskMap(String groupName) {
         userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");
-        String groupID = GroupManagement.getGroupID(userGroup.toString());
-        Map<String, Map<String, Object>> groupTaskMap;
+        String groupID  = (String) userMap.get("GroupID");
+        Map<String, Object> groupTaskMap;
         if (displayMap == null) {
-            updateDocRef(groupID);
+            readGroupTaskDB(groupID);
             if (displayMap == null) {
                 return null;
             }
         }
+        /*
         if (displayMap.containsKey(userMap.toString())) {
             groupTaskMap = new HashMap<>();
             groupTaskMap = (HashMap) displayMap.get(userMap);
         } else {
             groupTaskMap = new HashMap<>();
         }
-        return groupTaskMap;
+
+         */
+        return displayMap;
     }
 //        Map<String, Map<String, Object>> returnMap = new Map<String, Map<String, Object>>();
 //        final Map<String, Object>[] sampleMap = new Map[]{new HashMap<String, Object>()};
@@ -284,15 +289,15 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     }
 
     private static class Tasks{
-        public Map<String, Map<String, Object>> taskMap = new HashMap<>();
+        public Map<String, Object> taskMap = new HashMap<>();
 
         Tasks(){}
 
-        Tasks(Map<String, Map<String, Object>> customMap){
+        Tasks(Map<String, Object> customMap){
             taskMap = new HashMap<>();
             this.taskMap = customMap;
         }
-        public Map<String, Map<String, Object>> getTaskMap() { return this.taskMap;}
+        public Map<String, Object> getTaskMap() { return this.taskMap;}
     }
 
     @Override

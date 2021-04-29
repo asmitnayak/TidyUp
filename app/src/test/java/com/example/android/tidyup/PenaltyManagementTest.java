@@ -64,14 +64,14 @@ public class PenaltyManagementTest {
         doReturn(mockDocs).when(mockCollections).document(anyString());
 
         //////////////////////////////////
-        //////   Penalty Management  //////
+        /////   Penalty Management   /////
         //////////////////////////////////
 
         pm = new PenaltyManagement(mockFirestore, mockFireAuth, "gid1", "group1", "example");
-        GroupManagement.addGroupCodes("gid1","gc1");
-        GroupManagement.addGroupCodes("gid2","gc2");
-        GroupManagement.addGroupCodes("gid3","gc3");
-        GroupManagement.addGroupCodes("gid1","gc4");
+        PenaltyManagement.addPenalty("gid1", "This is a penalty", "Penalty1" );
+        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2" );
+        PenaltyManagement.addPenalty("gid3", "This is a penalty", "Penalty3");
+        PenaltyManagement.addPenalty("gid4", "This is a penalty", "Penalty4");
 
         GroupManagement.addUserToGroup("gid1","example","gc11","group1");
         GroupManagement.addUserToGroup("gid2","test","gc21","group2");

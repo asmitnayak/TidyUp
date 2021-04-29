@@ -113,7 +113,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 //    private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
 
     private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_TASKS).document(fAuth.getCurrentUser().getUid());
+    private  DocumentReference docRef;
 
     private TextView mtaskName, mtaskPerson, mtaskPoint, mtaskPriority, mtaskRepetition, mtaskDate;
     private boolean checked;
@@ -127,26 +127,30 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
         userMap = UserManagement.getUserDetails();
         Object userGroup1 = userMap.get("Group");
-        //tasks = new HashMap<>();
-        //tasks = TaskManagment.getGroupTaskMap(userGroup1.toString());
-        DocumentReference docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        tasks = new HashMap<>();
+        tasks = TaskManagment.getDisplayMap();
+
+/*
+        readTaskDB(new FirestoreCallback() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                tasks = documentSnapshot.getData();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            public void onFailure(@NonNull Exception e) {
-                Log.w("TaskFirebase", "Error reading document", e);
+            public void onCallback(Map<String, Object> taskDB) {
+                tasks = taskDB;
             }
         });
 
+ */
+        docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> taskDB = documentSnapshot.getData();
+                customAdaptor = new CustomAdapter(getApplicationContext(), taskDB);
+                taskList.setAdapter(customAdaptor);
+                tasksKey = new ArrayList<String>(tasks.keySet());
+                tasksValues = new ArrayList(tasks.values());
 
-
-        customAdaptor = new CustomAdapter(this, tasks);
-        taskList.setAdapter(customAdaptor);
-        tasksKey = new ArrayList<String>(tasks.keySet());
-        tasksValues = new ArrayList(tasks.values());
+            }
+        });
 
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
@@ -159,6 +163,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskPriority = findViewById(R.id.taskPriorityLayout);
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
+
+
 
 //// load and display user info on Task Page
 //        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -281,6 +287,26 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 //        //action bar
 //
    }
+
+
+   private void readTaskDB(FirestoreCallback firestoreCallback){
+       DocumentReference docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
+       docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+           @Override
+           public void onSuccess(DocumentSnapshot documentSnapshot) {
+               Map<String, Object> taskDB = documentSnapshot.getData();
+               firestoreCallback.onCallback(taskDB);
+           }
+       }).addOnFailureListener(new OnFailureListener() {
+           public void onFailure(@NonNull Exception e) {
+               Log.w("TaskFirebase", "Error reading document", e);
+           }
+       });
+   }
+
+    private interface FirestoreCallback{
+        void onCallback(Map<String, Object> taskDB);
+    }
 
     public String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");

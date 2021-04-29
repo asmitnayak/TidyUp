@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,9 +24,12 @@ public class JoinGroup extends AppCompatActivity {
     public void onJoinGroup(View view) {
         joinCode = findViewById(R.id.joinCode);
         String grp = GroupManagement.getGroup(joinCode.getText().toString()); // groupID
-
+        if (TextUtils.isEmpty(joinCode.getText().toString())){
+            joinCode.setError("Please Enter a Code");
+            return;
+        }
         if (grp == null){
-            Toast.makeText(JoinGroup.this, "Invalid Group Code", Toast.LENGTH_LONG).show();
+            joinCode.setError("Enter a Valid Join Code");
             return;
         }
 

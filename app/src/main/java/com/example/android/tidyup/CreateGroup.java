@@ -80,7 +80,7 @@ public class CreateGroup extends AppCompatActivity {
         memberEmail = findViewById(R.id.memberEmail);
         String email = memberEmail.getText().toString().trim();
         if (TextUtils.isEmpty(email)){
-            memberEmail.setError("Please Enter A User");
+            memberEmail.setError("Please Enter an Email");
             return;
         }
         if(isValid(email)) {
@@ -95,6 +95,9 @@ public class CreateGroup extends AppCompatActivity {
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(CreateGroup.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
             }
+        }else{
+            memberEmail.setError("Enter a Valid Email");
+            return;
         }
     }
 

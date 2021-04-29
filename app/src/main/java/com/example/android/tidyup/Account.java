@@ -320,11 +320,18 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         }
 
     }
-
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
     public void addMembers(View view){
         String newUserEmail = mNewUserEmail.getText().toString().trim();
         if (TextUtils.isEmpty(newUserEmail)){
             mNewUserEmail.setError("New User Email is required");
+            return;
+        }
+        if(!isValid(newUserEmail)) {
+            mNewUserEmail.setError("Please Enter a Valid Email");
             return;
         }
         fFirestore.collection(COLLECTIONPATH_USERS)

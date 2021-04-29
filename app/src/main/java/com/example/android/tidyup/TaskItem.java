@@ -24,6 +24,17 @@ public class TaskItem {
         this.isChecked = false;
     }
 
+    public TaskItem(String taskName, String personAssignedToTask, int rewardPenaltyPointValue,  String dateToBeCompleted, String repetition, boolean checked) {
+        this.taskName = taskName;
+        this.personAssignedToTask = personAssignedToTask;
+        this.rewardPenaltyPointValue = rewardPenaltyPointValue;
+
+        this.dateToBeCompleted = dateToBeCompleted;
+        this.repetition = repetition;
+
+        this.isChecked = checked;
+    }
+
     public void setTaskName(String taskName){ this.taskName = taskName; }
     public void setPersonAssignedToTask(String personAssignedToTask){ this.personAssignedToTask = personAssignedToTask; }
     public void setRewardPenaltyPointValue(int rewardPenaltyPointValue){ this.rewardPenaltyPointValue = rewardPenaltyPointValue; }

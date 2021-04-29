@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupMenu;
@@ -71,6 +72,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
@@ -95,7 +97,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     //private static HashMap<String, Object> userMap = new HashMap<>();
     private static HashMap<String, Object> userTasks = new HashMap<>();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-
+    private static TextView taskName;
     //private FirebaseAuth fAuth = FirebaseAuth.getInstance();
     //private FirebaseFirestore taskDatabase;
     //private static Map<String, List<String>> taskMapDatabase = new HashMap<>();
@@ -164,8 +166,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskPoint = findViewById(R.id.taskPointValueLayout);
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
-
-
 
 //// load and display user info on Task Page
 //        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -291,7 +291,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
 
    private void readTaskDB(FirestoreCallback firestoreCallback){
-       DocumentReference docRef = fFirestore.collection("Task").document((String) userMap.get("GroupID"));
+       DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
            @Override
            public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -391,7 +391,58 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         startActivity(intent);
     }
 
+    public void updateIsChecked(View view){
+        CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
+        TaskItem addTask;
+        if(cb.isChecked()){
+            taskName = findViewById(R.id.taskNameLayout);
+            String taskNameStr = taskName.getText().toString();
+
+            DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> currMap = document.getData();
+                    for (Map.Entry<String,Object> entry : currMap.entrySet()) {
+                        if(entry.getKey().equals(taskNameStr)){
+                            Object currObj = entry.getValue();
+                            String currStr = currObj.toString();
+                            TaskItem addTask = new TaskItem(getTaskName(currStr), getPersonStr(currStr), Integer.parseInt(getReward(currStr)),
+                                    getDate(currStr), getRepetition(currStr), true);
+                            Map<String, Object> delete = new HashMap<>();
+                            delete.put(taskNameStr, FieldValue.delete());
+                            docRef.update(delete);
+                            docRef.update(taskNameStr, addTask);
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
+    }
+
     public void completeTask(View view){
+        DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> taskDB = documentSnapshot.getData();
+                for(Map.Entry<String, Object> currObj : taskDB.entrySet()){
+
+                    if(getChecked(currObj.toString()).equals("true")){
+                        TaskManagment.removeTaskFromGroup((String) userMap.get("GroupID"), getTaskName(currObj.toString()));
+                    }
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            public void onFailure(@NonNull Exception e) {
+                Log.w("TaskFirebase", "Error reading document", e);
+            }
+        });
+
+        // run the TaskName.onCreate(); to refresh the page
 
     }
 

@@ -90,8 +90,21 @@ public class PenaltyManagementTest {
         PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2");
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Penalty2");
-
         assertEquals(expected, PenaltyManagement.getPenaltyNameList(PenaltyManagement.getGroupPenaltyMap("gid2")));
+    }
+    @Test
+    public void getNewlyAddedPenaltyMap(){
+        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2");
+        String expectedName  = "Penalty2";
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a penalty");
+        expectedValues.add(null);
+        HashMap<String, List<Object>> map = (HashMap<String, List<Object>>) PenaltyManagement.getGroupPenaltyMap("gid2");
+        String actualName = (String) PenaltyManagement.getGroupPenaltyMap("gid2").keySet().toArray()[0];
+        ArrayList<Object> actualValues = (ArrayList<Object>) map.get("Penalty2");
+        assertEquals(expectedName, actualName);
+        assertEquals(expectedValues, actualValues);
+
     }
 
 }

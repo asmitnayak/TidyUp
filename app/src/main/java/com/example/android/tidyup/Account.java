@@ -261,8 +261,36 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
 
     public void goToCreateGroupPage(View view){
+        if(!UserManagement.getUserDetails().get("Group").toString().equals("")) {
+            AlertDialog.Builder createAlert = new AlertDialog.Builder(Account.this);
+            createAlert.setMessage("If you create a new group you will leave " + mGroup.getText().toString()
+                    + "Are you sure you want to leave?");
+            createAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String userID = fAuth.getCurrentUser().getUid();
+                    String tempGrpID = grpID;
+                    GroupManagement.removeUserFromGroup(grpID, userID);
+                    mGroup.setText(R.string.no_group);
+                    docRef.update("Group", "",
+                            "GroupID", "");
+                    ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
+                    String str = mName.getText().toString();
+                    String[] arr = str.split(":");
+                    for (int i = 0; i < memberList.size(); i++) {
+                        String otherId = memberList.get(i);
+                        String userToken = UserManagement.getUserTokenFromUID(otherId);
+                        NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                    }
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), CreateGroup.class));
+                }
+            });
+            createAlert.setNegativeButton("Cancel", null);
+            createAlert.show();
+        }
         Intent intent = new Intent(this, CreateGroup.class);
-//        finish();
+        finish();
         startActivity(intent);
     }
 

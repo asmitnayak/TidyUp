@@ -87,7 +87,7 @@ public class PenaltyManagementTest {
     }
     @Test
     public void addAnotherPenaltyGroup(){
-        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2" );
+        PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2");
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Penalty2");
 

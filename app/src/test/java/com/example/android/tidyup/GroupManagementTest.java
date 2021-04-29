@@ -1,47 +1,31 @@
 package com.example.android.tidyup;
 
-import android.content.Context;
+import android.util.Base64;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
-import org.junit.runners.model.InitializationError;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.w3c.dom.Document;
-//import org.mockito.Mock;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Group;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupManagementTest {
 
     private GroupManagement gm;
+    private RewardsManagement rm;
+    private PenaltyManagement pm;
 
     @Before
     public void setUp() {
@@ -77,6 +61,16 @@ public class GroupManagementTest {
 
         GroupManagement.addUserToGroup("gid1","example","gc11","group1");
         GroupManagement.addUserToGroup("gid2","test","gc21","group2");
+
+        ///////////////////////////////////
+        //////   Reward Management   //////
+        ///////////////////////////////////
+        rm = new RewardsManagement(mockFireAuth, mockFirestore);
+
+        ////////////////////////////////////
+        //////   Penalty Management   //////
+        ////////////////////////////////////
+        pm = new PenaltyManagement(mockFirestore, mockFireAuth, "gid1", "Group1", "example");
 
     }
 
@@ -202,6 +196,12 @@ public class GroupManagementTest {
         GroupManagement.removeUserFromGroup("gidNew","user2");
         expected.remove(1);
         assertEquals(expected, GroupManagement.getGroupMemberList("gidNew"));
+        GroupManagement.removeUserFromGroup("gidNew","user3");
+        expected.remove(1);
+        assertEquals(expected, GroupManagement.getGroupMemberList("gidNew"));
+        GroupManagement.removeUserFromGroup("gidNew","user1");
+        expected.remove(0);
+        assertNull(GroupManagement.getGroupMemberList("gidNew"));
     }
 
     @Test
@@ -216,4 +216,11 @@ public class GroupManagementTest {
         assertNotEquals(GroupManagement.getGroup("gc3"), "gid1");
     }
 
+    @Test
+    public void testGetGroupCode(){
+        ArrayList<String> probable = new ArrayList<>();
+        probable.add("gc1");
+        probable.add("gc4");
+        assert probable.contains(GroupManagement.getGroupCode("gid1"));
+    }
 }

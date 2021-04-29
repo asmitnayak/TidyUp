@@ -78,13 +78,13 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
             if(groupPenaltyMap.containsKey(penaltyName)){
                 return 0; //Penalty already added
             }else{
-                groupPenaltyMap.put(penaltyName, Arrays.asList(new String[]{penaltyDescription, null}));
+                groupPenaltyMap.put(penaltyName, new ArrayList<>(Arrays.asList(penaltyDescription, null)));
                 grDB.put(groupID, groupPenaltyMap);
             }
 
         }else{
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>();
-            groupPenaltyMap.put(penaltyName, Arrays.asList(new String[]{penaltyDescription, null}));
+            groupPenaltyMap.put(penaltyName, new ArrayList<>(Arrays.asList(penaltyDescription, null)));
             grDB.put(groupID, groupPenaltyMap);
 
         }

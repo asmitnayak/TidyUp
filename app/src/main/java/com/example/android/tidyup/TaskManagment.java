@@ -13,6 +13,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
@@ -59,6 +60,9 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
     private static String groupName;
 
+    public static Map<String, Object> getDisplayMap(){
+        return displayMap;
+    }
 
     public static int addTaskItem(String taskName, String person, int pointValue, String dateToBeCompleted, String repetition) {
         TaskItem addTask = new TaskItem(taskName, person, pointValue, dateToBeCompleted, repetition);
@@ -77,19 +81,19 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
             }
         }
 
-/*
-        Map<String, Object> add;
-              add =  (Map<String, Object> ) displayMap.get(groupId);
+        Map<String, Object> add = (Map<String, Object> ) displayMap.get(groupId);
         add.put(taskName, addTask);
         displayMap.put(groupId, add);
-        //docRef.set(displayMap);
- */
+        docRef.set(displayMap);
 
         return 1;
     }
+    /*
     public static Map<String, Object> getDisplayMap(){
         return displayMap;
     }
+
+     */
     public static Map<String, Object> getGroupTaskMap(String groupName) {
         userMap = UserManagement.getUserDetails();
         String groupID  = (String) userMap.get("GroupID");
@@ -279,21 +283,10 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         }
     }*/
     public static void removeTaskFromGroup(String groupID, String taskName){
-        /*
-        if(displayMap.containsKey(groupID)){
-            ArrayList<String> taskList = (ArrayList<String>) displayMap.get(groupID);
-            if(taskList.contains(taskName))
-                taskList.remove(taskName);
-
-            TaskManagment.Tasks task = new TaskManagment.Tasks(displayMap);
-            fFirestore.collection(COLLECTIONPATH_TASK).document(groupID).set(task);
-        }
-
-         */
-
-        docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
-
-
+        DocumentReference docRef = fFirestore.collection("task").document(groupID);
+        Map<String, Object> delete = new HashMap<>();
+        delete.put(taskName, FieldValue.delete());
+        docRef.update(delete);
     }
 
     private static class Tasks{

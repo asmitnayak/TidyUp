@@ -7,15 +7,25 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.Inflater;
 
 
 public class CustomAdapter extends BaseAdapter {
@@ -27,6 +37,7 @@ public class CustomAdapter extends BaseAdapter {
     private List tasksValues;
     //public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();
     LayoutInflater inflter;
+    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
 
     public CustomAdapter(Context applicationContext, Map<String, Object> tasks) {
         this.context = context;
@@ -61,7 +72,7 @@ public class CustomAdapter extends BaseAdapter {
 
         TextView taskNameV = (TextView) view.findViewById(R.id.taskNameLayout);
         taskNameV.setText("Task Name: " + tasksKey.get(i));
-
+        taskNameV.setId(i + 1);
         TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
         personV.setText("Person Assigned: " +(String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
 
@@ -76,6 +87,11 @@ public class CustomAdapter extends BaseAdapter {
 
         CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
         cb.setChecked((boolean)((HashMap<String, Object>)tasksValues.get(i)).get("isChecked"));
+        cb.setTag(Integer.valueOf(i));
+        //view.setId(i+1);
+
+        //cb.setOnClickListener((View.OnClickListener) view);
+        //cb.setOnCheckedChangeListener(mListener); // set the listener
 //
 //        TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
 //        personV.setText(String.format(Locale.getDefault(),"%2f",tasks.get(i).getPersonAssignedToTask()));
@@ -113,6 +129,62 @@ public class CustomAdapter extends BaseAdapter {
             }
         });
     */
+
         return view;
     }
+
+
+    CompoundButton.OnCheckedChangeListener mListener = new CompoundButton.OnCheckedChangeListener() {
+
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        }
+    };
+/*
+    OnCheckedChangeListener mListener = new OnCheckedChangeListener() {
+
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mChecked[(Integer)buttonView.getTag()] = isChecked; // get the tag so we know the row and store the status
+        }
+    };
+    
+/*
+    @Override
+    public void onClick(View v) {
+        CheckBox cb = (CheckBox) v.findViewById(R.id.taskSelect);
+        TaskItem addTask;
+        if(cb.isChecked()){
+            TextView taskName = v.findViewById(R.id.taskNameLayout);
+            TextView assignedUser = v.findViewById(R.id.taskPersonLayout);
+            TextView taskPointVal = v.findViewById(R.id.taskPointValueLayout);
+            TextView taskRepitition = v.findViewById(R.id.taskRepetitionLayout);
+            TextView taskDate = v.findViewById(R.id.taskDateLayout);
+            String taskNameStr = taskName.getText().toString();
+
+            DocumentReference docRef = fFirestore.collection("task").document((String) UserManagement.getUserDetails().get("GroupID"));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> currMap = document.getData();
+                    for (Map.Entry<String,Object> entry : currMap.entrySet()) {
+                        if(entry.getKey().equals(taskNameStr)){
+                            Object currObj = entry.getValue();
+                            String currStr = currObj.toString();
+                            TaskItem addTask = new TaskItem(taskName.getText().toString(), assignedUser.getText().toString(), Integer.parseInt(taskPointVal.getText().toString()),
+                                    taskDate.getText().toString(), taskRepitition.getText().toString(), true);
+                            Map<String, Object> delete = new HashMap<>();
+                            delete.put(taskNameStr, FieldValue.delete());
+                            docRef.update(delete);
+                            docRef.update(taskNameStr, addTask);
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
+    }
+
+ */
 }

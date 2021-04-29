@@ -74,34 +74,30 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static int removeReward(String groupID, String rewardName){
-//        if(grDB == null){
-//            readGroupRewardsDB();
-//            if(grDB == null){
-//                return -1;
-//            }
-//        }
-        if(grDB.containsKey(groupID)) {
-            Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
-            if (groupRewardMap.containsKey(rewardName)) {
-                groupRewardMap.remove(rewardName);
-                grDB.replace(groupID, groupRewardMap);
-                //remove reward
-                Rewards rewards = new Rewards(grDB);
-                fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
-                return 1;
-            }
-        }
+       if(grDB != null) {
+           if (grDB.containsKey(groupID)) {
+               Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
+               if (groupRewardMap.containsKey(rewardName)) {
+                   groupRewardMap.remove(rewardName);
+                   grDB.replace(groupID, groupRewardMap);
+                   //remove reward
+                   Rewards rewards = new Rewards(grDB);
+                   fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+                   return 1;
+               }
+           }
+       }
 
         return 0;
     }
 
     public static int removeRewardsMap(String groupID){
-//        if(grDB == null){
-//            readGroupRewardsDB();
-//            if(grDB == null){
-//                return -1;
-//            }
-//        }
+        if(grDB == null){
+           readGroupRewardsDB();
+            if(grDB == null){
+                return -1;
+           }
+       }
         if(grDB.containsKey(groupID)) {
             grDB.remove(groupID);
             Rewards rewards = new Rewards(grDB);

@@ -59,6 +59,7 @@
             android:layout_below="@+id/taskPointValueLayout"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/taskSelect"
             android:fontFamily="@font/architects_daughter"
             android:text="Repetition:"

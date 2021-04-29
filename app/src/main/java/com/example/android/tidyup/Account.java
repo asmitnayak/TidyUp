@@ -270,7 +270,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getCurrentUser().getUid();
                     String tempGrpID = grpID;
-                    GroupManagement.removeUserFromGroup(grpID, userID);
+
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "",
                             "GroupID", "");
@@ -282,8 +282,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         String userToken = UserManagement.getUserTokenFromUID(otherId);
                         NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
                     }
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), CreateGroup.class));
+                    GroupManagement.removeUserFromGroup(grpID, userID);
                 }
             });
             createAlert.setNegativeButton("Cancel", null);
@@ -328,7 +327,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                 public void onClick(DialogInterface dialog, int which) {
                     String userID = fAuth.getCurrentUser().getUid();
                     String tempGrpID = grpID;
-                    GroupManagement.removeUserFromGroup(grpID, userID);
+
                     mGroup.setText(R.string.no_group);
                     docRef.update("Group", "",
                     "GroupID", "");
@@ -340,6 +339,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         String userToken = UserManagement.getUserTokenFromUID(otherId);
                         NotificationManager.sendNotifications(userToken, "Tidy Up",arr[1] + " has left the group",getApplicationContext(),apiService);
                     }
+                    GroupManagement.removeUserFromGroup(grpID, userID);
                     finish();
                     startActivity(new Intent(getApplicationContext(), Account.class));
                 }
@@ -383,13 +383,18 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
                             addedUserID = task.getResult().getDocuments().get(0).getId();
                             DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(addedUserID);
-                            if (!((String) addedUserDoc.get().getResult().getData().get(KEY_GroupID)).equals("")){
-                                
+                            String addedUserGroupID = (String) task.getResult().getDocumentChanges().get(0).getDocument().get("GroupID");
+                            if (!addedUserGroupID.equals("")) {
+                                AlertDialog.Builder noGroup = new AlertDialog.Builder(Account.this);
+                                noGroup.setMessage("User is already in a Group, Please ask them to leave their current group");
+                                noGroup.setNeutralButton("Ok", null);
+                                noGroup.show();
+                            }else{
+                                GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
+                                addedUserDoc.update(KEY_GroupID, grpID,
+                                        KEY_Group, grpName);
+                                mNewUserEmail.setText("");
                             }
-                            GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
-                            addedUserDoc.update(KEY_GroupID, grpID,
-                                                KEY_Group, grpName);
-                            mNewUserEmail.setText("");
 
                         } else {
                             Toast.makeText(Account.this, "Error! " + newUserEmail + "Does not have a Tidy Up Account" + task.getException().getMessage(), Toast.LENGTH_LONG).show();

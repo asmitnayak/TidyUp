@@ -238,6 +238,17 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
                 PenaltyManagement.removePenaltyMap(groupID);
                 Group_Code gc = new Group_Code(gcDB);
                 db.collection(GROUP_CODE_DB).document(GROUP_CODE_DB_DOCUMENT).set(gc);
+                db.collection("task").document(groupID).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Succesfully deleted task db of " + groupID);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "Error! taskd db of group " + groupID + " was not");
+                    }
+                });
             }
             else
                 grpDB.put(groupID,userList);
@@ -385,7 +396,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Base64.encodeToString(cipherText, Base64.DEFAULT).replaceAll("\\n", "");
+        return Base64.encodeToString(cipherText, Base64.DEFAULT).replaceAll("\\n", "").replaceAll("[^a-zA-Z0-9]", "");
     }
 
     @Override

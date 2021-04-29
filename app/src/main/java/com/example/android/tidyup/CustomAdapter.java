@@ -31,10 +31,10 @@ import java.util.zip.Inflater;
 public class CustomAdapter extends BaseAdapter {
     private Context context;
     //ArrayList<TaskItem> tasks;
-    private Map<String, Object>tasks;
+    public static Map<String, Object>tasks;
     //private Map<String, TaskItem>tasks;
     private List<String> tasksKey;
-    private List tasksValues;
+    public static List tasksValues;
     //public static ArrayList<TaskItem> selectedTask = new ArrayList<TaskItem>();
     LayoutInflater inflter;
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
@@ -45,6 +45,10 @@ public class CustomAdapter extends BaseAdapter {
         tasksKey = new ArrayList<String>(tasks.keySet());
         tasksValues = new ArrayList(tasks.values());
         inflter = (LayoutInflater.from(applicationContext));
+    }
+
+    public static Map<String, Object> getTasks(){
+        return tasks;
     }
 
     @Override

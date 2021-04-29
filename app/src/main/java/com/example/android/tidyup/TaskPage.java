@@ -314,7 +314,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("taskName=");
         index = index + 9;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -325,7 +325,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("personAssignedToTask=");
         index = index + 21;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -336,7 +336,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("dateToBeCompleted=");
         index = index + 18;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -347,7 +347,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("repetition=");
         index = index + 11;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -358,7 +358,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("priority=");
         index = index + 9;
         String buildString = "";
-        while(str.charAt(index) != ','){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -380,7 +380,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         int index = str.lastIndexOf("isChecked=");
         index = index + 10;
         String buildString = "";
-        while(str.charAt(index) != '}'){
+        while(str.charAt(index) != ',' && str.charAt(index) != '}'){
             buildString += str.charAt(index);
             index++;
         }
@@ -399,7 +399,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
             ViewGroup viewParent = (ViewGroup) view.getParent();
             TextView taskName = (TextView) viewParent.getChildAt(0);
 
-            String taskNameStr = taskName.getText().toString();
+            String taskNameStr = taskName.getText().toString().substring(11);
 
 
             DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));

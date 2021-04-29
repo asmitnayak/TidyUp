@@ -79,6 +79,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+    private final String TAG = "TaskPage";
     public static ArrayList<TaskItem> taskItems = new ArrayList<TaskItem>();
     CustomAdapter customAdp;
     private ImageView menu, backButton;
@@ -147,13 +148,30 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                     Map<String, Object> taskDB = documentSnapshot.getData();
                     customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
                     taskList.setAdapter(customAdaptor);
-                    tasksKey = new ArrayList<String>(tasks.keySet());
-                    tasksValues = new ArrayList(tasks.values());
                 }else {
                     Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                if(documentSnapshot.exists()) {
+                    Map<String, Object> taskDB = documentSnapshot.getData();
+                    customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
+                    taskList.setAdapter(customAdaptor);
+                }else {
+                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);

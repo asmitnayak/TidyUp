@@ -291,6 +291,9 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
          */
 
+        docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
+
+
     }
 
     private static class Tasks{

@@ -116,18 +116,16 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static int removePenaltyMap(String groupID){
-//        if(grDB == null){
-//            readGroupPenaltyDB();
-//            if(grDB == null){
-//                return -1;
-//            }
-//        }
-        if(grDB.containsKey(groupID)) {
-            grDB.remove(groupID);
-            PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);
-            fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY).set(penalty);
-            return 1;
-        }
+       if(grDB != null) {
+
+
+           if (grDB.containsKey(groupID)) {
+               grDB.remove(groupID);
+               PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);
+               fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_PENALTY).set(penalty);
+               return 1;
+           }
+       }
         return 0;
     }
 

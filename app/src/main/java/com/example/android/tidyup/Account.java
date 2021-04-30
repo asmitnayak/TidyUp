@@ -294,9 +294,6 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     String userID = fAuth.getCurrentUser().getUid();
                     String tempGrpID = grpID;
 
-                    mGroup.setText(R.string.no_group);
-                    docRef.update("Group", "",
-                            "GroupID", "");
                     ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
                     String str = mName.getText().toString();
                     String[] arr = str.split(":");
@@ -306,6 +303,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         NotificationManager.sendNotifications(userToken, "Account", arr[1] + " has left the group", getApplicationContext(), apiService);
                     }
                     GroupManagement.removeUserFromGroup(grpID, userID);
+                    mGroup.setText(R.string.no_group);
+                    docRef.update("Group", "",
+                            "GroupID", "");
                 }
             });
             createAlert.setNegativeButton("Cancel", null);
@@ -356,9 +356,6 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                 String userID = fAuth.getCurrentUser().getUid();
                                 String tempGrpID = grpID;
 
-                                mGroup.setText(R.string.no_group);
-                                docRef.update("Group", "",
-                                        "GroupID", "");
                                 ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
                                 String str = mName.getText().toString();
                                 String[] arr = str.split(":");
@@ -374,13 +371,16 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                     if(!memberList.get(i).equals(userID)){
                                         String otherId = memberList.get(i);
                                         String userToken = UserManagement.getUserTokenFromUID(otherId);
-                                        DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(memberList.get(i));
+                                        DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(otherId);
                                         addedUserDoc.update( KEY_ROLE, "Admin");
                                         NotificationManager.sendNotifications(userToken, "Account","Because the Admin "+ arr[1] + " has left the group you are now the Admin",getApplicationContext(),apiService);
                                         break;
                                     }
                                 }
                                 GroupManagement.removeUserFromGroup(grpID, userID);
+                                mGroup.setText(R.string.no_group);
+                                docRef.update("Group", "",
+                                        "GroupID", "");
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), Account.class));
                             }
@@ -392,9 +392,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         String userID = fAuth.getCurrentUser().getUid();
                         String tempGrpID = grpID;
 
-                        mGroup.setText(R.string.no_group);
-                        docRef.update("Group", "",
-                                "GroupID", "");
+
                         ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
                         String str = mName.getText().toString();
                         String[] arr = str.split(":");
@@ -404,6 +402,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                             NotificationManager.sendNotifications(userToken, "Account", arr[1] + " has left the group", getApplicationContext(), apiService);
                         }
                         GroupManagement.removeUserFromGroup(grpID, userID);
+                        mGroup.setText(R.string.no_group);
+                        docRef.update("Group", "",
+                                "GroupID", "");
                         finish();
                         startActivity(new Intent(getApplicationContext(), Account.class));
                     }

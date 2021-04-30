@@ -64,6 +64,9 @@ public class PenaltyPopUp extends AppCompatActivity {
 
     public void deletePenalty(View view){
         PenaltyManagement.removePenalty(GroupManagement.getGroupIDFromUserID(FirebaseAuth.getInstance().getUid()), penaltyName);
-        startActivity(new Intent(getApplicationContext(), RewardAndPenalty.class));
+        finish();
+        Intent intent = RewardAndPenalty.rp.getIntent();
+        RewardAndPenalty.rp.finish();
+        startActivity(intent);
     }
 }

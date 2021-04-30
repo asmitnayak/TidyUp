@@ -34,6 +34,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_assign_penalty);
         this.penaltyNameEDT = findViewById(R.id.penaltyName);
         this.penaltyReasonEDT = findViewById(R.id.reason);
@@ -112,10 +113,10 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                     case -1:
                         Toast.makeText(AssignPenalty.this, "No Penalty Database found", Toast.LENGTH_SHORT).show();
 
-                        break;
+                        return;
                     case 0:
                         Toast.makeText(AssignPenalty.this, "No Penalty Database found for current Group named" + GroupManagement.getGroupName(groupID), Toast.LENGTH_SHORT).show();
-                        break;
+                        return;
                     case 1:
                         Toast.makeText(AssignPenalty.this, "Successfully assigned penalty" + penaltyName + " to user " + UserManagement.getUserNameFromUID(offendingUserUID), Toast.LENGTH_SHORT).show();
                         String userToken = UserManagement.getUserTokenFromUID(offendingUserUID);
@@ -128,7 +129,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                         if (TextUtils.isEmpty(penaltyName)){
                             penaltyNameEDT.setError("Please Enter a correct Penalty Name");
                         }
-                        break;
+                        return;
                     default:
                 }
 
@@ -153,5 +154,11 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         }catch (Exception e){
             Toast.makeText(AssignPenalty.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

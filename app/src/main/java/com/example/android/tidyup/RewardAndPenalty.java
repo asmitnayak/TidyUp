@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -43,6 +44,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     private TextView pageTitle;
 
     private Button mAddReward, mAddPenalty, mAssignPenalty;
+
+    static RewardAndPenalty rp;
 
 
     @Override
@@ -146,6 +149,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
                 //RewardAndPenalty.super.onBackPressed();
             }
         });
+
+        rp = this;
     }
 
     @Override
@@ -175,8 +180,12 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     public void OnAssignPenalty(View view) {
         Intent intent = new Intent(this, AssignPenalty.class);
-        finish();
+//        finish();
         startActivity(intent);
 
+    }
+
+    public void refresh(){
+        finish();
     }
 }

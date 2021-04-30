@@ -461,6 +461,8 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                         KEY_Group, grpName, KEY_ROLE, "User");
                                 mNewUserEmail.setText("");
                                 Toast.makeText(Account.this, "User with Email " + newUserEmail + " was added to your group", Toast.LENGTH_LONG).show();
+                                String userToken = UserManagement.getUserTokenFromUID(addedUserID);
+                                NotificationManager.sendNotifications(userToken, "Account",  "You have been added to a group in Tidy Up!", getApplicationContext(), apiService);
                             }
 
                         } else {

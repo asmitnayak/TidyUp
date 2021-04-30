@@ -84,6 +84,11 @@ public class GroupSettingsAdapter extends BaseAdapter {
         }
         Button delete = (Button) view.findViewById(R.id.deleteButton);
         delete.setEnabled(UserManagement.getUserDetails().get("Role").equals("Admin"));
+        if (!UserManagement.getUserDetails().get("Role").equals("Admin")){
+            delete.setBackgroundColor(001);
+            delete.setText("");
+        }
+
         delete.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {

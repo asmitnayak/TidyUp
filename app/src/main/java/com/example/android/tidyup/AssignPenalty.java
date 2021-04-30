@@ -122,7 +122,8 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                     case 1:
                         Toast.makeText(AssignPenalty.this, "Successfully assigned penalty" + penaltyName + " to user " + UserManagement.getUserNameFromUID(offendingUserUID), Toast.LENGTH_SHORT).show();
                         String userToken = UserManagement.getUserTokenFromUID(offendingUserUID);
-                        NotificationManager.sendNotifications(userToken, "Tidy Up",  "Your penalty is " + penaltyName +
+                        Intent intent = new Intent(this,AssignPenalty.class);
+                        NotificationManager.sendNotifications(userToken, "Penalty/Reward",  "Your penalty is " + penaltyName +
                                 ". The reason you are receiving this penalty is " + penaltyReason, getApplicationContext(),apiService);
                         break;
                     case 2:

@@ -83,6 +83,7 @@ public class GroupSettingsAdapter extends BaseAdapter {
             });
         }
         Button delete = (Button) view.findViewById(R.id.deleteButton);
+        delete.setEnabled(UserManagement.getUserDetails().get("Role").equals("Admin"));
         delete.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {

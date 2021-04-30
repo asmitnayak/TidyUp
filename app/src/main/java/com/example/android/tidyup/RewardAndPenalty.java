@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,13 +30,13 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     private ListView rewardsListView;
     private Map<String, List<Object>> rewardsMap;
-    private RewardsAdaptor rewardsAdaptor;
+    private static RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
 
     private ListView penaltyListView;
-    private Map<String, List<Object>> penaltyMap;
-    private PenaltyAdaptor penaltyAdaptor;
+    private static Map<String, List<Object>> penaltyMap;
+    private static PenaltyAdaptor penaltyAdaptor;
     private List penaltyKey;
     private List penaltyValue;
 
@@ -43,6 +44,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
     private TextView pageTitle;
 
     private Button mAddReward, mAddPenalty, mAssignPenalty;
+
+    static RewardAndPenalty rp;
 
 
     @Override
@@ -146,6 +149,8 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
                 //RewardAndPenalty.super.onBackPressed();
             }
         });
+
+        rp = this;
     }
 
     @Override
@@ -175,8 +180,17 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     public void OnAssignPenalty(View view) {
         Intent intent = new Intent(this, AssignPenalty.class);
-        finish();
+//        finish();
         startActivity(intent);
 
+    }
+
+    public void refresh(){
+        finish();
+    }
+
+    public static void refresher(){
+        penaltyMap = PenaltyManagement.getGroupPenaltyMap((String) UserManagement.getUserDetails().get("GroupdID"));
+        penaltyAdaptor.notifyDataSetChanged();
     }
 }

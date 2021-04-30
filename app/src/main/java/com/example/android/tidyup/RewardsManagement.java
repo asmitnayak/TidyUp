@@ -199,7 +199,6 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             Map<String, List<Object>> rewardMap = RewardsManagement.getGroupRewardsMap(grpID);
             APIService apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
             for (Map.Entry<String, List<Object>> entry : rewardMap.entrySet()) {
-                int i = 0;
                 int rewardVal;
                 try {
                     rewardVal = Integer.parseInt(((String) entry.getValue().get(1)).trim());
@@ -221,10 +220,9 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
                         noGroup.show();
 
                           */
-                         return 1;
+
                     }
                 }
-                i++;
             }
         }
         return -1;

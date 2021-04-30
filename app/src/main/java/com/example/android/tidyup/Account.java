@@ -57,6 +57,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private static final String KEY_USERPOINTS = "UserPoints";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
+    private static final String KEY_ROLE = "Role";
     private UserManagement um;
     private RewardsManagement rm;
 
@@ -65,7 +66,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
 
-    private TextView mName, mEmail, mUserPoints, mGroup;
+    private TextView mName, mEmail, mUserPoints, mGroup, mRole;
     private EditText mNewUserEmail;
     private Button mAddMembers, mLeaveGroup;
     private String addedUserID;
@@ -91,6 +92,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             mNewUserEmail = findViewById(R.id.acNewUserEmail);
             mAddMembers = findViewById(R.id.acAddMembersButton);
             mLeaveGroup = findViewById(R.id.acLeaveGroupButton);
+            mRole = findViewById(R.id.acRole);
 
             apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
             UpdateToken();
@@ -125,6 +127,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         } else {
                             mGroup.setText("Group: No Group Yet");
                         }
+                        mRole.setText("Role: " + documentSnapshot.getString("Role"));
                     } else {
                         Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }
@@ -162,6 +165,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         } else {
                             mGroup.setText("Group: No Group Yet");
                         }
+                        mRole.setText("Role: " + documentSnapshot.getString("Role"));
                     } else {
                         Toast.makeText(Account.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }
@@ -326,23 +330,65 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             leaveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    String userID = fAuth.getCurrentUser().getUid();
-                    String tempGrpID = grpID;
+                    if((UserManagement.getUserDetails().get("Role")).equals("Admin")) {
+                        AlertDialog.Builder leaveAsAdmin = new AlertDialog.Builder(Account.this);
+                        leaveAsAdmin.setMessage("Are you sure you want to leave " + mGroup.getText().toString() + " As Admin?");
+                        leaveAsAdmin.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                String userID = fAuth.getCurrentUser().getUid();
+                                String tempGrpID = grpID;
 
-                    mGroup.setText(R.string.no_group);
-                    docRef.update("Group", "",
-                    "GroupID", "");
-                    ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
-                    String str = mName.getText().toString();
-                    String[] arr = str.split(":");
-                    for(int i=0;i<memberList.size();i++){
-                        String otherId = memberList.get(i);
-                        String userToken = UserManagement.getUserTokenFromUID(otherId);
-                        NotificationManager.sendNotifications(userToken, "Tidy Up",arr[1] + " has left the group",getApplicationContext(),apiService);
+                                mGroup.setText(R.string.no_group);
+                                docRef.update("Group", "",
+                                        "GroupID", "");
+                                ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
+                                String str = mName.getText().toString();
+                                String[] arr = str.split(":");
+                                for(int i=0;i<memberList.size();i++){
+                                    if(!memberList.get(i).equals(userID)) {
+                                        String otherId = memberList.get(i);
+                                        String userToken = UserManagement.getUserTokenFromUID(otherId);
+                                        NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                                    }
+                                }
+
+                                for(int i=0;i<memberList.size();i++){
+                                    if(!memberList.get(i).equals(userID)){
+                                        String otherId = memberList.get(i);
+                                        String userToken = UserManagement.getUserTokenFromUID(otherId);
+                                        DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(memberList.get(i));
+                                        addedUserDoc.update( KEY_ROLE, "Admin");
+                                        NotificationManager.sendNotifications(userToken, "Tidy Up","Because the Admin "+ arr[1] + " has left the group you are now the Admin",getApplicationContext(),apiService);
+                                        break;
+                                    }
+                                }
+                                GroupManagement.removeUserFromGroup(grpID, userID);
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), Account.class));
+                            }
+                        });
+                        leaveAsAdmin.setNegativeButton("Cancel", null);
+                        leaveAsAdmin.show();
+                    } else {
+
+                        String userID = fAuth.getCurrentUser().getUid();
+                        String tempGrpID = grpID;
+
+                        mGroup.setText(R.string.no_group);
+                        docRef.update("Group", "",
+                                "GroupID", "");
+                        ArrayList<String> memberList = GroupManagement.getGroupMemberList(tempGrpID);
+                        String str = mName.getText().toString();
+                        String[] arr = str.split(":");
+                        for (int i = 0; i < memberList.size(); i++) {
+                            String otherId = memberList.get(i);
+                            String userToken = UserManagement.getUserTokenFromUID(otherId);
+                            NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                        }
+                        GroupManagement.removeUserFromGroup(grpID, userID);
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), Account.class));
                     }
-                    GroupManagement.removeUserFromGroup(grpID, userID);
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), Account.class));
                 }
             });
             leaveAlert.setNegativeButton("Cancel", null);
@@ -393,7 +439,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                             }else{
                                 GroupManagement.addUserToGroup(grpID, addedUserID, null, GroupManagement.getGroupName(grpID));
                                 addedUserDoc.update(KEY_GroupID, grpID,
-                                        KEY_Group, grpName);
+                                        KEY_Group, grpName, KEY_ROLE, "User");
                                 mNewUserEmail.setText("");
                             }
 

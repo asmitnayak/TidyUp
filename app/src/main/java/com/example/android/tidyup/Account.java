@@ -122,6 +122,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
             //test
 
+
             // load and display user info on Account Page
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
@@ -458,6 +459,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                 addedUserDoc.update(KEY_GroupID, grpID,
                                         KEY_Group, grpName, KEY_ROLE, "User");
                                 mNewUserEmail.setText("");
+                                Toast.makeText(Account.this, "User with Email " + newUserEmail + " was added to your group", Toast.LENGTH_LONG).show();
                             }
 
                         } else {

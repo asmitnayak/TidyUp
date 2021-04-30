@@ -49,7 +49,6 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static Map<String, Object> displayMap;
     private static String groupID;
     private static final String COLLECTIONPATH_TASK = "task";
-    private static final String DOCUMENTPATH_TASKS = "Tasks";
     private static  DocumentReference docRef;
 
     private static final String TAG = "task";
@@ -92,18 +91,16 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     public static TaskItem addTaskItem(String taskName, String person, int pointValue, String dateToBeCompleted, String repetition) {
         TaskItem addTask = new TaskItem(taskName, person, pointValue, dateToBeCompleted, repetition);
 
-        //String groupId = (String) UserManagement.getUserDetails().get("GroupID");
+        String groupId = (String) UserManagement.getUserDetails().get("GroupID");
+        fFirestore = FirebaseFirestore.getInstance();
+        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupId);
 
-        //DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupId);
-
-        docRef.update(taskName, addTask);
-
+        if (docRef != null)
+            docRef.update(taskName, addTask);
+/*
         //taskItems.put(userGroup.toString(), addTask);
         if(displayMap == null){
-            updateDocRef(groupID);
-            if(displayMap == null){
-                return null;
-            }
+            readGroupTaskDB(groupID);
         }
 /*
         Map<String, Object> add = (Map<String, Object> ) displayMap.get(groupId);
@@ -125,9 +122,6 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         Map<String, Object> groupTaskMap;
         if (displayMap == null) {
             readGroupTaskDB(groupID);
-            if (displayMap == null) {
-                return null;
-            }
         }
         /*
         if (displayMap.containsKey(userMap.toString())) {
@@ -268,11 +262,8 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         this.groupName = groupName;
     }
 
-    protected static void updateDocRef(String groupID){
-        readGroupTaskDB(groupID);
-    }
     public static void readGroupTaskDB(String groupID){
-
+        fFirestore = FirebaseFirestore.getInstance();
         CollectionReference colRef = fFirestore.collection(COLLECTIONPATH_TASK);
 
         docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
@@ -330,6 +321,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         }
     }*/
     public static Object removeTaskFromGroup(String groupID, String taskName){
+        fFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
         Map<String, Object> delete = new HashMap<>();
         Object returnObj = delete.put(taskName, FieldValue.delete());

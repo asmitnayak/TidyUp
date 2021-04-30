@@ -145,7 +145,7 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
 
    //     EditText groupIdIn = (EditText) findViewById(R.id.taskName)
         //    String groupID = groupIdIn.getText().toString();
-        //try {
+        try {
             EditText nameIn = (EditText) findViewById(R.id.taskName);
             String name = nameIn.getText().toString();
 
@@ -174,11 +174,10 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
             TaskManagment.addTaskItem(name, user, rewardInt, date, mSpinnerRepetition.getSelectedItem().toString());
 
             finish();
-//            startActivity(new Intent(getApplicationContext(), TaskPage.class));
-        //}catch (Exception e){
-           // Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
-           // Log.d(TAG, e.toString());
-       //}
+        }catch (Exception e){
+            Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.d(TAG, e.toString());
+       }
     }
     static boolean isValid(String date) {
         String regex = "\\d\\d/\\d\\d";

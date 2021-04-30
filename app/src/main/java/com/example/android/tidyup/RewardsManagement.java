@@ -106,10 +106,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
     public static int removeRewardsMap(String groupID){
         if(grDB == null){
-           readGroupRewardsDB();
-            if(grDB == null){
-                return -1;
-           }
+           return 0;
        }
         if(grDB.containsKey(groupID)) {
             grDB.remove(groupID);

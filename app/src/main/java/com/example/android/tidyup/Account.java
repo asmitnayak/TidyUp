@@ -181,8 +181,9 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             backButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
-                    //Account.super.onBackPressed();
+                    onBackPressed();
+//                    finish();
+//                    //Account.super.onBackPressed();
                 }
             });
 

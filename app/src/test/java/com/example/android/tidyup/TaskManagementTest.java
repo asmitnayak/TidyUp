@@ -60,8 +60,8 @@ public class TaskManagementTest {
 
 //        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
 //        doReturn("example").when(mockFireUser).getUid();
-        doReturn(mockCollections).when(mockFirestore).collection(anyString());
-        doReturn(mockDocs).when(mockCollections).document(anyString());
+//        doReturn(mockCollections).when(mockFirestore).collection(anyString());
+//        doReturn(mockDocs).when(mockCollections).document(anyString());
 
         //////////////////////////////////
         /////   Test Management   /////

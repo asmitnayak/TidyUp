@@ -40,10 +40,15 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class RewardsManagementTest {
+    private UserManagement um;
+    private GroupManagement gm;
     private RewardsManagement rm;
+    private PenaltyManagement pm;
 
     @Before
     public void setUp() {
+
+
 
         /////////////////////////////////
         //////   MOCKING CLASSES   //////
@@ -65,10 +70,42 @@ public class RewardsManagementTest {
         doReturn(mockDocs).when(mockCollections).document(anyString());
 
         //////////////////////////////////
-        /////   Penalty Management   /////
+        /////   Rewards Management   /////
         //////////////////////////////////
 
+        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, List<String>> othermap = new HashMap<>();
+
+        List<String> lst1 = new ArrayList<String>(){{
+            add("EXAMPLE_USER");
+            add("12");
+            add("example.com");
+            add("example token");
+        }};
+
+        List<String> lst2 = new ArrayList<String>(){{
+            add("EX_USER");
+            add("21");
+            add("example2.com");
+            add("example2 token");
+        }};
+
+        map.put("Email", "example.com");
+        map.put("Group", "example");
+        map.put("GroupID", "e1");
+        map.put("Role", "Admin");
+        map.put("Task", "example task");
+        map.put("Token", "example token");
+        map.put("UserPoints", "12");
+        map.put("Username", "EXAMPLE_USER");
+
+        othermap.put("docID1", lst1);
+        othermap.put("docID2", lst2);
+
+        um = new UserManagement(mockFirestore, mockFireAuth, mockDocs, map, othermap);
+        gm = new GroupManagement(mockFirestore, mockFireAuth, "gid1", "group1", "example");
         rm = new RewardsManagement(mockFireAuth, mockFirestore);
+
         RewardsManagement.addReward(null,"gid1", "This is a reward", "Reward1", 15);
     }
 
@@ -128,4 +165,100 @@ public class RewardsManagementTest {
         expected.add("Reward3");
         assertEquals(expected, RewardsManagement.getRewardNameList(RewardsManagement.getGroupRewardsMap("gid1")));
     }
+
+    @Test
+    public void removeReward(){
+        RewardsManagement.addReward(null, "gid1", "This is a new reward", "Reward3", 3);
+        RewardsManagement.removeReward("gid1", "Reward3");
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Reward1");
+        assertEquals(expected, RewardsManagement.getRewardNameList(RewardsManagement.getGroupRewardsMap("gid1")));
+    }
+    @Test
+    public void removeRewardReturn(){
+        RewardsManagement.addReward(null, "gid1", "This is a new reward", "Reward3", 3);
+        assertEquals(1, RewardsManagement.removeReward("gid1", "Reward3"));
+    }
+    @Test
+    public void removeRewardNonExistentReturn(){
+        assertEquals(0, RewardsManagement.removeReward("gid1", "Reward3"));
+    }
+
+    @Test
+    public void removeNonExistentReward(){
+        RewardsManagement.addReward(null, "gid1", "This is a new reward", "Reward3", 3);
+        int expected = 0;
+        assertEquals(expected, RewardsManagement.removeReward("gid1", "Reward2"));
+    }
+
+    @Test
+    public void removeRewardMap(){
+        RewardsManagement.addReward(null, "gid2", "This is a new reward", "Reward3", 3);
+        RewardsManagement.removeRewardsMap("gid2");
+        ArrayList<String> expected = new ArrayList<String>();
+        assertEquals(expected, RewardsManagement.getRewardNameList(RewardsManagement.getGroupRewardsMap("gid2")));
+    }
+    @Test
+    public void removeRewardMapNonExistentGroup(){
+        int expected = 0 ;
+        assertEquals(expected, RewardsManagement.removeRewardsMap("gid2"));
+
+    }
+
+    @Test
+    public void assignRewardReturn(){
+
+        assertEquals(1,RewardsManagement.assignReward(null, "example","gid1", 15));
+    }
+
+
+    @Test
+    public void assignReward(){
+        RewardsManagement.addReward(null, "gid2", "This is a reward", "Reward2", 5);
+        String expectedName  = "Reward2";
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a reward");
+        expectedValues.add("5");
+        expectedValues.add("example");
+        HashMap<String, List<Object>> map = (HashMap<String, List<Object>>) RewardsManagement.getGroupRewardsMap("gid2");
+
+        RewardsManagement.assignReward(null, "example","gid2", 15);
+        ArrayList<Object> actualValues = new ArrayList<>(map.get("Reward2"));
+        assertEquals(expectedValues, actualValues);
+    }
+
+    @Test
+    public void getRewardInfo(){
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a reward");
+        expectedValues.add("15");
+        expectedValues.add(null);
+
+        ArrayList<Object> actualValues = new ArrayList<>(RewardsManagement.getRewardInfo("gid1", "Reward1"));
+        assertEquals(expectedValues,actualValues);
+    }
+
+    @Test
+    public void resetRewardAssignment(){
+        RewardsManagement.addReward(null, "gid2", "This is a reward", "Reward2", 5);
+        String expectedName  = "Reward2";
+        ArrayList<Object> expectedValues = new ArrayList<Object>();
+        expectedValues.add("This is a reward");
+        expectedValues.add("5");
+        expectedValues.add(null);
+        HashMap<String, List<Object>> map = (HashMap<String, List<Object>>) RewardsManagement.getGroupRewardsMap("gid2");
+
+        RewardsManagement.assignReward(null, "example","gid2", 15);
+        RewardsManagement.resetRewardAssignments("gid2");
+        ArrayList<Object> actualValues = new ArrayList<>(map.get("Reward2"));
+        assertEquals(expectedValues, actualValues);
+    }
+
+    @Test
+    public void resetRewardAssignmentToNonExistentGroup(){
+        int expected = -1;
+        assertEquals(expected, RewardsManagement.resetRewardAssignments("gid2"));
+    }
+
+
 }

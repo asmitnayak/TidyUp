@@ -33,7 +33,8 @@
             android:parentActivityName=".Login" />
         <activity
             android:name=".Account"
-            android:label="Account" />
+            android:label="Account"
+            android:launchMode="singleTop"/>
         <activity android:name=".UpdateUserInfo" />
         <activity android:name=".AuthenticationPassword" />
         <activity android:name=".AddTaskToTaskPage" />

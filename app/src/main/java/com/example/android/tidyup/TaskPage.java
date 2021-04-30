@@ -269,75 +269,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
             }
         });
 
-        userMap = UserManagement.getUserDetails();
-        Object userGroup = userMap.get("Group");
-
-//        fFirestore.collection("task").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        for (QueryDocumentSnapshot document : task.getResult()) {
-//                            Map<String, Object> currTaskMap = document.getData();
-//                            for (Map.Entry<String,Object> entry : currTaskMap.entrySet()) {
-//                                Object currTask = entry.getValue();
-//                                String taskName = getTaskName(currTask.toString());
-//                                String getDate = getDate(currTask.toString());
-//                                String person = getPersonStr(currTask.toString());
-//                                String repetition = getRepetition(currTask.toString());
-//                                String priority = getPriority(currTask.toString());
-//                                String reward = getReward(currTask.toString());
-//                                String checked = getChecked(currTask.toString());
-//
-//
-//                                mtaskName.setText("Task Name: " + taskName);
-//                                mtaskPerson.setText("Person Assigned: " + person);
-//                                mtaskPoint.setText("Point Value: " + reward);
-//                                mtaskPriority.setText("Priority Level: " + priority);
-//                                mtaskRepetition.setText("Repetition: " + repetition);
-//                                mtaskDate.setText("Due Date: " + getDate);
-//                                /*
-//                                System.out.println("taskName   : " + taskName);
-//                                System.out.println("getDate    : " + getDate);
-//                                System.out.println("person     : " + person);
-//                                System.out.println("repetition : " + repetition);
-//                                System.out.println("priority   : " + priority);
-//                                System.out.println("reward     : " + reward);
-//                                System.out.println("checked    : " + checked);*/
-//                            }
-//
-//                        }
-//                    }
-//                });
-//
-//
-//       // DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
-//        //docRef.update(tasks);
-//
-//       // ArrayAdapter<String> tasksAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, tasks);
-//        //if (tasksAdapter != null )
-//            //taskList.setAdapter(tasksAdapter);
-//        //action bar
-//
    }
 
-
-   private void readTaskDB(FirestoreCallback firestoreCallback){
-       DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
-       docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-           @Override
-           public void onSuccess(DocumentSnapshot documentSnapshot) {
-               Map<String, Object> taskDB = documentSnapshot.getData();
-               firestoreCallback.onCallback(taskDB);
-           }
-       }).addOnFailureListener(new OnFailureListener() {
-           public void onFailure(@NonNull Exception e) {
-               Log.w("TaskFirebase", "Error reading document", e);
-           }
-       });
-   }
-
-    private interface FirestoreCallback{
-        void onCallback(Map<String, Object> taskDB);
-    }
 
     public static String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");

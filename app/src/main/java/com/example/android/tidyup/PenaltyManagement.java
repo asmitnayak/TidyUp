@@ -5,13 +5,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -64,14 +67,25 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
                 Log.w("PenaltyManagementFirebase", "Error reading document", e);
             }
         });
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (documentSnapshot != null || documentSnapshot.exists()){
+                    Penalty penaltyDocument = documentSnapshot.toObject(PenaltyManagement.Penalty.class);
+                    grDB = penaltyDocument.getPenaltyMap();
+                    System.out.println(grDB);
+                } else {
+                    Log.w("PenaltyManagementFirebase", "Error reading document");
+
+                }
+            }
+        });
     }
     //Adds a penalty to a specific group
     public static int addPenalty(String groupID, String penaltyDescription, String penaltyName){
         if(grDB == null){
-            readGroupPenaltyDB();
-            if(grDB == null){
-                return -1;
-            }
+            return -1;
+
         }
         if(grDB.containsKey(groupID)){
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));
@@ -95,10 +109,8 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
 
     public static int removePenalty(String groupID, String penaltyName){
         if(grDB == null){
-            readGroupPenaltyDB();
-            if(grDB == null){
-                return -1;
-            }
+            return -1;
+
         }
         if(grDB.containsKey(groupID)) {
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));
@@ -131,10 +143,8 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
     public static Map<String, List<Object>> getGroupPenaltyMap(String groupID){
         Map<String, List<Object>> groupPenaltyMap;
         if(grDB == null){
-            readGroupPenaltyDB();
-            if(grDB == null){
-                return null;
-            }
+            return null;
+
         }
         if(grDB.containsKey(groupID)){
             groupPenaltyMap = new HashMap<>(grDB.get(groupID));
@@ -171,10 +181,7 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
 
     public static int assignPenalty(String groupID, String penaltyName, String uid){
         if(grDB == null){
-            readGroupPenaltyDB();
-            if(grDB == null){
-                return -1;
-            }
+            return -1;
         }
         if(grDB.containsKey(groupID)) {
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));

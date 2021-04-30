@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
 
         RewardsManagement rm = new RewardsManagement();
         rm.execute();
-        RewardsManagement.addReward("test", "test reward description" , "Test Reward Name", 15);
+        RewardsManagement.addReward(null, "test", "test reward description" , "Test Reward Name", 15);
 
     }
 

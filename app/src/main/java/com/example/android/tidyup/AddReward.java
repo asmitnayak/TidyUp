@@ -64,7 +64,7 @@ public class AddReward extends AppCompatActivity {
             rewardPointValEDT.setError("Only Enter Numbers, No Other Characters Allowed");
             return;
         }
-        RewardsManagement.addReward(GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid()),
+        RewardsManagement.addReward(getApplicationContext(), GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid()),
                 this.rewardDescription, this.rewardName, this.rewardPointVal);
         Intent intent = new Intent(this, RewardAndPenalty.class);
         finish();

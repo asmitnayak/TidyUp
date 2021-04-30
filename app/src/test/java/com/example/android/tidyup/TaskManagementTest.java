@@ -92,7 +92,7 @@ public class TaskManagementTest {
 
     @Test
     public void addAnotherTaskReturnValue(){
-        assertEquals(1, TaskManagment.addTaskItem("task2","id2", 5, "05/05", "none"));
+        assertNotNull(TaskManagment.addTaskItem("task2","id2", 5, "05/05", "none"));
     }
 
     @Test

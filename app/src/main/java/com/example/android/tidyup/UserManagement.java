@@ -44,6 +44,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_ROLE= "Role";
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
+    private static final String KEY_USERPOINTS = "UserPoints";
     private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private static  DocumentReference docRef;
@@ -127,6 +128,10 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         return ((List<String>)otherUserMap.get(uid)).get(2);
     }
 
+    public static String getUserPointsFromUID (String uid){
+        return ((List<String>)otherUserMap.get(uid)).get(1);
+    }
+
     /*
     public static String getUserPointsFromUID (String uid){
         return ((List<String>)otherUserMap.get(uid)).get(1);
@@ -167,6 +172,12 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     protected static void setUserGroup(String groupName){
         docRef.update(KEY_Group, groupName);
+    }
+
+    protected static void updateUserPoints(String newPoints){
+        String userPoints = (String) UserManagement.getUserDetails().get("UserPoints");
+        String updatedUserPoints = String.valueOf(Integer.parseInt(userPoints) + Integer.parseInt(newPoints));
+        docRef.update(KEY_USERPOINTS, updatedUserPoints);
     }
 
 

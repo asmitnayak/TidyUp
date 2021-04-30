@@ -1,9 +1,12 @@
 package com.example.android.tidyup;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +35,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     private static Map<String, Map<String, List<Object>>> grDB;
     private static Calendar cal;
 
+
     public RewardsManagement( FirebaseAuth fireAuth, FirebaseFirestore fireStore){
         fAuth = fireAuth;
         fFirestore = fireStore;
@@ -46,7 +50,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
     //Adds a reward to a specific group
-    public static int addReward(String groupID, String rewardDescription, String rewardName, int rewardVal){
+    public static int addReward(Context context, String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB == null){
             readGroupRewardsDB();
             if(grDB == null){
@@ -70,8 +74,15 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         }
         Rewards rewards = new Rewards(grDB);
         fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+        ArrayList<String> membersList = GroupManagement.getGroupMemberList(groupID);
+        if( context != null) {
+            for (int i = 0; i < membersList.size(); i++) {
+                assignReward(context, membersList.get(i), groupID, Integer.parseInt((String) UserManagement.getUserPointsFromUID(membersList.get(i))));
+            }
+        }
         return 1;
     }
+
 
     public static int removeReward(String groupID, String rewardName){
        if(grDB != null) {
@@ -90,6 +101,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
         return 0;
     }
+
 
     public static int removeRewardsMap(String groupID){
         if(grDB == null){
@@ -175,7 +187,7 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
 
 
 
-    public static int AssignReward(String userID, String grpID, int userPoints){
+    public static int assignReward(Context context, String userID, String grpID, int userPoints){
         if(grDB == null) {
             readGroupRewardsDB();
             if (grDB == null) {
@@ -184,7 +196,9 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         }
         else {
             Map<String, List<Object>> rewardMap = RewardsManagement.getGroupRewardsMap(grpID);
+            APIService apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
             for (Map.Entry<String, List<Object>> entry : rewardMap.entrySet()) {
+                int i = 0;
                 int rewardVal;
                 try {
                     rewardVal = Integer.parseInt(((String) entry.getValue().get(1)).trim());
@@ -193,13 +207,23 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
                     return -1;
                 }
                 if (userPoints >= rewardVal){
-                    if(((String) entry.getValue().get(2)).equals(null)){
-                         entry.getValue().set(2, userID);
+                    if(((String) entry.getValue().get(2)) == null){
+                        grDB.get(grpID).get(entry.getKey()).set(2, userID);
                          Rewards rewards = new Rewards(grDB);
                          fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+                        String userToken = UserManagement.getUserTokenFromUID(fAuth.getUid());
+                        NotificationManager.sendNotifications(userToken, "Tidy Up","Congrats because of your Points you got reward "+ entry.getKey(),context,apiService);
+                         /*
+                        AlertDialog.Builder noGroup = new AlertDialog.Builder(context);
+                        noGroup.setMessage("Congrats because of your Points you got Reward " + entry.getKey());
+                        noGroup.setNeutralButton("Ok", null);
+                        noGroup.show();
+
+                          */
                          return 1;
                     }
                 }
+                i++;
             }
         }
         return -1;

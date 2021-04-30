@@ -422,6 +422,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
     public void updateIsChecked(View view){
         CheckBox cb = (CheckBox) view.findViewById(R.id.taskSelect);
+
         TaskItem addTask;
         if(cb.isChecked()){
             ViewGroup viewParent = (ViewGroup) view.getParent();
@@ -464,6 +465,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 for(Map.Entry<String, Object> currObj : taskDB.entrySet()){
 
                     if(getChecked(currObj.toString()).equals("true")){
+                        UserManagement.updateUserPoints(String.valueOf(((HashMap<String, Object>) currObj.getValue()).get("rewardPenaltyPointValue")));
+                        RewardsManagement.assignReward(getApplicationContext(), fAuth.getUid(),(String) userMap.get("GroupID"), Integer.parseInt((String) userMap.get("UserPoints")));
                         TaskManagment.removeTaskFromGroup((String) userMap.get("GroupID"), getTaskName(currObj.toString()));
                     }
                 }

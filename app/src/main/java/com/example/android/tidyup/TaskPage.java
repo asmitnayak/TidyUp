@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -95,6 +96,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
     private List tasksKey;
     private List tasksValues;
 
+    private Button mAddTaskButton, mOnCompleteButton;
+
     //private static HashMap<String, Object> userMap = new HashMap<>();
     private static HashMap<String, Object> userTasks = new HashMap<>();
     private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
@@ -125,6 +128,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_page);
 
+        mAddTaskButton = findViewById(R.id.addtask);
+        mOnCompleteButton = findViewById(R.id.completeTask);
         taskList = (ListView) findViewById(R.id.taskList);
         //String groupID = (String) UserManagement.getUserDetails().get("GroupID");
 
@@ -142,21 +147,44 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         });
 
  */
-        docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()) {
-                    Map<String, Object> taskDB = documentSnapshot.getData();
-                    customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
-                    taskList.setAdapter(customAdaptor);
-                    tasksKey = new ArrayList<String>(tasks.keySet());
-                    tasksValues = new ArrayList(tasks.values());
-                }else {
-                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+        String groupID = (String) userMap.get("GroupID");
+
+        mAddTaskButton.setEnabled(!groupID.equals(""));
+        mOnCompleteButton.setEnabled(!groupID.equals(""));
+
+        if(!groupID.equals("")) {
+            docRef = fFirestore.collection("task").document(groupID);
+            docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> taskDB = documentSnapshot.getData();
+                        customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
+                        taskList.setAdapter(customAdaptor);
+                        tasksKey = new ArrayList<String>(tasks.keySet());
+                        tasksValues = new ArrayList(tasks.values());
+                    } else {
+                        Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+            docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
+
+                @Override
+                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                    if (documentSnapshot.exists()) {
+                        Map<String, Object> taskDB = documentSnapshot.getData();
+                        customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
+                        taskList.setAdapter(customAdaptor);
+                        tasksKey = new ArrayList<String>(tasks.keySet());
+                        tasksValues = new ArrayList(tasks.values());
+                    } else {
+                        Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
         menu = findViewById(R.id.menu);
         backButton = findViewById(R.id.back_button);
         pageTitle = findViewById(R.id.pageTitle);

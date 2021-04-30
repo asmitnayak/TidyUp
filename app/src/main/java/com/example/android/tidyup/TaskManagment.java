@@ -80,12 +80,12 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
                 return -1;
             }
         }
-
+/*
         Map<String, Object> add = (Map<String, Object> ) displayMap.get(groupId);
         add.put(taskName, addTask);
         displayMap.put(groupId, add);
         docRef.set(displayMap);
-
+ */
         return 1;
     }
     /*

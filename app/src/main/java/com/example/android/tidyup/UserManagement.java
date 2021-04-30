@@ -274,11 +274,17 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     Log.w(TAG, "listen:error", error);
                     return;
                 }
+                String grpID = "";
                 if (document.exists()) {
                     Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                     map = document.getData();
+                    grpID = (String) map.get("GroupID");
                 } else {
                     Log.d(TAG, "No such document");
+                }
+                if (grpID != null && !grpID.isEmpty() && !testing) {
+                    TaskManagment tm = new TaskManagment();
+                    tm.execute();
                 }
             }
         });

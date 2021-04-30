@@ -69,7 +69,6 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
         groupID = (String) UserManagement.getUserDetails().get("GroupID");
         docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
-
     }
 
     // Testing only
@@ -92,7 +91,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         TaskItem addTask = new TaskItem(taskName, person, pointValue, dateToBeCompleted, repetition);
 
         String groupId = (String) UserManagement.getUserDetails().get("GroupID");
-        fFirestore = FirebaseFirestore.getInstance();
+//        fFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupId);
 
         if (docRef != null)
@@ -134,127 +133,9 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
          */
         return displayMap;
     }
-//        Map<String, Map<String, Object>> returnMap = new Map<String, Map<String, Object>>();
-//        final Map<String, Object>[] sampleMap = new Map[]{new HashMap<String, Object>()};
-//
-//        userMap = UserManagement.getUserDetails();
-//        Object userGroup = userMap.get("Group");
-//        DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
-//        final String[] taskName = new String[1];
-//        final String[] dateToBeCompleted = new String[1];
-//        final String[] priority = new String[1];
-//        final String[] repetition = new String[1];
-//        final String[] person = new String[1];
-//        final String[] reward = new String[1];
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//    @Override
-//
-//    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//        if (task.isSuccessful()) {
-//            DocumentSnapshot document = task.getResult();
-//            //System.out.println("DocumentSnapshot data: " + document.getString("taskName"));
-//            sampleMap[0] = document.getData();
-//            for (Map.Entry<String,Object> entry : sampleMap[0].entrySet()){
-//                taskName[0] = TaskPage.getTaskName(entry.getValue().toString());
-//                person[0] = TaskPage.getPersonStr(entry.getValue().toString());
-//                dateToBeCompleted[0] = TaskPage.getDate(entry.getValue().toString());
-//                priority[0] = TaskPage.getPriority(entry.getValue().toString());
-//                repetition[0] = TaskPage.getRepetition(entry.getValue().toString());
-//                reward[0] = TaskPage.getReward(entry.getValue().toString());
-//
-//                TaskItem add = new TaskItem(new String(taskName[0]), new String(person[0]), Integer.valueOf(reward[0]), new String(priority[0]),
-//                        new String(dateToBeCompleted[0]), new String(repetition[0]));
-//                returnMap.put(taskName[0], add);
-//            }
-//
-//        }
-//
-//    }
-//        });
-
-       // return returnMap;
-   // }
-//        Map<String, Map<String, Object>> groupTaskMap;
-//        userMap = UserManagement.getUserDetails();
-//        Object userGroup = userMap.get("Group");
-//
-//
-//        DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    String name = document.getString(KEY_TASKNAME);
-//                    String person = document.getString(KEY_PERSON);
-//                    String point = document.getString(KEY_POINT);
-//                    String priority = document.getString(KEY_PRIORITY);
-//                    String repetition = document.getString(KEY_REPETITION);
-//                    String date = document.getString(KEY_DATE);
-//                    System.out.println("DocumentSnapshot data: " + document.getData());
-//                }
-//            }
-//        });
-//
-//        return null;
-//    }
-
-//        DocumentReference docRef = fFirestore.collection("task").document(userGroup.toString());
-//
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        //Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                    } else {
-//                        //Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    //Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//        return groupTaskMap;
-
-
-
-//        DocumentSnapshot test = docRef.get();
-//        Map<String, Object> taskMap = test.getData();
-
-//        Map<String, List<String>> groupTaskMap;
-//        if(taskListDB == null){
-//            readGroupTaskDB();
-//            if(taskListDB == null){
-//                return null;
-//            }
-//        }
-//        if(taskListDB.containsKey(groupID)){
-//            groupTaskMap = new HashMap<>(taskListDB.get(groupID));
-//        }else{
-//            groupTaskMap = new HashMap<>();
-//        }
-//        return groupTaskMap;
 
 
     public static HashMap<String, Object> getGroupTaskDetails(){
-//        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                        map = document.getData();
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
         return (HashMap<String, Object>) userMap;
     }
 
@@ -321,7 +202,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         }
     }*/
     public static Object removeTaskFromGroup(String groupID, String taskName){
-        fFirestore = FirebaseFirestore.getInstance();
+//        fFirestore = FirebaseFirestore.getInstance();
         DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
         Map<String, Object> delete = new HashMap<>();
         Object returnObj = delete.put(taskName, FieldValue.delete());

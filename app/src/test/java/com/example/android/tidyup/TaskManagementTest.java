@@ -75,8 +75,8 @@ public class TaskManagementTest {
         //////   MOCKING FUNCTIONS   //////
         ///////////////////////////////////
 
-        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
-        doReturn("example").when(mockFireUser).getUid();
+//        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
+//        doReturn("example").when(mockFireUser).getUid();
         doReturn(mockCollections).when(mockFirestore).collection(anyString());
         doReturn(mockDocs).when(mockCollections).document(anyString());
 

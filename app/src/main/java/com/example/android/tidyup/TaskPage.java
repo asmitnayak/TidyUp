@@ -197,60 +197,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mtaskRepetition = findViewById(R.id.taskRepetitionLayout);
         mtaskDate = findViewById(R.id.taskDateLayout);
 
-//// load and display user info on Task Page
-//        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//            @Override
-//            public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                if (documentSnapshot.exists()){
-//                    String name = documentSnapshot.getString(KEY_TASKNAME);
-//                    String person = documentSnapshot.getString(KEY_PERSON);
-//                    String point = documentSnapshot.getString(KEY_POINT);
-//                    String priority = documentSnapshot.getString(KEY_PRIORITY);
-//                    String repetition = documentSnapshot.getString(KEY_REPETITION);
-//                    String date = documentSnapshot.getString(KEY_DATE);
-//
-//                    mtaskName.setText("Task Name: " + name);
-//                    mtaskPerson.setText("Person Assigned: " + person);
-//                    mtaskPoint.setText("Point Value: " + point);
-//                    mtaskPriority.setText("Priority Level: " + priority);
-//                    mtaskRepetition.setText("Repetition: " + repetition);
-//                    mtaskDate.setText("Due Date: " + date);
-//
-//                }else {
-//                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                Toast.makeText(TaskPage.this, "Error! "+ e.getMessage(), Toast.LENGTH_LONG).show();
-//                Log.d(TAG, e.toString());
-//            }
-//        });
-//
-//        docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
-//            @Override
-//            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-//                if (error != null) {
-//                    Log.w(TAG, "listen:error", error);
-//                    return;
-//                }
-//
-//                if (documentSnapshot.exists()){
-//                    String name = documentSnapshot.getString(KEY_TASKNAME);
-//                    String person = documentSnapshot.getString(KEY_PERSON);
-//                    String point = documentSnapshot.getString(KEY_POINT);
-//                    String priority = documentSnapshot.getString(KEY_PRIORITY);
-//                    String repetition = documentSnapshot.getString(KEY_REPETITION);
-//                    String date = documentSnapshot.getString(KEY_DATE);
-//
-//
-//
-//                }else {
-//                    Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        });
 
         menu.setOnClickListener(new View.OnClickListener() {
             @Override

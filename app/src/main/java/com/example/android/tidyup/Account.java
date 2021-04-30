@@ -61,10 +61,10 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private UserManagement um;
     private RewardsManagement rm;
 
-    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private final FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
-    private final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-    private final DocumentReference docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
+    private FirebaseAuth fAuth;// = FirebaseAuth.getInstance();
+    private FirebaseUser fUser;// = FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseFirestore fFirestore;// = FirebaseFirestore.getInstance();
+    private DocumentReference docRef;//  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
 
     private TextView mName, mEmail, mUserPoints, mGroup, mRole;
     private EditText mNewUserEmail;
@@ -77,6 +77,21 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
     private ImageView menu, backButton;
     private TextView pageTitle;
+
+    public Account(){
+        fAuth = FirebaseAuth.getInstance();
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
+        fFirestore = FirebaseFirestore.getInstance();
+        docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
+    }
+
+    public Account(FirebaseAuth fireAuth, FirebaseUser fireUser, FirebaseFirestore fireStore){
+        fAuth = fireAuth;
+        fUser = fireUser;
+        fFirestore = fireStore;
+        docRef  = fFirestore.collection(COLLECTIONPATH_USERS).document(fAuth.getCurrentUser().getUid());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

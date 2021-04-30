@@ -100,7 +100,6 @@ public class PenaltyManagementTest {
     @Test
     public void addPenaltyReturn(){
         assertEquals(1, PenaltyManagement.addPenalty("gid2", "This is a penalty", "Penalty2"));
-
     }
     @Test
     public void getNewlyAddedPenaltyMap(){

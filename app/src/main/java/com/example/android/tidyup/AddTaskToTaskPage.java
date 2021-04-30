@@ -137,129 +137,7 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
        // mPersonSpinner = spinnerPerson;
         mSpinnerRewardPenaltyValue = spinnerRewardPenaltyValue;
         mSpinnerRepetition = spinnerRepetition;
-
-/*
-        addTaskButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // check if there has been a name input into the edit text box
-                String string_taskName = taskName.getText().toString();
-                if(string_taskName.isEmpty()){
-                    Toast.makeText(AddTaskToTaskPage.this, "There is no task name.", Toast.LENGTH_SHORT).show();
-                }
-
-                String string_date = date.getText().toString();
-                if(string_date.isEmpty()){
-                    Toast.makeText(AddTaskToTaskPage.this, "There is no due date", Toast.LENGTH_SHORT).show();
-                }
-
-                // if both of them are populated then add the information to the hashmap
-                if(!(string_taskName.isEmpty()) && !(string_date.isEmpty())){
-                        Spinner personSpinner = (Spinner) findViewById(R.id.personAssignedToTask);
-                        String str_person = personSpinner.getSelectedItem().toString();
-
-                        Spinner pointValueSpinner = (Spinner) findViewById(R.id.rewardPenaltyValue);
-                        String str_pointValue = pointValueSpinner.getSelectedItem().toString();
-                        int int_pointValue = Integer.parseInt(str_pointValue);
-
-                        Spinner prioritySpinner = (Spinner) findViewById(R.id.taskPriorityValue);
-                        String str_priority = prioritySpinner.getSelectedItem().toString();
-
-                        Spinner repetitionSpinner = (Spinner) findViewById(R.id.taskRepetitionValue);
-                        String str_repetition = repetitionSpinner.getSelectedItem().toString();
-
-                        TaskItem addItem = new TaskItem(string_taskName, str_person, int_pointValue,
-                                str_priority, string_date, str_repetition);
-
-                        int taskNumber = tasks.size() + 1;
-                        String str_taskNumber = String.valueOf(taskNumber);
-
-                        tasks.put(str_taskNumber, addItem);
-
-                        finish();
-                }
-            }
-        });
-*/
     }
-
-    /*public static int addTaskItem(String groupID, String taskName, String person, int pointValue, String priority, String dateToBeCompleted, String repetition) {
-        if(taskListDB.containsKey(groupID)) {
-            Map<String, List<String>> groupTaskMap = new HashMap<>(taskListDB.get(groupID));
-            if(groupTaskMap.containsKey(taskName)){
-                return 0;
-            } else {
-                groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-                taskListDB.put(groupID, groupTaskMap);
-                // Tasks task = new Tasks(taskDB);
-                // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-                // return 1;
-            }
-        } else {
-            Map<String, List<String>> groupTaskMap = new HashMap<>();
-            groupTaskMap.put(taskName, Arrays.asList(new String[]{person, String.valueOf(pointValue), priority, dateToBeCompleted, repetition, null}));
-            taskListDB.put(groupID, groupTaskMap);
-            // Tasks task = new Tasks(taskDB);
-            // docRef.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(task);
-            // return 1;
-        }
-        Tasks tasks = new Tasks(taskListDB);
-        fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS).set(tasks);
-        return 1;
-
-        // TaskItem addTaskItem = new TaskItem(taskName, person, pointValue, priority, dateToBeCompleted, repetition);
-        // taskItems.add(addTaskItem);
-    }*/
-
-    /*public static Map<String, List<String>> getGroupTaskMap(String groupID){
-        Map<String, List<String>> groupTaskMap;
-        if(taskListDB == null){
-            readGroupTaskDB();
-            if(taskListDB == null){
-                return null;
-            }
-        }
-        if(taskListDB.containsKey(groupID)){
-            groupTaskMap = new HashMap<>(taskListDB.get(groupID));
-        }else{
-            groupTaskMap = new HashMap<>();
-        }
-        return groupTaskMap;
-    }*/
-
-   /* public static void readGroupTaskDB(){
-        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(DOCUMENTPATH_TASKS);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Tasks taskDocument = documentSnapshot.toObject(Tasks.class);
-                taskListDB = taskDocument.TaskMap;
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            public void onFailure(@NonNull Exception e) {
-                Log.w("TaskFirebase", "Error reading document", e);
-            }
-        });
-
-    }
-
-    private static class Tasks{
-        public Map<String, Map<String, List<String>>> TaskMap = new HashMap<>();
-        Tasks(){}
-        Tasks(Map<String, Map<String, List<String>>> customMap){
-            TaskMap = new HashMap<>();
-            this.TaskMap = customMap;
-        }
-        public Map<String, Map<String, List<String>>> getTaskMap() { return this.TaskMap;}
-    }*/
-
-    /*//@Override
-    protected void onPreExecute() {
-        readGroupTaskDB();
-        super.onPreExecute();
-    }*/
-
-
 
     public void returnToTaskPage(View view) {
 
@@ -288,7 +166,6 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
             if (!isValid(date)) {
                 dueDate.setError("Please Enter a Date in Format ##/##");
                 return;
-
             }
 
             String rewardString = mSpinnerRewardPenaltyValue.getSelectedItem().toString();
@@ -297,7 +174,7 @@ public class AddTaskToTaskPage extends TaskPage implements View.OnClickListener{
             TaskManagment.addTaskItem(name, user, rewardInt, date, mSpinnerRepetition.getSelectedItem().toString());
 
             finish();
-            startActivity(new Intent(getApplicationContext(), TaskPage.class));
+//            startActivity(new Intent(getApplicationContext(), TaskPage.class));
         //}catch (Exception e){
            // Toast.makeText(getApplicationContext(), "Error!" + e.getMessage(), Toast.LENGTH_LONG).show();
            // Log.d(TAG, e.toString());

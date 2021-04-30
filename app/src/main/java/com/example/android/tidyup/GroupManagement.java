@@ -397,7 +397,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
     }
 
-    private static class Group_Code{
+    static class Group_Code{
         public Map<String, List<String>> grpCodeMap = new HashMap<>();
 
         Group_Code(){}
@@ -410,7 +410,7 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
             return this.grpCodeMap;
         }
     }
-    private static class Group{
+    static class Group{
         // Group ID: ==> [user list]
         public Map<String, List<String>> grpMap = new HashMap<>();
         Group(){}

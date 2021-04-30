@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -13,7 +14,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
@@ -52,10 +55,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     //Adds a reward to a specific group
     public static int addReward(Context context, String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
                 return -1;
-            }
+            //}
         }
         if(grDB.containsKey(groupID)){
             Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
@@ -125,10 +128,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     public static Map<String, List<Object>> getGroupRewardsMap(String groupID){
         Map<String, List<Object>> groupRewardMap;
         if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
                 return null;
-            }
+//            }
         }
         if(grDB.containsKey(groupID)){
             groupRewardMap = new HashMap<>(grDB.get(groupID));
@@ -179,6 +182,23 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         }).addOnFailureListener(new OnFailureListener() {
             public void onFailure(@NonNull Exception e) {
                 Log.w("RewardsManagementFirebase", "Error reading document", e);
+            }
+        });
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+
+                if(documentSnapshot==null || !documentSnapshot.exists())
+                    return;
+
+                Rewards rewardDocument = documentSnapshot.toObject(Rewards.class);
+                grDB = rewardDocument.getRewardsMap();
+                System.out.println(grDB);
             }
         });
     }

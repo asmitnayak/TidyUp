@@ -45,10 +45,28 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static final String KEY_GroupID = "GroupID";
     private static final String KEY_Group = "Group";
     private static final String KEY_USERPOINTS = "UserPoints";
-    private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+    private static FirebaseAuth fAuth;// = FirebaseAuth.getInstance();
+    private static FirebaseFirestore fFirestore;// = FirebaseFirestore.getInstance();
     private static  DocumentReference docRef;
-    private static final CollectionReference collRef = fFirestore.collection(COLLECTIONPATH_USERS);
+    private static CollectionReference collRef;// = fFirestore.collection(COLLECTIONPATH_USERS);
+    private static boolean testing = false;
+    private List userInfo = new ArrayList<String>();
+    private static Map<String, Object> map = new HashMap<>();
+    private static Map<String, List<String>> otherUserMap = new HashMap<>();
+
+    public UserManagement(){
+        fAuth = FirebaseAuth.getInstance();
+        fFirestore = FirebaseFirestore.getInstance();
+        collRef = fFirestore.collection(COLLECTIONPATH_USERS);
+    }
+
+    public UserManagement(FirebaseFirestore fireStore, FirebaseAuth fireAuth, DocumentReference fireDocs){
+        fAuth = fireAuth;
+        fFirestore = fireStore;
+        collRef = fFirestore.collection(COLLECTIONPATH_USERS);
+        docRef = fireDocs;
+        testing = true;
+    }
 
     public static void addStringField(String fieldName) {
         Map<String, String> data = new HashMap<>();
@@ -70,9 +88,11 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
         docRef.update(fieldName, FieldValue.delete());
     }
+
     public static void updateUserGroup(String newGroupID, String role, Context cntxt) {
         docRef.update("GroupID", newGroupID,
-                      "Group", GroupManagement.getGroupName(newGroupID), "Role", role)
+                      "Group", GroupManagement.getGroupName(newGroupID),
+                                          "Role", role)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -88,38 +108,12 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                 });
     }
 
-
-
-
-    private static Map<String, Object> map = new HashMap<>();
     public static HashMap<String, Object> getUserDetails(){
-//        docRef.get(Source.SERVER).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-//                        map = document.getData();
-//                    } else {
-//                        Log.d(TAG, "No such document");
-//                    }
-//                } else {
-//                    Log.d(TAG, "get failed with ", task.getException());
-//                }
-//            }
-//        });
-//        try {
-//            done.await(); //it will wait till the response is received from firebase.
-//        } catch(InterruptedException e) {
-//            e.printStackTrace();
-//        }
         return (HashMap<String, Object>) map;
     }
 
 
     //private static Map<String, String> otherUserMap = new HashMap<>();
-    private static Map<String, List<String>> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
         return ((List<String>)otherUserMap.get(uid)).get(0);
     }
@@ -180,8 +174,6 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         docRef.update(KEY_USERPOINTS, updatedUserPoints);
     }
 
-
-    private List userInfo = new ArrayList<String>();
     @Override
     protected Void doInBackground(Void... params) {
         return null;
@@ -255,7 +247,7 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
                     } else {
                         Log.d(TAG, "No such document");
                     }
-                    if (grpID != null && !grpID.isEmpty()) {
+                    if (grpID != null && !grpID.isEmpty() && !testing) {
                         TaskManagment tm = new TaskManagment();
                         tm.execute();
                     }

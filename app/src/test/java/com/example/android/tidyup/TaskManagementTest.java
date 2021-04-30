@@ -41,6 +41,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaskManagementTest {
+    private TaskManagment tm;
     @Before
     public void setUp() {
 
@@ -58,20 +59,42 @@ public class TaskManagementTest {
         //////   MOCKING FUNCTIONS   //////
         ///////////////////////////////////
 
-//        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
-//        doReturn("example").when(mockFireUser).getUid();
-//        doReturn(mockCollections).when(mockFirestore).collection(anyString());
-//        doReturn(mockDocs).when(mockCollections).document(anyString());
+        doReturn(mockFireUser).when(mockFireAuth).getCurrentUser();
+        doReturn("example").when(mockFireUser).getUid();
+        doReturn(mockCollections).when(mockFirestore).collection(anyString());
+        doReturn(mockDocs).when(mockCollections).document(anyString());
 
         //////////////////////////////////
         /////   Test Management   /////
         //////////////////////////////////
 
+        tm = new TaskManagment(mockFireAuth, mockFirestore, "gid1");
+        TaskManagment.addTaskItem("task1","id1", 5, "05/05", "none");
+
 
     }
 
     @Test
-    public void something(){
+    public void addAnotherTaskReturnValue(){
+        assertEquals(1, TaskManagment.addTaskItem("task2","id2", 5, "05/05", "none"));
+    }
+
+    @Test
+    public void addTaskToGroup() {
+        TaskManagment.addTaskItem("task3","id2", 5, "05/05", "none");
+        String expectedName = "task3";
+        ArrayList<Object> expectedTaskValues = new ArrayList<Object>();
+        expectedTaskValues.add("task3");
+        expectedTaskValues.add("id2");
+        expectedTaskValues.add(5);
+        expectedTaskValues.add("05/05");
+        expectedTaskValues.add("none");
 
     }
+
+    @Test
+    public void removeTaskFromGroup() {
+
+    }
+
 }

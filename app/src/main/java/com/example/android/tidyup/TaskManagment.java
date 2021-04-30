@@ -25,6 +25,7 @@ import com.google.firestore.v1.WriteResult;
 import java.util.Arrays;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,8 @@ import androidx.annotation.Nullable;
 
 public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
-    private static final FirebaseAuth fAuth = FirebaseAuth.getInstance();
-    private static final FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
+    private static  FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private static  FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
     private static Map<String, Map<String, List<String>>> taskListDB; // list of tasks
     private static Map<String, Map<String, List<String>>> taskDB; // will store the actual info of tasks
 
@@ -59,6 +60,14 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     private static final String KEY_CHECKED= "isChecked"; //might need to be boolean
 
     private static String groupName;
+
+    // Testing only
+    public TaskManagment(FirebaseAuth mockFireAuth, FirebaseFirestore mockFirestore, String gid1) {
+        fFirestore = mockFirestore;
+        fAuth = mockFireAuth;
+        docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(gid1);
+        displayMap = new HashMap<>();
+    }
 
     public static Map<String, Object> getDisplayMap(){
         return displayMap;

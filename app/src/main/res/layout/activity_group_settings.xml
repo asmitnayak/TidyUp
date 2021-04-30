@@ -75,10 +75,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
 
-            android:backgroundTint="#003060"
             android:fontFamily="@font/architects_daughter"
             android:onClick="onCopy"
             android:text="Copy"
+            android:textColor="@color/white"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -86,7 +86,7 @@
         android:id="@+id/membersText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="1dp"
         android:fontFamily="@font/architects_daughter"
         android:text="Members:"

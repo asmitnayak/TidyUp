@@ -43,6 +43,7 @@ public class GroupSettings extends AppCompatActivity {
         copyBtn = (Button) findViewById(R.id.copyButton);
         copyBtn.setEnabled(false);
 
+
         if(fAuth.getCurrentUser() != null)
             groupID = GroupManagement.getGroupIDFromUserID(fAuth.getCurrentUser().getUid());
         if(groupID != null) {

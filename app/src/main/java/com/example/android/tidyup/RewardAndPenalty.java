@@ -30,13 +30,13 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     private ListView rewardsListView;
     private Map<String, List<Object>> rewardsMap;
-    private RewardsAdaptor rewardsAdaptor;
+    private static RewardsAdaptor rewardsAdaptor;
     private List rewardsKey;
     private List rewardsValue;
 
     private ListView penaltyListView;
-    private Map<String, List<Object>> penaltyMap;
-    private PenaltyAdaptor penaltyAdaptor;
+    private static Map<String, List<Object>> penaltyMap;
+    private static PenaltyAdaptor penaltyAdaptor;
     private List penaltyKey;
     private List penaltyValue;
 
@@ -187,5 +187,10 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     public void refresh(){
         finish();
+    }
+
+    public static void refresher(){
+        penaltyMap = PenaltyManagement.getGroupPenaltyMap((String) UserManagement.getUserDetails().get("GroupdID"));
+        penaltyAdaptor.notifyDataSetChanged();
     }
 }

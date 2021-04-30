@@ -72,4 +72,7 @@ public class RewardPopUp extends AppCompatActivity {
         RewardsManagement.removeReward(GroupManagement.getGroupIDFromUserID(FirebaseAuth.getInstance().getUid()), rewardName);
         finish();
     }
+
+
+
 }

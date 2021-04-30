@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -13,7 +14,9 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
@@ -52,10 +55,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     //Adds a reward to a specific group
     public static int addReward(Context context, String groupID, String rewardDescription, String rewardName, int rewardVal){
         if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
                 return -1;
-            }
+            //}
         }
         if(grDB.containsKey(groupID)){
             Map<String, List<Object>> groupRewardMap = new HashMap<>(grDB.get(groupID));
@@ -125,10 +128,10 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     public static Map<String, List<Object>> getGroupRewardsMap(String groupID){
         Map<String, List<Object>> groupRewardMap;
         if(grDB == null){
-            readGroupRewardsDB();
-            if(grDB == null){
+//            readGroupRewardsDB();
+//            if(grDB == null){
                 return null;
-            }
+//            }
         }
         if(grDB.containsKey(groupID)){
             groupRewardMap = new HashMap<>(grDB.get(groupID));
@@ -139,14 +142,15 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
     }
 
 
+
     //Gets the specific info for the reward. Specifically description and value
-    public static ArrayList<Object> getRewardInfo(String groupID, String rewardName){
+    public static List<Object> getRewardInfo(String groupID, String rewardName){
         Map<String, List<Object>> groupRewardMap = getGroupRewardsMap(groupID);
         List<Object> rewardInfo = new ArrayList<Object>();
         if (groupRewardMap != null) {
             if (groupRewardMap.containsKey(rewardName)) {
                 rewardInfo = groupRewardMap.get(rewardName);
-                return (ArrayList<Object>) rewardInfo;
+                return (List<Object>) rewardInfo;
             } else {
                 return null;
             }
@@ -154,6 +158,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
             return null;
         }
     }
+
+
 
     public static ArrayList<String> getRewardNameList(Map<String, List<Object>> groupRewardMap) {
         ArrayList<String> rewardNames = new ArrayList<String>();
@@ -181,11 +187,29 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
                 Log.w("RewardsManagementFirebase", "Error reading document", e);
             }
         });
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+
+                if(documentSnapshot==null || !documentSnapshot.exists())
+                    return;
+
+                Rewards rewardDocument = documentSnapshot.toObject(Rewards.class);
+                grDB = rewardDocument.getRewardsMap();
+                System.out.println(grDB);
+            }
+        });
     }
 
 
 
     public static int assignReward(Context context, String userID, String grpID, int userPoints){
+        int test = 0;
         if(grDB == null) {
             readGroupRewardsDB();
             if (grDB == null) {
@@ -206,29 +230,25 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
                 if (userPoints >= rewardVal){
                     if(((String) entry.getValue().get(2)) == null){
                         grDB.get(grpID).get(entry.getKey()).set(2, userID);
-                         Rewards rewards = new Rewards(grDB);
-                         fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
-                        String userToken = UserManagement.getUserTokenFromUID(fAuth.getUid());
-                        NotificationManager.sendNotifications(userToken, "Tidy Up","Congrats because of your Points you got reward "+ entry.getKey(),context,apiService);
-                         /*
-                        AlertDialog.Builder noGroup = new AlertDialog.Builder(context);
-                        noGroup.setMessage("Congrats because of your Points you got Reward " + entry.getKey());
-                        noGroup.setNeutralButton("Ok", null);
-                        noGroup.show();
+                        Rewards rewards = new Rewards(grDB);
+                        fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
+                        test = 1;
+                        if (context != null) {
+                            String userToken = UserManagement.getUserTokenFromUID(fAuth.getUid());
+                            NotificationManager.sendNotifications(userToken, "Tidy Up", "Congrats because of your Points you got reward " + entry.getKey(), context, apiService);
 
-                          */
-
+                        }
                     }
                 }
             }
         }
-        return -1;
+        return test;
     }
 
     public static int resetRewardAssignments(String grpID){
         Map<String, List<Object>> rewardMap = getGroupRewardsMap(grpID);
-        if(rewardMap.equals(null)){
-            Log.d(TAG, "Error getting Members List");
+        if(rewardMap.size() == 0){
+            Log.d(TAG, "Error getting Reward Map");
             return -1;
         }
         for (Map.Entry<String, List<Object>> entry: rewardMap.entrySet()){
@@ -249,11 +269,8 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
                 GroupManagement.setWeekofYear(grpID, sCurrWeek);
                 UserManagement.resetAllUserPoints(grpID);
                 resetRewardAssignments(grpID);
-                Log.d(TAG, "updated Reward Updater DB");
-
+                Log.d(TAG, "updated Weekly DB");
             }
-            Log.d(TAG, "ListedWeek: " + listedWeek);
-            Log.d(TAG, "CurrWeek " + currWeek);
         }
     }
 

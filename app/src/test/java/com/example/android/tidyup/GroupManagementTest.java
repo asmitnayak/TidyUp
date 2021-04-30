@@ -13,15 +13,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GroupManagementTest {
@@ -29,6 +35,11 @@ public class GroupManagementTest {
     private GroupManagement gm;
     private RewardsManagement rm;
     private PenaltyManagement pm;
+    private FirebaseFirestore mockFirestore;
+    private FirebaseAuth mockFireAuth;
+    private FirebaseUser mockFireUser;
+    private CollectionReference mockCollections;
+    private DocumentReference mockDocs;
 
     @Before
     public void setUp() {
@@ -37,11 +48,11 @@ public class GroupManagementTest {
         //////   MOCKING CLASSES   //////
         /////////////////////////////////
 
-        FirebaseFirestore mockFirestore = mock(FirebaseFirestore.class);
-        FirebaseAuth mockFireAuth = mock(FirebaseAuth.class);
-        FirebaseUser mockFireUser = mock(FirebaseUser.class);
-        CollectionReference mockCollections = mock(CollectionReference.class);
-        DocumentReference mockDocs = mock(DocumentReference.class);
+        mockFirestore = mock(FirebaseFirestore.class);
+        mockFireAuth = mock(FirebaseAuth.class);
+        mockFireUser = mock(FirebaseUser.class);
+        mockCollections = mock(CollectionReference.class);
+        mockDocs = mock(DocumentReference.class);
         Task mockTask = mock(Task.class);
 
         ///////////////////////////////////
@@ -65,7 +76,7 @@ public class GroupManagementTest {
         GroupManagement.addGroupCodes("gid3","gc3");
         GroupManagement.addGroupCodes("gid1","gc4");
 
-        GroupManagement.addUserToGroup("gid1","example","gc11","group1");
+        GroupManagement.addUserToGroup("gid1","example11","gc22","group1");
         GroupManagement.addUserToGroup("gid2","test","gc21","group2");
 
         ///////////////////////////////////
@@ -101,6 +112,7 @@ public class GroupManagementTest {
         GroupManagement.addUserToGroup("gid1","example2","gc11", "group1");
         ArrayList<String> expected = new ArrayList<>();
         expected.add("example");
+        expected.add("example11");
         expected.add("example2");
 
         assertEquals(expected, GroupManagement.getGroupMemberList("gid1"));
@@ -114,6 +126,7 @@ public class GroupManagementTest {
         GroupManagement.addUserToGroup("gid1","example2","gc11", "group1");
         ArrayList<String> expected = new ArrayList<>();
         expected.add("example");
+        expected.add("example11");
         expected.add("example2");
 
         assertEquals(expected, GroupManagement.getGroupMemberList("gid1"));
@@ -228,5 +241,32 @@ public class GroupManagementTest {
         probable.add("gc1");
         probable.add("gc4");
         assert probable.contains(GroupManagement.getGroupCode("gid1"));
+    }
+
+    @Test
+    public void setWeekofYear(){
+        List<String> lst1 = new ArrayList<>();
+        lst1.add("false");
+        lst1.add("GroupName:group1");
+        lst1.add("WeekofYear:"+"currweek");
+        lst1.add("example");
+        lst1.add("example11");
+
+        List<String> lst2 = new ArrayList<>();
+        lst2.add("false");
+        lst2.add("GroupName:group2");
+        lst2.add("WeekofYear:"+"18");
+        lst2.add("test");
+
+        Map<String, List<String>> map = new HashMap<>();
+        map.put("gid1", lst1);
+        map.put("gid2", lst2);
+
+        GroupManagement.Group grp = new GroupManagement.Group(map);
+        ArgumentCaptor<GroupManagement.Group> args = ArgumentCaptor.forClass(GroupManagement.Group.class);
+        GroupManagement.setWeekofYear("gid1", "currweek");
+        verify(mockDocs, times(9)).set(args.capture());
+
+        assert args.getValue().getGrpMap().equals(map);
     }
 }

@@ -48,4 +48,11 @@ public class JoinGroup extends AppCompatActivity {
         //reassigned at this point
         //Will need to call onCreate again possibly on the main page not sure though
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        startActivity(new Intent(this, Account.class));
+        super.onBackPressed();
+    }
 }

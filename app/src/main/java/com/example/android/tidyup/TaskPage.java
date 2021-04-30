@@ -153,7 +153,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mOnCompleteButton.setEnabled(!groupID.equals(""));
 
         if(!groupID.equals("")) {
-            docRef = fFirestore.collection("task").document(groupID);
+            docRef = fFirestore.collection(COLLECTIONPATH_TASKS).document(groupID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -168,14 +168,17 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                     }
                 }
             });
-            docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
 
+            docRef.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                     if (documentSnapshot.exists()) {
                         Map<String, Object> taskDB = documentSnapshot.getData();
                         customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
                         taskList.setAdapter(customAdaptor);
+                        tasks = TaskManagment.getDisplayMap();
+                        if(tasks == null)
+                            return;
                         tasksKey = new ArrayList<String>(tasks.keySet());
                         tasksValues = new ArrayList(tasks.values());
                     } else {

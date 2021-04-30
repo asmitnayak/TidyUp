@@ -74,6 +74,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
     private String grpName;
 
     private APIService apiService;
+    private Intent intent;
 
     private ImageView menu, backButton;
     private TextView pageTitle;
@@ -111,6 +112,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
 
             apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
             UpdateToken();
+            intent = new Intent(this,Account.class);
 
             //action bar
             menu = findViewById(R.id.menu);
@@ -119,6 +121,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
             pageTitle.setText("Account");
 
             //test
+
 
             // load and display user info on Account Page
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -300,7 +303,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                     for (int i = 0; i < memberList.size(); i++) {
                         String otherId = memberList.get(i);
                         String userToken = UserManagement.getUserTokenFromUID(otherId);
-                        NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                        NotificationManager.sendNotifications(userToken, "Account", arr[1] + " has left the group", getApplicationContext(), apiService);
                     }
                     GroupManagement.removeUserFromGroup(grpID, userID);
                 }
@@ -363,7 +366,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                     if(!memberList.get(i).equals(userID)) {
                                         String otherId = memberList.get(i);
                                         String userToken = UserManagement.getUserTokenFromUID(otherId);
-                                        NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                                        NotificationManager.sendNotifications(userToken, "Account", arr[1] + " has left the group", getApplicationContext(), apiService);
                                     }
                                 }
 
@@ -373,7 +376,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                         String userToken = UserManagement.getUserTokenFromUID(otherId);
                                         DocumentReference addedUserDoc = fFirestore.collection(COLLECTIONPATH_USERS).document(memberList.get(i));
                                         addedUserDoc.update( KEY_ROLE, "Admin");
-                                        NotificationManager.sendNotifications(userToken, "Tidy Up","Because the Admin "+ arr[1] + " has left the group you are now the Admin",getApplicationContext(),apiService);
+                                        NotificationManager.sendNotifications(userToken, "Account","Because the Admin "+ arr[1] + " has left the group you are now the Admin",getApplicationContext(),apiService);
                                         break;
                                     }
                                 }
@@ -398,7 +401,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                         for (int i = 0; i < memberList.size(); i++) {
                             String otherId = memberList.get(i);
                             String userToken = UserManagement.getUserTokenFromUID(otherId);
-                            NotificationManager.sendNotifications(userToken, "Tidy Up", arr[1] + " has left the group", getApplicationContext(), apiService);
+                            NotificationManager.sendNotifications(userToken, "Account", arr[1] + " has left the group", getApplicationContext(), apiService);
                         }
                         GroupManagement.removeUserFromGroup(grpID, userID);
                         finish();
@@ -456,6 +459,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
                                 addedUserDoc.update(KEY_GroupID, grpID,
                                         KEY_Group, grpName, KEY_ROLE, "User");
                                 mNewUserEmail.setText("");
+                                Toast.makeText(Account.this, "User with Email " + newUserEmail + " was added to your group", Toast.LENGTH_LONG).show();
                             }
 
                         } else {

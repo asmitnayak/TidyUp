@@ -162,17 +162,20 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
 
     public void OnAddReward(View view) {
         Intent intent = new Intent(this, AddReward.class);
+        finish();
         startActivity(intent);
     }
 
     public void OnAddPenalty(View view) {
         Intent intent = new Intent(this, AddPenalty.class);
+        finish();
         startActivity(intent);
 
     }
 
     public void OnAssignPenalty(View view) {
         Intent intent = new Intent(this, AssignPenalty.class);
+        finish();
         startActivity(intent);
 
     }

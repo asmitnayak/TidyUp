@@ -34,8 +34,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationChannel channel=new NotificationChannel(CHANNEL_ID,CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
             manager.createNotificationChannel(channel);
         }
-        intent = new Intent(this, Account.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,1,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        if(title.equalsIgnoreCase("Account")) {
+            intent = new Intent(this, Account.class);
+        }
+        if(title.equalsIgnoreCase("Penalty/Reward")){
+            intent = new Intent(this,RewardAndPenalty.class);
+        }
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,1,this.intent,PendingIntent.FLAG_UPDATE_CURRENT);
         Notification notification = new NotificationCompat.Builder(this,CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_group_24)
                 .setPriority(4)

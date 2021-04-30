@@ -90,13 +90,13 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
             if(groupPenaltyMap.containsKey(penaltyName)){
                 return 0; //Penalty already added
             }else{
-                groupPenaltyMap.put(penaltyName, new ArrayList<>(Arrays.asList(penaltyDescription, null)));
+                groupPenaltyMap.put(penaltyName.trim(), new ArrayList<>(Arrays.asList(penaltyDescription, null)));
                 grDB.put(groupID, groupPenaltyMap);
             }
 
         }else{
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>();
-            groupPenaltyMap.put(penaltyName, new ArrayList<>(Arrays.asList(penaltyDescription, null)));
+            groupPenaltyMap.put(penaltyName.trim(), new ArrayList<>(Arrays.asList(penaltyDescription, null)));
             grDB.put(groupID, groupPenaltyMap);
 
         }
@@ -112,8 +112,8 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
         }
         if(grDB.containsKey(groupID)) {
             Map<String, List<Object>> groupPenaltyMap = new HashMap<>(grDB.get(groupID));
-            if (groupPenaltyMap.containsKey(penaltyName)) {
-                groupPenaltyMap.remove(penaltyName);
+            if (groupPenaltyMap.containsKey(penaltyName.trim())) {
+                groupPenaltyMap.remove(penaltyName.trim());
                 grDB.replace(groupID, groupPenaltyMap);
                 //remove penalty
                 PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);

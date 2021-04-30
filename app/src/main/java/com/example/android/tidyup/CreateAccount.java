@@ -205,6 +205,10 @@ public class CreateAccount extends AppCompatActivity {
 
                                 UserManagement um = new UserManagement();
                                 um.execute();
+                                RewardsManagement rm = new RewardsManagement();
+                                rm.execute();
+                                PenaltyManagement pm = new PenaltyManagement();
+                                pm.execute();
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), Account.class));
                             }

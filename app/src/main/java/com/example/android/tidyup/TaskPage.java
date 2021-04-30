@@ -151,7 +151,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
 
         mAddTaskButton.setEnabled(!groupID.equals(""));
         mOnCompleteButton.setEnabled(!groupID.equals(""));
-
+        if (!groupID.equals("")) // check fore resetting rewards
+            RewardsManagement.resetUserRewards(groupID);
 
         if(!groupID.equals("")) {
             docRef = fFirestore.collection("task").document(groupID);
@@ -170,7 +171,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 }
             });
             docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
-
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                     if (documentSnapshot.exists()) {

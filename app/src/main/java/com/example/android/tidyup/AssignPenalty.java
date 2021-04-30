@@ -72,10 +72,6 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
             penaltyReasonEDT.setError("Please Enter a Reason");
             return;
         }
-        if (TextUtils.isEmpty(offendingUser)){
-            //offendingEDT.setError("Please Enter A User Email");
-            return;
-        }
         groupID = (String) UserManagement.getUserDetails().get("GroupID");
         if(groupID != null) {
             ArrayList<String> members = GroupManagement.getGroupMemberList(groupID);
@@ -112,9 +108,10 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
             startActivity(Intent.createChooser(i, "Send mail..."));
             */
             try {
-                switch (PenaltyManagement.assignPenalty(groupID, penaltyName, offendingUserUID)){
+                switch (PenaltyManagement.assignPenalty(groupID, penaltyName.trim(), offendingUserUID)){
                     case -1:
                         Toast.makeText(AssignPenalty.this, "No Penalty Database found", Toast.LENGTH_SHORT).show();
+
                         break;
                     case 0:
                         Toast.makeText(AssignPenalty.this, "No Penalty Database found for current Group named" + GroupManagement.getGroupName(groupID), Toast.LENGTH_SHORT).show();
@@ -122,11 +119,15 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
                     case 1:
                         Toast.makeText(AssignPenalty.this, "Successfully assigned penalty" + penaltyName + " to user " + UserManagement.getUserNameFromUID(offendingUserUID), Toast.LENGTH_SHORT).show();
                         String userToken = UserManagement.getUserTokenFromUID(offendingUserUID);
-                        NotificationManager.sendNotifications(userToken, "Tidy Up",  "Your penalty is " + penaltyName +
+                        Intent intent = new Intent(this,AssignPenalty.class);
+                        NotificationManager.sendNotifications(userToken, "Penalty/Reward",  "Your penalty is " + penaltyName +
                                 ". The reason you are receiving this penalty is " + penaltyReason, getApplicationContext(),apiService);
                         break;
                     case 2:
                         Toast.makeText(AssignPenalty.this, "No PenaltyName found with name " + penaltyName, Toast.LENGTH_SHORT).show();
+                        if (TextUtils.isEmpty(penaltyName)){
+                            penaltyNameEDT.setError("Please Enter a correct Penalty Name");
+                        }
                         break;
                     default:
                 }
@@ -139,6 +140,7 @@ public class AssignPenalty extends AppCompatActivity implements View.OnClickList
         }
 
         Intent intent = new Intent(this, RewardAndPenalty.class);
+        finish();
         startActivity(intent);
 
     }

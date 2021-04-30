@@ -214,15 +214,5 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
     }
 
-    private static class PenaltyUpdater{
-        public Map<String, Integer> penaltyUpdaterMap = new HashMap<>();
-        PenaltyUpdater(){}
-        PenaltyUpdater(Map<String, Integer> customMap){
-            this.penaltyUpdaterMap = new HashMap<>();
-            this.penaltyUpdaterMap = customMap;
-        }
-        public Map<String, Integer> getPenaltyUpdaterMap() {
-            return this.penaltyUpdaterMap;}
-    }
 
 }

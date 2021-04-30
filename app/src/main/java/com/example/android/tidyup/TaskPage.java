@@ -453,6 +453,36 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 }
             });
         }
+        else{
+            ViewGroup viewParent = (ViewGroup) view.getParent();
+            TextView taskName = (TextView) viewParent.getChildAt(0);
+
+            String taskNameStr = taskName.getText().toString().substring(11);
+
+
+            DocumentReference docRef = fFirestore.collection("task").document((String) userMap.get("GroupID"));
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> currMap = document.getData();
+                    for (Map.Entry<String,Object> entry : currMap.entrySet()) {
+                        if(entry.getKey().equals(taskNameStr)){
+                            Object currObj = entry.getValue();
+                            String currStr = currObj.toString();
+                            TaskItem addTask = new TaskItem(getTaskName(currStr), getPersonStr(currStr), Integer.parseInt(getReward(currStr)),
+                                    getDate(currStr), getRepetition(currStr), false);
+                            Map<String, Object> delete = new HashMap<>();
+                            delete.put(taskNameStr, FieldValue.delete());
+                            docRef.update(delete);
+                            docRef.update(taskNameStr, addTask);
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
     }
 
     public void completeTask(View view){

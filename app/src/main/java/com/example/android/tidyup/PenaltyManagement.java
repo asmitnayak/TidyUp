@@ -70,14 +70,12 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
         docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
-                if (documentSnapshot != null || documentSnapshot.exists()){
-                    Penalty penaltyDocument = documentSnapshot.toObject(PenaltyManagement.Penalty.class);
-                    grDB = penaltyDocument.getPenaltyMap();
-                    System.out.println(grDB);
-                } else {
-                    Log.w("PenaltyManagementFirebase", "Error reading document");
+                if (documentSnapshot == null || !documentSnapshot.exists())
+                    return;
 
-                }
+                Penalty penaltyDocument = documentSnapshot.toObject(PenaltyManagement.Penalty.class);
+                grDB = penaltyDocument.getPenaltyMap();
+                System.out.println(grDB);
             }
         });
     }

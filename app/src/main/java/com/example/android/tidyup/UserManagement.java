@@ -17,7 +17,6 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -25,7 +24,6 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +48,9 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
     private static  DocumentReference docRef;
     private static CollectionReference collRef;// = fFirestore.collection(COLLECTIONPATH_USERS);
     private static boolean testing = false;
-    private List userInfo = new ArrayList<String>();
-    private static Map<String, Object> map = new HashMap<>();
-    private static Map<String, List<String>> otherUserMap = new HashMap<>();
+    private List<String> userInfo = new ArrayList<String>();
+    private static Map<String, Object> map = new HashMap<>();           // current users
+    private static Map<String, List<String>> otherUserMap = new HashMap<>();    // other users in the same group
 
     public UserManagement(){
         fAuth = FirebaseAuth.getInstance();
@@ -60,12 +58,14 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         collRef = fFirestore.collection(COLLECTIONPATH_USERS);
     }
 
-    public UserManagement(FirebaseFirestore fireStore, FirebaseAuth fireAuth, DocumentReference fireDocs){
+    public UserManagement(FirebaseFirestore fireStore, FirebaseAuth fireAuth, DocumentReference fireDocs, HashMap<String, Object> _map, HashMap<String, List<String>> _otherMap){
         fAuth = fireAuth;
         fFirestore = fireStore;
         collRef = fFirestore.collection(COLLECTIONPATH_USERS);
         docRef = fireDocs;
         testing = true;
+        map = _map;
+        otherUserMap = _otherMap;
     }
 
     public static void addStringField(String fieldName) {
@@ -115,14 +115,20 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
 
     //private static Map<String, String> otherUserMap = new HashMap<>();
     public static String getUserNameFromUID (String uid){
+        if(!otherUserMap.containsKey(uid))
+            return null;
         return ((List<String>)otherUserMap.get(uid)).get(0);
     }
 
     public static String getEmailFromUID (String uid){
+        if(!otherUserMap.containsKey(uid))
+            return null;
         return ((List<String>)otherUserMap.get(uid)).get(2);
     }
 
     public static String getUserPointsFromUID (String uid){
+        if(!otherUserMap.containsKey(uid))
+            return null;
         return ((List<String>)otherUserMap.get(uid)).get(1);
     }
 
@@ -159,7 +165,11 @@ public class UserManagement extends AsyncTask<Void, Void, Void> {
         docRef.update(KEY_ROLE, role);
     }
     protected static void setToken(String token) {docRef.update("Token", token);}
-    protected static String getUserTokenFromUID(String uid){return otherUserMap.get(uid).get(3);}
+    protected static String getUserTokenFromUID(String uid){
+        if(!otherUserMap.containsKey(uid))
+            return null;
+        return otherUserMap.get(uid).get(3);
+    }
     protected static void setUserGroupID(String groupID){
         docRef.update(KEY_GroupID, groupID);
     }

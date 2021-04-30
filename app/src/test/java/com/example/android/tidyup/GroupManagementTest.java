@@ -2,6 +2,8 @@ package com.example.android.tidyup;
 
 import android.util.Base64;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -16,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -39,6 +42,7 @@ public class GroupManagementTest {
         FirebaseUser mockFireUser = mock(FirebaseUser.class);
         CollectionReference mockCollections = mock(CollectionReference.class);
         DocumentReference mockDocs = mock(DocumentReference.class);
+        Task mockTask = mock(Task.class);
 
         ///////////////////////////////////
         //////   MOCKING FUNCTIONS   //////
@@ -48,6 +52,8 @@ public class GroupManagementTest {
         doReturn("example").when(mockFireUser).getUid();
         doReturn(mockCollections).when(mockFirestore).collection(anyString());
         doReturn(mockDocs).when(mockCollections).document(anyString());
+        doReturn(mockTask).when(mockDocs).delete();
+        doReturn(mockTask).when(mockTask).addOnSuccessListener(any(OnSuccessListener.class));
 
         //////////////////////////////////
         //////   Group Management   //////

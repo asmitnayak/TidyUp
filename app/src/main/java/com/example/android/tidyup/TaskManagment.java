@@ -69,7 +69,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
 
         String groupId = (String) UserManagement.getUserDetails().get("GroupID");
 
-        DocumentReference docRef = fFirestore.collection("task").document(groupId);
+        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupId);
 
         docRef.update(taskName, addTask);
 
@@ -246,18 +246,40 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
     protected static void updateDocRef(String groupID){
         readGroupTaskDB(groupID);
     }
-    public static void readGroupTaskDB( String groupID){
+    public static void readGroupTaskDB(String groupID){
+
+        CollectionReference colRef = fFirestore.collection(COLLECTIONPATH_TASK);
 
         docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot==null) {
+                    displayMap = new HashMap<>();
+                    return;
+                }
                 TaskManagment.Tasks taskDocument = documentSnapshot.toObject(TaskManagment.Tasks.class);
                 displayMap = taskDocument.taskMap;
             }
         }).addOnFailureListener(new OnFailureListener() {
             public void onFailure(@NonNull Exception e) {
                 Log.w("TaskFirebase", "Error reading document", e);
+            }
+        });
+
+        docRef.addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.w(TAG, "listen:error", error);
+                    return;
+                }
+                if(documentSnapshot==null || !documentSnapshot.exists()) {
+                    displayMap = new HashMap<>();
+                    return;
+                }
+                TaskManagment.Tasks taskDocument = documentSnapshot.toObject(TaskManagment.Tasks.class);
+                displayMap = taskDocument.taskMap;
             }
         });
 
@@ -283,7 +305,7 @@ public class TaskManagment extends AsyncTask<Void, Void, Void> {
         }
     }*/
     public static void removeTaskFromGroup(String groupID, String taskName){
-        DocumentReference docRef = fFirestore.collection("task").document(groupID);
+        DocumentReference docRef = fFirestore.collection(COLLECTIONPATH_TASK).document(groupID);
         Map<String, Object> delete = new HashMap<>();
         delete.put(taskName, FieldValue.delete());
         docRef.update(delete);

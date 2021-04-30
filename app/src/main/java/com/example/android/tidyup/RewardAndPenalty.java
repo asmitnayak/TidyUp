@@ -51,6 +51,9 @@ public class RewardAndPenalty extends AppCompatActivity implements PopupMenu.OnM
         setContentView(R.layout.activity_reward_and_penatly);
         String groupID = (String) UserManagement.getUserDetails().get("GroupID");
 
+        if (!groupID.equals("")) // check fore resetting rewards
+            RewardsManagement.resetUserRewards(groupID);
+
         mAddReward = findViewById(R.id.addReward);
         mAddPenalty = findViewById(R.id.addPenalty);
         mAssignPenalty = findViewById(R.id.assignPenalty);

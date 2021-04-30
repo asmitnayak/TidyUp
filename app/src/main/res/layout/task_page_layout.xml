@@ -12,15 +12,19 @@
     <RelativeLayout
         android:id="@+id/box1"
         android:layout_width="400dp"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp">
 
         <TextView
             android:id="@+id/taskNameLayout"
             android:layout_width="250dp"
             android:layout_height="27dp"
             android:layout_below="@+id/completeTask"
+            android:layout_alignParentTop="true"
             android:layout_marginStart="0dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="8dp"
             android:layout_toEndOf="@+id/taskSelect"
             android:fontFamily="@font/architects_daughter"
             android:text="Name:"
@@ -92,7 +96,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="18dp"
-            android:onClick="updateIsChecked"/>
+            android:onClick="updateIsChecked" />
 
     </RelativeLayout>
 

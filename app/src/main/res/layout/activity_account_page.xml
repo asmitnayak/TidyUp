@@ -22,9 +22,26 @@
             layout="@layout/action_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="247dp">
+
+            <TextView
+                android:id="@+id/acRole"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/architects_daughter"
+                android:text="Role:"
+                android:textColor="@color/fontAndButtonColor"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.491"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/acGroup"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/acUserPoints"
@@ -48,12 +65,10 @@
                 android:text="Group:"
                 android:textColor="@color/fontAndButtonColor"
                 android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.491"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/acUserPoints"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/acUserPoints" />
 
             <TextView
                 android:id="@+id/acName"

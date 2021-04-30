@@ -68,20 +68,6 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
         return false;
     }
 
-    public void setUpEmulator(){
-        // [START fs_emulator_connect]
-        // 10.0.2.2 is the special IP address to connect to the 'localhost' of
-        // the host computer from an Android emulator.
-        //FirebaseFirestore fFirestore = FirebaseFirestore.getInstance();
-        db.useEmulator("10.0.2.2", 8080);
-
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(false)
-                .build();
-        db.setFirestoreSettings(settings);
-        // [END fs_emulator_connect]
-    }
-
     public static String getCurrentGroup(){
         String groupID = "";
         if(fAuth.getCurrentUser() != null)
@@ -158,11 +144,11 @@ public class GroupManagement extends AsyncTask<Void, Void, Void> {
     }
 
     public static ArrayList<String> getGroupMemberList(String groupID){
-        if(grpDB == null){
-            readGroupDB();
-            if(grpDB == null)
-                return null;
-        }
+//        if(grpDB == null){
+//            readGroupDB();
+//            if(grpDB == null)
+//                return null;
+//        }
         if(!grpDB.containsKey(groupID)) {
             return null;
         }

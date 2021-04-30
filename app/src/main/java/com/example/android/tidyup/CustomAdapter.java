@@ -76,7 +76,7 @@ public class CustomAdapter extends BaseAdapter {
 
         TextView taskNameV = (TextView) view.findViewById(R.id.taskNameLayout);
         taskNameV.setText("Task Name: " + tasksKey.get(i));
-        taskNameV.setId(i + 1);
+//        taskNameV.setId(i + 1);
         TextView personV = (TextView) view.findViewById(R.id.taskPersonLayout);
         personV.setText("Person Assigned: " +(String)((HashMap<String, Object>)tasksValues.get(i)).get("personAssignedToTask"));
 

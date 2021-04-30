@@ -152,6 +152,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         mAddTaskButton.setEnabled(!groupID.equals(""));
         mOnCompleteButton.setEnabled(!groupID.equals(""));
 
+
         if(!groupID.equals("")) {
             docRef = fFirestore.collection("task").document(groupID);
             docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -161,8 +162,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                         Map<String, Object> taskDB = documentSnapshot.getData();
                         customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
                         taskList.setAdapter(customAdaptor);
-                        tasksKey = new ArrayList<String>(tasks.keySet());
-                        tasksValues = new ArrayList(tasks.values());
+                        if (!groupID.equals("")) // check fore resetting rewards
+                            RewardsManagement.resetUserRewards(groupID);
                     } else {
                         Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }
@@ -176,8 +177,8 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                         Map<String, Object> taskDB = documentSnapshot.getData();
                         customAdaptor = new CustomAdapter(TaskPage.this, documentSnapshot.getData());
                         taskList.setAdapter(customAdaptor);
-                        tasksKey = new ArrayList<String>(tasks.keySet());
-                        tasksValues = new ArrayList(tasks.values());
+                        if (!groupID.equals("")) // check fore resetting rewards
+                            RewardsManagement.resetUserRewards(groupID);
                     } else {
                         Toast.makeText(TaskPage.this, "Document does not Exist", Toast.LENGTH_LONG).show();
                     }

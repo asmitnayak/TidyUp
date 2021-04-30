@@ -117,8 +117,6 @@ public class PenaltyManagement extends AsyncTask<Void, Void, Void> {
 
     public static int removePenaltyMap(String groupID){
        if(grDB != null) {
-
-
            if (grDB.containsKey(groupID)) {
                grDB.remove(groupID);
                PenaltyManagement.Penalty penalty = new PenaltyManagement.Penalty(grDB);

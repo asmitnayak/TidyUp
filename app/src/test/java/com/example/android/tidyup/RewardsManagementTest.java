@@ -69,7 +69,7 @@ public class RewardsManagementTest {
         //////////////////////////////////
 
         rm = new RewardsManagement(mockFireAuth, mockFirestore);
-        RewardsManagement.addReward("gid1", "This is a reward", "Reward1", 15);
+        RewardsManagement.addReward(null,"gid1", "This is a reward", "Reward1", 15);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class RewardsManagementTest {
 
     @Test
     public void addAnotherRewardGroup(){
-        RewardsManagement.addReward("gid2", "This is a reward", "Reward2", 12);
+        RewardsManagement.addReward(null,"gid2", "This is a reward", "Reward2", 12);
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Reward2");
         assertEquals(expected, RewardsManagement.getRewardNameList(RewardsManagement.getGroupRewardsMap("gid2")));
@@ -102,12 +102,12 @@ public class RewardsManagementTest {
 
     @Test
     public void addRewardReturn(){
-        assertEquals(1, RewardsManagement.addReward("gid2", "This is a reward", "Reward2", 12));
+        assertEquals(1, RewardsManagement.addReward(null,"gid2", "This is a reward", "Reward2", 12));
     }
 
     @Test
     public void getNewlyAddedRewardMap(){
-        RewardsManagement.addReward("gid2", "This is a reward", "Reward2", 12);
+        RewardsManagement.addReward(null, "gid2", "This is a reward", "Reward2", 12);
         String expectedName  = "Reward2";
         ArrayList<Object> expectedValues = new ArrayList<Object>();
         expectedValues.add("This is a reward");
@@ -122,7 +122,7 @@ public class RewardsManagementTest {
 
     @Test
     public void addRewardToExistingRewardList(){
-        RewardsManagement.addReward("gid1", "This is a new reward", "Reward3", 3);
+        RewardsManagement.addReward(null,"gid1", "This is a new reward", "Reward3", 3);
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Reward1");
         expected.add("Reward3");

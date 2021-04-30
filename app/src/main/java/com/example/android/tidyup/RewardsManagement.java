@@ -74,8 +74,9 @@ public class RewardsManagement extends AsyncTask<Void, Void, Void> {
         }
         Rewards rewards = new Rewards(grDB);
         fFirestore.collection(COLLECTIONPATH_REWARDS_PENALTIES).document(DOCUMENTPATH_REWARDS).set(rewards);
-        ArrayList<String> membersList = GroupManagement.getGroupMemberList(groupID);
+
         if( context != null) {
+            ArrayList<String> membersList = GroupManagement.getGroupMemberList(groupID);
             for (int i = 0; i < membersList.size(); i++) {
                 assignReward(context, membersList.get(i), groupID, Integer.parseInt((String) UserManagement.getUserPointsFromUID(membersList.get(i))));
             }

@@ -129,6 +129,10 @@ public class CreateAccount extends AppCompatActivity {
             mEmailView.setError("Invalid Email!");
             return;
         }
+        if(!isValid(email)){
+            mEmailView.setError("Please enter a valid Email!");
+            return;
+        }
         if (TextUtils.isEmpty(password)){
             mPasswordView.setError("Password is required");
             return;
@@ -178,46 +182,51 @@ public class CreateAccount extends AppCompatActivity {
     }
 
     protected void firebaseAuthAddUser(String email, String password, String username, String role){
-        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Map<String, Object> userMap = new HashMap<>();
-                    userMap.put("Username", username);
-                    userMap.put("Email", email);
-                    userMap.put("UserPoints", "0");
-                    userMap.put("Role", role);
-                    userMap.put("GroupID", "");
-                    userMap.put("Group", "");
-                    userMap.put("Task", "");
+        if( isValid(email)) {
+            fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("Username", username);
+                        userMap.put("Email", email);
+                        userMap.put("UserPoints", "0");
+                        userMap.put("Role", role);
+                        userMap.put("GroupID", "");
+                        userMap.put("Group", "");
+                        userMap.put("Task", "");
 
-                    // Store user information into Firestore
-                    fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
-                            mProgressBar.setVisibility(View.INVISIBLE);
+                        // Store user information into Firestore
+                        fFirestore.collection("Users").document(fAuth.getCurrentUser().getUid()).set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(CreateAccount.this, "Account created", Toast.LENGTH_LONG).show();
+                                mProgressBar.setVisibility(View.INVISIBLE);
 
-                            UserManagement um = new UserManagement();
-                            um.execute();
-                            finish();
-                            startActivity(new Intent(getApplicationContext(), Account.class));
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            mProgressBar.setVisibility(View.INVISIBLE);
-                            Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }else{
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                UserManagement um = new UserManagement();
+                                um.execute();
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), Account.class));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                mProgressBar.setVisibility(View.INVISIBLE);
+                                Toast.makeText(CreateAccount.this, "Error! " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    } else {
+                        mProgressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(CreateAccount.this, "Error! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        }
 
     }
 
-
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
 }

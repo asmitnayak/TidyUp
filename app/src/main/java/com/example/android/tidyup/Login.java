@@ -74,6 +74,12 @@ public class Login extends AppCompatActivity {
             mEmail.setError("Invalid Email!");
             return;
         }
+
+        if(!isValid(email)){
+            mEmail.setError("Please enter a valid Email!");
+            return;
+        }
+
         if (TextUtils.isEmpty(password)){
             mPassword.setError("Password is required");
             return;
@@ -119,6 +125,10 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
 
 
     public void forgotPassword(View view){

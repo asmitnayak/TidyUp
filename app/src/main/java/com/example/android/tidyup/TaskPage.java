@@ -170,7 +170,6 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
                 }
             });
             docRef.addSnapshotListener(MetadataChanges.EXCLUDE, new EventListener<DocumentSnapshot>() {
-
                 @Override
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                     if (documentSnapshot.exists()) {

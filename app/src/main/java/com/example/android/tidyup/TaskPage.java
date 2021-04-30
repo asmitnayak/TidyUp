@@ -339,7 +339,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         void onCallback(Map<String, Object> taskDB);
     }
 
-    public String getTaskName(String str){
+    public static String getTaskName(String str){
         int index = str.lastIndexOf("taskName=");
         index = index + 9;
         String buildString = "";
@@ -350,7 +350,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getPersonStr(String str){
+    public static String getPersonStr(String str){
         int index = str.lastIndexOf("personAssignedToTask=");
         index = index + 21;
         String buildString = "";
@@ -361,7 +361,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getDate(String str){
+    public static String getDate(String str){
         int index = str.lastIndexOf("dateToBeCompleted=");
         index = index + 18;
         String buildString = "";
@@ -372,7 +372,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getRepetition(String str){
+    public static String getRepetition(String str){
         int index = str.lastIndexOf("repetition=");
         index = index + 11;
         String buildString = "";
@@ -383,7 +383,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getPriority(String str){
+    public static String getPriority(String str){
         int index = str.lastIndexOf("priority=");
         index = index + 9;
         String buildString = "";
@@ -394,7 +394,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getReward(String str){
+    public static String getReward(String str){
         int index = str.lastIndexOf("rewardPenaltyPointValue=");
         index = index + 24;
         String buildString = "";
@@ -405,7 +405,7 @@ public class TaskPage extends AppCompatActivity implements PopupMenu.OnMenuItemC
         return buildString;
     }
 
-    public String getChecked(String str){
+    public static String getChecked(String str){
         int index = str.lastIndexOf("isChecked=");
         index = index + 10;
         String buildString = "";

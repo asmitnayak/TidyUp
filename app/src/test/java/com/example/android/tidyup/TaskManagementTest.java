@@ -1,11 +1,20 @@
 package com.example.android.tidyup;
 
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.google.firebase.firestore.SetOptions;
 
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -31,9 +40,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import org.junit.runner.RunWith;
@@ -42,6 +53,11 @@ import org.mockito.junit.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class TaskManagementTest {
     private TaskManagment tm;
+    FirebaseFirestore mockFirestore;
+    FirebaseAuth mockFireAuth;
+    FirebaseUser mockFireUser;
+    CollectionReference mockCollections;
+    DocumentReference mockDocs;
     @Before
     public void setUp() {
 
@@ -49,11 +65,11 @@ public class TaskManagementTest {
         //////   MOCKING CLASSES   //////
         /////////////////////////////////
 
-        FirebaseFirestore mockFirestore = mock(FirebaseFirestore.class);
-        FirebaseAuth mockFireAuth = mock(FirebaseAuth.class);
-        FirebaseUser mockFireUser = mock(FirebaseUser.class);
-        CollectionReference mockCollections = mock(CollectionReference.class);
-        DocumentReference mockDocs = mock(DocumentReference.class);
+        mockFirestore = mock(FirebaseFirestore.class);
+        mockFireAuth = mock(FirebaseAuth.class);
+        mockFireUser = mock(FirebaseUser.class);
+        mockCollections = mock(CollectionReference.class);
+        mockDocs = mock(DocumentReference.class);
 
         ///////////////////////////////////
         //////   MOCKING FUNCTIONS   //////
@@ -81,20 +97,24 @@ public class TaskManagementTest {
 
     @Test
     public void addTaskToGroup() {
-        TaskManagment.addTaskItem("task3","id2", 5, "05/05", "none");
-        String expectedName = "task3";
-        ArrayList<Object> expectedTaskValues = new ArrayList<Object>();
-        expectedTaskValues.add("task3");
-        expectedTaskValues.add("id2");
-        expectedTaskValues.add(5);
-        expectedTaskValues.add("05/05");
-        expectedTaskValues.add("none");
+        Map<String, Object> data = new HashMap<>();
+        TaskItem addItem = new TaskItem("task3","id2", 5, "05/05", "none");
+        data.put("task3", addItem);
 
+        TaskItem checkItem = TaskManagment.addTaskItem("task3","id2", 5, "05/05", "none");
+
+        assertEquals(addItem.getTaskName() ,addItem.getTaskName() );
+        assertEquals(addItem.getPersonAssignedToTask() ,addItem.getPersonAssignedToTask() );
+        assertEquals(addItem.getRewardPenaltyPointValue() ,addItem.getRewardPenaltyPointValue() );
+        assertEquals(addItem.getDateToBeCompleted(), checkItem.getDateToBeCompleted());
+        assertEquals(addItem.getRepetition() ,addItem.getRepetition());
     }
 
     @Test
     public void removeTaskFromGroup() {
-
+        TaskManagment.addTaskItem("task3","id2", 5, "05/05", "none");
+        Object check = TaskManagment.removeTaskFromGroup("gid1", "task3");
+        assertNull(check);
     }
 
 }

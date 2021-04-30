@@ -269,7 +269,7 @@ public class Account extends AppCompatActivity implements PopupMenu.OnMenuItemCl
         if(!UserManagement.getUserDetails().get("Group").toString().equals("")) {
             AlertDialog.Builder createAlert = new AlertDialog.Builder(Account.this);
             createAlert.setMessage("If you create a new group you will leave " + mGroup.getText().toString()
-                    + " Are you sure you want to leave?");
+                    + ". Are you sure you want to leave?");
             createAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

@@ -89,7 +89,7 @@
             <LinearLayout
                 android:layout_width="352dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="10dp"
                 android:baselineAligned="false"
                 android:dividerPadding="10dp"
                 android:orientation="horizontal">
